@@ -23,27 +23,17 @@ public class MainActivity extends Activity {
 		GridView grid = (GridView)findViewById(R.id.Grid);
 		LinearLayout ll = (LinearLayout)findViewById(R.id.LinearLayout1);
 		int width = ll.getWidth();
+		Board board = new Board(8,8);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
 		layoutParams.height = width;
 		grid.setLayoutParams(layoutParams);
 		grid.setNumColumns(numOfColumns);
 		grid.setColumnWidth(grid.getWidth()/numOfColumns);
 		grid.setBackgroundResource(R.drawable.checkered_background);
-		grid.setAdapter(new PiecesAdapter(this));
-
-		grid.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
-	        }
-	    });
-		grid.setOnDragListener(new OnDragListener() {
-			
-			@Override
-			public boolean onDrag(View v, DragEvent event) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
+		PiecesAdapter adapter = new PiecesAdapter(this,board);
+		BoardController controller = new BoardController(adapter, board);
+		grid.setAdapter(adapter);
+		grid.setOnItemClickListener(new SpaceListener(controller));
 
 		
 	}

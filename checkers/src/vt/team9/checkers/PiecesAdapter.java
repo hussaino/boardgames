@@ -12,10 +12,12 @@ public class PiecesAdapter extends BaseAdapter {
 
 	Context context_;
 	int width_;
+	Board board_;
 
-	public PiecesAdapter(Context applicationContext) {
+	public PiecesAdapter(Context applicationContext,Board board) {
 		// TODO Auto-generated constructor stub
 		context_ = applicationContext;
+		board_ = board;
 	}
 
 	@Override
@@ -39,6 +41,8 @@ public class PiecesAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView;
+		int x = position %8;
+		int y = position /8;
 		int width = context_.getResources().getDisplayMetrics().widthPixels;
 		int boxWidth = width/8;
 		int imageWidth = (int) 95*boxWidth/100;
@@ -50,16 +54,21 @@ public class PiecesAdapter extends BaseAdapter {
             imageView.setLayoutParams(params);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(imagePad,imagePad,imagePad,imagePad);
-    		if((position > 23 && position < 40) || (position % 2 == 1 && position %16 < 8) || (position % 2 == 0 && position %16 >= 8)){
-    			return imageView;
-    		}
+    		
         } else {
             imageView = (ImageView) convertView;
         }
-        
-        imageView.setImageResource(R.drawable.peach_circle);
-        if(position > 40)
+        if(board_.containsTeam1Piece[x][y]){
+        	imageView.setImageResource(R.drawable.peach_circle);
+        }
+        else if(board_.containsTeam2Piece[x][y]){
         	imageView.setImageResource(R.drawable.moccasin_circle);
+        }
+        else if(board_.highlighted[x][y]){
+        	imageView.setImageResource(R.drawable.jade_circle);
+        }
+        else
+        	imageView.setImageResource(0);
         return imageView;
 	}
 
