@@ -2,6 +2,7 @@ package vt.team9.checkers;
 
 import java.util.List;
 
+//import android.R;
 import android.util.Log;
 
 public class Checker extends Piece {
@@ -16,12 +17,12 @@ public class Checker extends Piece {
 
 	@Override
 	public int getTeam1Image() {
-		return R.drawable.peach_circle;
+		return R.drawable.maroon_checker;
 	}
 
 	@Override
 	public int getTeam2Image() {
-		return R.drawable.moccasin_circle;
+		return R.drawable.orange_checker;
 	}
 
 	@Override

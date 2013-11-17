@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 		GridView grid = (GridView)findViewById(R.id.Grid);
 		LinearLayout ll = (LinearLayout)findViewById(R.id.LinearLayout1);
 		int width = ll.getWidth();
-		Board board = new CheckerBoard(8,8);
+		Board board = new ChessBoard(8,8);
 		Button button = (Button) findViewById(R.id.submitButton);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
 		layoutParams.height = width;

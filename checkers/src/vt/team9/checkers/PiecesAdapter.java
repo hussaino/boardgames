@@ -58,15 +58,16 @@ public class PiecesAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-        if(board_.Pieces_[x][y].team_ == board_.Team1){
+        if(board_.Pieces_[x][y].highlight_){
+        	imageView.setImageResource(board_.Pieces_[x][y].getHighlightImage());
+        }
+        else if(board_.Pieces_[x][y].team_ == board_.Team1){
         	imageView.setImageResource(board_.Pieces_[x][y].getTeam1Image());
         }
         else if(board_.Pieces_[x][y].team_ == board_.Team2){
         	imageView.setImageResource(board_.Pieces_[x][y].getTeam2Image());
         }
-        else if(board_.Pieces_[x][y].highlight_){
-        	imageView.setImageResource(board_.Pieces_[x][y].getHighlightImage());
-        }
+        
         else
         	imageView.setImageResource(0);
         return imageView;
