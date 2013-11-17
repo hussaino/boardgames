@@ -17,7 +17,7 @@ public class EmptySpace extends Piece {
 	@Override
 	public int getHighlightImage()
 	{
-		return R.drawable.jade_square;
+		return R.drawable.empty_space_highlight;
 	}
 	EmptySpace(int team) {
 		super(team);

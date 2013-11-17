@@ -11,7 +11,7 @@ public class King extends Piece {
 
 	@Override
 	public int getTeam1Image() {
-		return R.drawable.ic_launcher;
+		return R.drawable.maroon_king;
 	}
 
 	@Override
