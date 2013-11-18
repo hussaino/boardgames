@@ -1,0 +1,109 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (javaClasses.cpp:129), pid=456, tid=1368
+#  fatal error: Invalid layout of preloaded class
+#
+# JRE version: 7.0_25-b17
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (23.25-b01 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000001c9d800):  JavaThread "Unknown thread" [_thread_in_vm, id=1368, stack(0x0000000001d00000,0x0000000001e00000)]
+
+Stack: [0x0000000001d00000,0x0000000001e00000]
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000001c9d800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=1368, stack(0x0000000001d00000,0x0000000001e00000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.018 loading class 0x0000000001e49a30 done
+Event: 0.019 loading class 0x0000000001e0fc20 done
+Event: 0.019 loading class 0x0000000001e0fef0
+Event: 0.019 loading class 0x0000000001e51210
+Event: 0.019 loading class 0x0000000001e51210 done
+Event: 0.019 loading class 0x0000000001e51290
+Event: 0.019 loading class 0x0000000001e51290 done
+Event: 0.019 loading class 0x0000000001e9c660
+Event: 0.019 loading class 0x0000000001e9c660 done
+Event: 0.019 loading class 0x0000000001e0fef0 done
+
+
+Dynamic libraries:
+0x000007f7d5210000 - 0x000007f7d5243000 	C:\Program Files\Java\jre7\bin\javaw.exe
+0x000007f8f4a60000 - 0x000007f8f4c20000 	C:\Windows\SYSTEM32\ntdll.dll
+0x000007f8f2600000 - 0x000007f8f2736000 	C:\Windows\system32\KERNEL32.DLL
+0x000007f8f19e0000 - 0x000007f8f1ad3000 	C:\Windows\system32\KERNELBASE.dll
+0x000007f8f4260000 - 0x000007f8f433e000 	C:\Windows\system32\ADVAPI32.dll
+0x000007f8f3ee0000 - 0x000007f8f402c000 	C:\Windows\system32\USER32.dll
+0x000007f8ef360000 - 0x000007f8ef5ca000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.9200.16579_none_418ab7ef718b27ef\COMCTL32.dll
+0x000007f8f4970000 - 0x000007f8f4a15000 	C:\Windows\system32\msvcrt.dll
+0x000007f8f2890000 - 0x000007f8f28d8000 	C:\Windows\SYSTEM32\sechost.dll
+0x000007f8f4340000 - 0x000007f8f4485000 	C:\Windows\system32\RPCRT4.dll
+0x000007f8f2740000 - 0x000007f8f2881000 	C:\Windows\system32\GDI32.dll
+0x000007f8f4a20000 - 0x000007f8f4a59000 	C:\Windows\system32\IMM32.DLL
+0x000007f8f24e0000 - 0x000007f8f25f6000 	C:\Windows\system32\MSCTF.dll
+0x0000000058ab0000 - 0x0000000058b81000 	C:\Program Files\Java\jre7\bin\msvcr100.dll
+0x00000000583a0000 - 0x0000000058aaf000 	C:\Program Files\Java\jre7\bin\server\jvm.dll
+0x000007f8e8be0000 - 0x000007f8e8be9000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x000007f8e7170000 - 0x000007f8e7190000 	C:\Windows\SYSTEM32\WINMM.dll
+0x000007f8f4680000 - 0x000007f8f4687000 	C:\Windows\system32\PSAPI.DLL
+0x000007f8f4910000 - 0x000007f8f4968000 	C:\Windows\system32\WS2_32.dll
+0x000007f8e7130000 - 0x000007f8e7163000 	C:\Windows\SYSTEM32\WINMMBASE.dll
+0x000007f8f2a90000 - 0x000007f8f2a99000 	C:\Windows\system32\NSI.dll
+0x000007f8f1d20000 - 0x000007f8f1d6f000 	C:\Windows\SYSTEM32\cfgmgr32.dll
+0x000007f8f1e20000 - 0x000007f8f1e42000 	C:\Windows\system32\DEVOBJ.dll
+0x0000000058390000 - 0x000000005839f000 	C:\Program Files\Java\jre7\bin\verify.dll
+0x0000000058360000 - 0x0000000058388000 	C:\Program Files\Java\jre7\bin\java.dll
+0x0000000058340000 - 0x0000000058355000 	C:\Program Files\Java\jre7\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=Cp1252 -Xbootclasspath:C:\Users\hussain\android-sdks\platforms\android-18\android.jar 
+java_command: vt.team9.checkers.ChessController
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jre7
+PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Kits\8.0\Windows Performance Toolkit\;C:\Program Files\MATLAB\R2012b\bin;C:\Program Files (x86)\Altium Designer S09 Viewer\System;c:\altera\12.1\modelsim_ase\win32aloem
+USERNAME=Hussain
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 37 Stepping 5, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 8 , 64 bit Build 9200 
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 37 stepping 5, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht, tsc, tscinvbit
+
+Memory: 4k page, physical 8181612k(5875000k free), swap 9426796k(6825736k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (23.25-b01) for windows-amd64 JRE (1.7.0_25-b17), built on Jun 21 2013 12:58:32 by "java_re" with unknown MS VC++:1600
+
+time: Sun Nov 17 19:36:02 2013
+elapsed time: 0 seconds
+

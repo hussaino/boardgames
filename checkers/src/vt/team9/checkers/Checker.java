@@ -2,6 +2,7 @@ package vt.team9.checkers;
 
 import java.util.List;
 
+
 //import android.R;
 import android.util.Log;
 
@@ -11,8 +12,8 @@ public class Checker extends Piece {
 
 	}
 
-	Checker(int team) {
-		super(team);
+	Checker(int team,String name) {
+		super(team,name);
 	}
 
 	@Override

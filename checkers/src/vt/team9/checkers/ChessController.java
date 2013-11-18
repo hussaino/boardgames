@@ -7,9 +7,14 @@ import android.widget.Toast;
 
 public class ChessController extends GameController {
 
+	boolean check;
+	boolean checkmate;
+
 	public ChessController(PiecesAdapter adapter, Board board, Button submit) {
 		super(adapter, board, submit);
 		// TODO Auto-generated constructor stub
+		checkmate = false;
+		check = false;
 	}
 
 	/**
@@ -28,6 +33,7 @@ public class ChessController extends GameController {
 		switch (gamePhase) {
 		case 0: {
 			Piece piece = board_.Pieces_[x][y];
+
 			if (piece.team_ == currentTeam) {
 				piece.getMoves(x, y, board_);
 				oldX = x;
@@ -41,22 +47,32 @@ public class ChessController extends GameController {
 			Piece piece = board_.Pieces_[x][y];
 
 			if (board_.Pieces_[x][y].highlight_) {
-				//Log.d("Checker", x + "," + y + ", " + currentTeam);
 				piece = board_.Pieces_[oldX][oldY];
-				Class<? extends Piece> newPiece = piece.getClass();
-				piece = newPiece.newInstance();
-				piece.setTeam_(board_.Pieces_[oldX][oldY].team_);
+				Piece oldPiece = board_.Pieces_[x][y];
 				board_.putPiece(piece, x, y);
-
-				if (Math.abs(x - oldX) != 1) {
-					board_.removePiece(x + ((oldX - x) / 2), y
-							+ ((oldY - y) / 2));
-				}
 				board_.removePiece(oldX, oldY);
 				board_.clearAllHighlights();
-				oldX = x;
-				oldY = y;
+				isInCheck();
+				if (check) {
+					Context context = MainActivity.getAppContext();
+					CharSequence text = "You are still in Check";
+					int duration = Toast.LENGTH_SHORT;
+					board_.putPiece(piece, oldX, oldY);
+					board_.removePiece(x, y);
+					board_.putPiece(oldPiece, x, y);
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+					board_.clearAllHighlights();
+					adapter_.notifyDataSetChanged();
+					gamePhase--;
+					return;
+				}
 				gamePhase++;
+				putInCheck();
+				isCheckmate();
+				if(checkmate){
+					Log.d("Hussain","Checkmate");
+				}
 				Context context = MainActivity.getAppContext();
 				CharSequence text = "You can now submit your move.";
 				int duration = Toast.LENGTH_SHORT;
@@ -64,35 +80,24 @@ public class ChessController extends GameController {
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
 
-			} else if (board_.Pieces_[x][y].team_ != 0 && !moved) {
+			} else if (board_.Pieces_[x][y].team_ == currentTeam) {
 				board_.clearAllHighlights();
 				piece = board_.Pieces_[x][y];
-				// piece.setHighlighted(true);
-				if (piece.team_ == currentTeam) {
-					piece.getMoves(x, y, board_);
-					oldX = x;
-					oldY = y;
-				}
-			} else if (!moved) {
+				piece.getMoves(x, y, board_);
+				oldX = x;
+				oldY = y;
+			}
+			else{
 				board_.clearAllHighlights();
 				gamePhase--;
-			} else {
-
 			}
-
+			
+			if (check) {
+				Log.d("Hussain", "Check");
+			}
 			break;
 		}
 		case 2: {
-
-			if ((x == oldX) && (y == oldY)) {
-				Piece piece = board_.Pieces_[x][y];
-				piece.action1(x, y, board_);
-				oldX = x;
-				oldY = y;
-				moved = true;
-				gamePhase = 1;
-
-			}
 			break;
 		}
 
@@ -101,4 +106,171 @@ public class ChessController extends GameController {
 
 	}
 
+	@Override
+	public void submitClick() {
+		// TODO Auto-generated method stub
+		super.submitClick();
+
+	}
+
+	public void putInCheck() {
+
+		Piece king;
+
+		int coord[] = new int[2];
+		if (currentTeam == -1) {
+			king = board_.getPiece("king1", coord);
+		} else
+			king = board_.getPiece("king2", coord);
+
+		for (int i = 0; i < board_.width_; i++) {
+			for (int j = 0; j < board_.length_; j++) {
+				Piece temp = board_.Pieces_[i][j];
+				if (temp.team_ == currentTeam) {
+					int tempcoord[] = new int[2];
+					board_.getPiece(temp.getName(), tempcoord);
+					board_.clearAllHighlights();
+					temp.getMoves(tempcoord[0], tempcoord[1], board_);
+					if (king.highlight_) {
+						check = true;
+					}
+				}
+
+			}
+		}
+		board_.clearAllHighlights();
+	}
+
+	public void isCheckmate() {
+		if(!check){
+			return;
+		}
+		boolean[][] possibleMoves = new boolean[board_.width_][board_.length_];
+		Piece king;
+		
+		int coord[] = new int[2];
+		if (currentTeam == -1) {
+			king = board_.getPiece("king1", coord);
+		} else
+			king = board_.getPiece("king2", coord);
+		
+		board_.removePiece(coord[0], coord[1]);
+		for (int i = 0; i < board_.width_; i++) {
+			for (int j = 0; j < board_.length_; j++) {
+				Piece temp = board_.Pieces_[i][j];
+				if (temp.team_ == currentTeam) {
+					int tempcoord[] = new int[2];
+					board_.getPiece(temp.getName(), tempcoord);
+					board_.clearAllHighlights();
+					temp.getMoves(tempcoord[0], tempcoord[1], board_);
+					if(temp.getClass() == Pawn.class){
+						for(int k=0; k<board_.length_;k++){
+							board_.Pieces_[tempcoord[0]][k].highlight_ = false;
+						}
+					}
+					for(int m=0;m<board_.width_;m++){
+						for(int n=0;n<board_.length_;n++){
+							if(board_.Pieces_[m][n].highlight_){
+								possibleMoves[m][n] = true;
+							}
+						}
+					}
+				}
+
+			}
+		}
+		board_.clearAllHighlights();
+
+		board_.putPiece(king, coord[0], coord[1]);
+		king.getMoves(coord[0], coord[1], board_);
+		for(int m=0;m<board_.width_;m++){
+			for(int n=0;n<board_.length_;n++){
+				if(board_.Pieces_[m][n].highlight_)
+					if(possibleMoves[m][n] == false){
+						checkmate = false;
+						board_.clearAllHighlights();
+						return;
+					}
+				
+			}
+		}
+		board_.clearAllHighlights();
+		
+		for (int i = 0; i < board_.width_; i++) {
+			for (int j = 0; j < board_.length_; j++) {
+				Piece temp = board_.Pieces_[i][j];
+				if (temp.team_ == -currentTeam) {
+					int tempcoord[] = new int[2];
+					board_.getPiece(temp.getName(), tempcoord);
+					board_.clearAllHighlights();
+					temp.getMoves(tempcoord[0], tempcoord[1], board_);
+					for(int m=0;m<board_.width_;m++){
+						for(int n=0;n<board_.length_;n++){
+							Piece piece = board_.Pieces_[i][j];
+							if(piece.getName() == "king1" || piece.getName() == "king2"){
+								continue;
+							}
+							Piece oldPiece = board_.Pieces_[m][n];
+							if(board_.Pieces_[m][n].highlight_ && possibleMoves[m][n] == true){
+								board_.putPiece(piece, m, n);
+								board_.removePiece(i, j);
+								board_.clearAllHighlights();
+								isInCheck();
+								if (!check) {
+									Log.d("Hussain","" + "(" + m + "," + n + ")");
+									checkmate = false;
+									board_.putPiece(piece, i, j);
+									board_.removePiece(m, n);
+									board_.putPiece(oldPiece, m, n);
+									board_.clearAllHighlights();
+									return;
+								}
+							}
+								
+						}
+					}
+				}
+
+			}
+			
+		}
+		
+		checkmate = true;
+		board_.clearAllHighlights();
+	}
+
+	public void isInCheck() {
+
+		Piece king;
+
+		int coord[] = new int[2];
+		if (currentTeam == 1) {
+			king = board_.getPiece("king1", coord);
+		} else
+			king = board_.getPiece("king2", coord);
+
+		for (int i = 0; i < board_.width_; i++) {
+			for (int j = 0; j < board_.length_; j++) {
+				Piece temp = board_.Pieces_[i][j];
+				if (temp.team_ == -currentTeam) {
+					int tempcoord[] = new int[2];
+					board_.getPiece(temp.getName(), tempcoord);
+					board_.clearAllHighlights();
+					temp.getMoves(tempcoord[0], tempcoord[1], board_);
+					if (king.highlight_) {
+						check = true;
+						board_.clearAllHighlights();
+						return;
+					}
+				}
+
+			}
+		}
+		check = false;
+		board_.clearAllHighlights();
+	}
+
+	public void resetRound() {
+
+	}
 }

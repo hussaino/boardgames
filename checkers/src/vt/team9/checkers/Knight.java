@@ -6,8 +6,8 @@ public class Knight extends Piece {
 
 	}
 
-	Knight(int team) {
-		super(team);
+	Knight(int team,String name) {
+		super(team,name);
 	}
 
 	@Override

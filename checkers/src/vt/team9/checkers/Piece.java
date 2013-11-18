@@ -6,6 +6,7 @@ public class Piece {
 	
 	boolean highlight_;
 	int team_;
+	String name_;
 	Piece()
 	{
 		
@@ -22,8 +23,9 @@ public class Piece {
 	{
 		return 0;
 	}
-	Piece(int team)
+	Piece(int team,String name)
 	{
+		name_ = name;
 		team_ = team;
 	}
 	public int getTeam_() {
@@ -46,6 +48,9 @@ public class Piece {
 	public void action1(int x, int y, Board board) {
 		// TODO Auto-generated method stub
 		
+	}
+	public String getName(){
+		return name_;
 	}
 
 }

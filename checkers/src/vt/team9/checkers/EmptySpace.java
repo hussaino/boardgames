@@ -19,8 +19,8 @@ public class EmptySpace extends Piece {
 	{
 		return R.drawable.empty_space_highlight;
 	}
-	EmptySpace(int team) {
-		super(team);
+	EmptySpace(int team,String name) {
+		super(team,name);
 		// TODO Auto-generated constructor stub
 	}
 

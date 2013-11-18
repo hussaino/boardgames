@@ -6,8 +6,8 @@ public class Rook extends Piece {
 
 	}
 
-	Rook(int team) {
-		super(team);
+	Rook(int team,String name) {
+		super(team,name);
 	}
 
 	@Override

@@ -4,8 +4,8 @@ public class King extends Piece {
 	King(){
 		
 	}
-	King(int team) {
-		super(team);
+	King(int team,String name) {
+		super(team,name);
 		// TODO Auto-generated constructor stub
 	}
 

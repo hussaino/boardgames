@@ -29,7 +29,7 @@ public class Board extends Object{
 		{
 			for (int j = 0; j< length_; j++)
 			{
-				Pieces_[width_][length_] = new EmptySpace(NoTeam);
+				Pieces_[width_][length_] = new EmptySpace(NoTeam,"");
 			}
 		}
 	}
@@ -38,7 +38,7 @@ public class Board extends Object{
 	}
 	public void removePiece(int x, int y){
 		
-		Pieces_[x][y] = new EmptySpace(NoTeam);
+		Pieces_[x][y] = new EmptySpace(NoTeam,"");
 	}
 	void initPiecesTeam1(int x[],int y[]){
 		for (int i = 0; i < x.length; i++){
@@ -73,6 +73,19 @@ public class Board extends Object{
 	void removeTeam2Piece(int x,int y){
 		containsTeam2Piece[x][y] = false;
 	}
-	
+	public Piece getPiece(String name,int[] args){
+		
+		for(int i=0;i<width_;i++){
+			for(int j=0;j<length_;j++){
+				Piece temp = Pieces_[i][j];
+				if(temp.getName() == name){
+					args[0] = i;
+					args[1] = j;
+					return temp;
+				}
+			}
+		}
+		return new EmptySpace(NoTeam,"null");
+	}
 
 }

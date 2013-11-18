@@ -6,8 +6,8 @@ public class Bishop extends Piece {
 
 	}
 
-	Bishop(int team) {
-		super(team);
+	Bishop(int team,String name) {
+		super(team,name);
 	}
 	@Override
 	public int getTeam1Image() {

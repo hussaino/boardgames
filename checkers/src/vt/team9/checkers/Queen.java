@@ -5,8 +5,8 @@ public class Queen extends Piece {
 
 	}
 
-	Queen(int team) {
-		super(team);
+	Queen(int team,String name) {
+		super(team,name);
 	}
 
 	@Override

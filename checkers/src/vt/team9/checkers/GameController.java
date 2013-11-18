@@ -53,6 +53,7 @@ public class GameController extends Object {
 
 	void itemClicked(int position) throws InstantiationException,
 			IllegalAccessException {
+		/*
 		int x = position % 8;
 		int y = position / 8;
 		switch (gamePhase) {
@@ -137,7 +138,8 @@ public class GameController extends Object {
 
 		}
 		adapter_.notifyDataSetChanged();
-
+		
+	*/
 	}
 
 }

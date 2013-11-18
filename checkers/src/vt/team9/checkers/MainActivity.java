@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 		grid.setColumnWidth(grid.getWidth()/numOfColumns);
 		grid.setBackgroundResource(R.drawable.checkered_background);
 		PiecesAdapter adapter = new PiecesAdapter(this,board);
-		GameController controller = new GameController(adapter, board, button);
+		GameController controller = new ChessController(adapter, board, button);
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
 		MainActivity.context_ = getApplicationContext();

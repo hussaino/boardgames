@@ -5,8 +5,8 @@ public class ChessKing extends Piece {
 
 	}
 
-	ChessKing(int team) {
-		super(team);
+	ChessKing(int team,String name) {
+		super(team,name);
 	}
 
 	@Override
