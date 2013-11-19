@@ -1,5 +1,7 @@
 package vt.team9.checkers;
 
+import android.util.Log;
+
 public class Pawn extends Piece {
 
 	Pawn() {
@@ -37,25 +39,45 @@ public class Pawn extends Piece {
 
 	@Override
 	public void getMoves(int x, int y, Board board) {
-		if (this.team_ == board.Team1) {
-			if (y + 1 < board.length_ && board.Pieces_[x][y+1].team_ == board.NoTeam);
+		if (this.team_ == Board.Team1) {
+			if (y + 1 < board.length_ && board.Pieces_[x][y+1].team_ == Board.NoTeam)
 				board.Pieces_[x][y + 1].setHighlighted(true);
-			if (y == 1 && board.Pieces_[x][y+2].team_ == board.NoTeam)
+			if (y == 1 && board.Pieces_[x][y+2].team_ == Board.NoTeam)
 				board.Pieces_[x][y + 2].setHighlighted(true);
 			if (x+1 < board.width_ && y+1 < board.length_ && board.Pieces_[x+1][y+1].team_ == -this.team_ )
 				board.Pieces_[x+1][y+1].setHighlighted(true);
 			if (x-1 >= 0 && y+1 < board.length_ && board.Pieces_[x-1][y+1].team_ == -this.team_ )
 				board.Pieces_[x-1][y+1].setHighlighted(true);
+			
+			if(board.enPass == x + 1){
+				if (x+1 < board.width_ && y+1 < board.length_ && board.Pieces_[x+1][y].team_ == -this.team_ )
+					board.Pieces_[x+1][y+1].setHighlighted(true);
+			}
+			else if(board.enPass == x - 1){
+				if (x-1 >= 0 && y+1 < board.length_ && board.Pieces_[x-1][y].team_ == -this.team_ )
+					board.Pieces_[x-1][y+1].setHighlighted(true);
+			}
+			
 		}
-		if (this.team_ == board.Team2) {
-			if (y - 1 >= 0 && board.Pieces_[x][y-1].team_ == board.NoTeam);
+		if (this.team_ == Board.Team2) {
+			if (y - 1 >= 0 && board.Pieces_[x][y-1].team_ == Board.NoTeam)
 				board.Pieces_[x][y - 1].setHighlighted(true);
-			if (y == 6 && board.Pieces_[x][y-1].team_ == board.NoTeam)
+			if (y == 6 && board.Pieces_[x][y-1].team_ == Board.NoTeam)
 				board.Pieces_[x][y - 2].setHighlighted(true);
 			if (x-1 >= 0 && y-1 > 0 && board.Pieces_[x-1][y-1].team_ == -this.team_ )
 				board.Pieces_[x-1][y-1].setHighlighted(true);
 			if (x+1 < board.width_ && y-1 >= 0 && board.Pieces_[x+1][y-1].team_ == -this.team_ )
 				board.Pieces_[x+1][y-1].setHighlighted(true);
+			
+			if(board.enPass == x - 1){
+				if (x-1 >= 0 && y-1 > 0 && board.Pieces_[x-1][y].team_ == -this.team_ )
+					board.Pieces_[x-1][y-1].setHighlighted(true);
+			}
+			else if(board.enPass == x + 1){
+				if (x+1 < board.width_ && y-1 >= 0 && board.Pieces_[x+1][y].team_ == -this.team_ )
+					board.Pieces_[x+1][y-1].setHighlighted(true);
+			}
+			
 		}
 	}
 }

@@ -2,9 +2,15 @@ package vt.team9.checkers;
 
 public class ChessBoard extends Board {
 
+	
 	ChessBoard(int length, int width) {
 		super(length, width);
 		// TODO Auto-generated constructor stub
+		team1QueenSideCast = true;
+		team1KingSideCast = true;
+		team2QueenSideCast = true;
+		team2KingSideCast = true;
+		enPass = -1;
 	}
 
 	@Override
@@ -17,20 +23,19 @@ public class ChessBoard extends Board {
 			}
 		}
 		
-		for (int i = 0; i<width_; i+=1) 
+		for (int i = 0; i<8; i++) 
 		{
 			Pieces_[i][1] = new Pawn(Team1,"pawn" + (i+1));
 			Pieces_[i][6] = new Pawn(Team2,"pawn" + (9 + i));
 		}
-		
-		for (int i = 0; i<8; i+=7) 
-		{
-			Pieces_[i][0] = new Rook(Team1,"rook" + (i + 1));
-			Pieces_[i][7] = new Rook(Team2,"rook" + (i + 3));
-		}
+
+		Pieces_[0][0] = new Rook(Team1,"rook1");
+		Pieces_[7][0] = new Rook(Team1,"rook2");
+		Pieces_[0][7] = new Rook(Team2,"rook3");
+		Pieces_[7][7] = new Rook(Team2,"rook4");
 		
 
-		
+		/*
 		Pieces_[1][0] = new Knight(Team1,"knight1");
 		Pieces_[6][0] = new Knight(Team1,"knight2");
 		Pieces_[1][7] = new Knight(Team2,"knight3");
@@ -40,16 +45,14 @@ public class ChessBoard extends Board {
 		Pieces_[5][0] = new Bishop(Team1,"bishop2");
 		Pieces_[2][7] = new Bishop(Team2,"bishop3");
 		Pieces_[5][7] = new Bishop(Team2,"bishop4");
-		
-		Pieces_[3][0] = new Queen(Team1,"queen1");
+		*/
+		//Pieces_[3][0] = new Queen(Team1,"queen1");
 		Pieces_[4][0] = new ChessKing(Team1,"king1");
 		
-		Pieces_[3][7] = new Queen(Team2,"queen2");
+		//Pieces_[3][7] = new Queen(Team2,"queen2");
 		Pieces_[4][7] = new ChessKing(Team2,"king2");
 		
 
-
-		
 
 	}
 
