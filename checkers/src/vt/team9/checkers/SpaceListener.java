@@ -6,15 +6,23 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SpaceListener implements OnItemClickListener{
 
-	BoardController controller_;
+	GameController controller_;
 	
-	public SpaceListener(BoardController controller){
+	public SpaceListener(GameController controller){
 		controller_ = controller;
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long ID) {
-		controller_.itemClicked(position);
+		try {
+			controller_.itemClicked(position);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

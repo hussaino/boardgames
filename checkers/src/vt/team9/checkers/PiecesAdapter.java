@@ -47,7 +47,7 @@ public class PiecesAdapter extends BaseAdapter {
 		int boxWidth = width/8;
 		int imageWidth = (int) 95*boxWidth/100;
 		int imagePad = (int) 10*boxWidth/100;
-		Log.d("Hussain","" +(int) 80*boxWidth/100);
+		//Log.d("Hussain","" +(int) 80*boxWidth/100);
 		ViewGroup.LayoutParams params = new GridView.LayoutParams(imageWidth,imageWidth);
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(context_);
@@ -58,15 +58,16 @@ public class PiecesAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-        if(board_.containsTeam1Piece[x][y]){
-        	imageView.setImageResource(R.drawable.peach_circle);
+        if(board_.Pieces_[x][y].highlight_){
+        	imageView.setImageResource(board_.Pieces_[x][y].getHighlightImage());
         }
-        else if(board_.containsTeam2Piece[x][y]){
-        	imageView.setImageResource(R.drawable.moccasin_circle);
+        else if(board_.Pieces_[x][y].team_ == board_.Team1){
+        	imageView.setImageResource(board_.Pieces_[x][y].getTeam1Image());
         }
-        else if(board_.highlighted[x][y]){
-        	imageView.setImageResource(R.drawable.jade_circle);
+        else if(board_.Pieces_[x][y].team_ == board_.Team2){
+        	imageView.setImageResource(board_.Pieces_[x][y].getTeam2Image());
         }
+        
         else
         	imageView.setImageResource(0);
         return imageView;
