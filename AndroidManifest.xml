@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vt.team9.boardgames"
+    package="vt.team9.customgames"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="vt.team9.boardgames.UserListActivity"
+            android:name="vt.team9.layouts.ItemListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +23,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="vt.team9.boardgames.UserDetailActivity"
-            android:label="@string/title_user_detail"
-            android:parentActivityName=".UserListActivity" >
+            android:name="vt.team9.layouts.ItemDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName="vt.team9.layouts.ItemListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UserListActivity" />
+                android:value=".ItemListActivity" />
+        </activity>
+        <activity
+            android:name="vt.team9.games.ChessActivity"
+            android:label="Chess"
+            android:screenOrientation="portrait"
+            android:parentActivityName="vt.team9.layouts.ItemListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChessActivity" />
+        </activity>
+        <activity
+            android:name="vt.team9.games.CheckersActivity"
+            android:label="Checkers"
+            android:screenOrientation="portrait"
+            android:parentActivityName="vt.team9.layouts.ItemListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CheckersActivity" />
         </activity>
     </application>
 
