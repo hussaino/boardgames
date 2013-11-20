@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <resources>
 	 <string name="app_checkers">Checkers</string>
     <string name="app_chess">Checkers</string>
@@ -34,21 +33,3 @@
     <string name="desc_list_item_icon">Item Icon</string>
 
 </resources>
-=======
-<resources>
-
-    <string name="app_name">Board Games</string>
-    <string name="test">Game</string>
-    <string name="menu_settings">Settings</string>
-
-<<<<<<< HEAD
-=======
-	
-    <string name="title_item_detail">Detail</string>
-    <string name="app_checkers">Checkers</string>
-    <string name="app_chess">Checkers</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
->>>>>>> hussain-development
-</resources>
->>>>>>> 4bac891ab4ca760796f8855108b8175439c66708
