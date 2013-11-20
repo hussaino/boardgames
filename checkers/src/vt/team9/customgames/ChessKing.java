@@ -1,30 +1,32 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
-public class Queen extends Piece {
-	Queen() {
+import vt.team9.customgames.R;
+
+public class ChessKing extends Piece {
+	ChessKing() {
 
 	}
 
-	Queen(int team,String name) {
+	ChessKing(int team,String name) {
 		super(team,name);
 	}
 
 	@Override
 	public int getTeam1Image() {
-		return R.drawable.team1_queen;
+		return R.drawable.team1_king;
 	}
 
 	@Override
 	public int getTeam2Image() {
-		return R.drawable.team2_queen;
+		return R.drawable.team2_king;
 	}
 
 	@Override
 	public int getHighlightImage() {
 		if (this.team_ == 1)
-			return R.drawable.team1_queen_highlight;
+			return R.drawable.team1_king_highlight;
 		else if (this.team_ == -1)
-			return R.drawable.team2_queen_highlight;
+			return R.drawable.team2_king_highlight;
 		else
 			return 0;
 	}
@@ -38,79 +40,64 @@ public class Queen extends Piece {
 	public void getMoves(int x, int y, Board board) {
 		int oldX = x;
 		int oldY = y;
-		while (oldX < board.width_ - 1) {
+		if (oldX < board.width_ - 1) {
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 
 		}
 		oldX = x;
-		while (oldX > 0) {
+		if (oldX > 0) {
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 
 		}
 		oldX = x;
-		while (oldY < board.length_ - 1) {
+		if (oldY < board.length_ - 1) {
 			oldY++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 
 		}
 		oldY = y;
-		while (oldY > 0) {
+		if (oldY > 0) {
 			oldY--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY > 0) && (oldX > 0)) {
+		if ((oldY > 0) && (oldX > 0)) {
 			oldY--;
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY > 0) && (oldX < board.width_ - 1)) {
+		if ((oldY > 0) && (oldX < board.width_ - 1)) {
 			oldY--;
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY < board.length_ - 1) && (oldX > 0)) {
+		if ((oldY < board.length_ - 1) && (oldX > 0)) {
 			oldY++;
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY < board.length_ - 1) && (oldX < board.width_ - 1)) {
+		if ((oldY < board.length_ - 1) && (oldX < board.width_ - 1)) {
 			oldY++;
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
-				break;
+
 		}
 
 	}

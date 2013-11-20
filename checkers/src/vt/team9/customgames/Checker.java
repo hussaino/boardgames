@@ -1,8 +1,9 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 import java.util.List;
 
 
+import vt.team9.customgames.R;
 //import android.R;
 import android.util.Log;
 

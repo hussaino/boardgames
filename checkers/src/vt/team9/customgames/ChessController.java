@@ -1,4 +1,4 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,8 +13,10 @@ public class ChessController extends GameController {
 	boolean check;
 	boolean checkmate;
 	Activity main;
+	ChessBoard board_;
 	public ChessController(PiecesAdapter adapter, Board board, Button submit, Activity activity) {
 		super(adapter, board, submit);
+		board_ = (ChessBoard) board;
 		// TODO Auto-generated constructor stub
 		checkmate = false;
 		check = false;
@@ -64,7 +66,7 @@ public class ChessController extends GameController {
 					board_.putPiece(piece, oldX, oldY);
 					board_.removePiece(x, y);
 					board_.putPiece(oldPiece, x, y);
-					Toast.makeText(MainActivity.getAppContext(), "You are still in Check", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ChessActivity.getAppContext(), "You are still in Check", Toast.LENGTH_SHORT).show();
 					board_.clearAllHighlights();
 					adapter_.notifyDataSetChanged();
 					gamePhase--;
@@ -121,7 +123,7 @@ public class ChessController extends GameController {
 				putInCheck();
 				isCheckmate();
 				if(checkmate){
-					Toast.makeText(MainActivity.getAppContext(), "Checkmate", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ChessActivity.getAppContext(), "Checkmate", Toast.LENGTH_SHORT).show();
 				}
 				if(Math.abs(y-oldY) == 2 && piece.getName().contains("pawn")){
 					board_.enPass = x;
@@ -131,7 +133,7 @@ public class ChessController extends GameController {
 					board_.enPass = -1;
 				
 				checkPromotion();
-				Toast.makeText(MainActivity.getAppContext(), "You can now submit your move.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ChessActivity.getAppContext(), "You can now submit your move.", Toast.LENGTH_SHORT).show();
 				
 
 			} else if (board_.Pieces_[x][y].team_ == currentTeam) {
@@ -147,7 +149,7 @@ public class ChessController extends GameController {
 			}
 			
 			if (check) {
-				Toast.makeText(MainActivity.getAppContext(), "Check", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ChessActivity.getAppContext(), "Check", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}

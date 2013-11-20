@@ -1,4 +1,6 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
+
+import vt.team9.customgames.R;
 
 public class King extends Piece {
 	King(){

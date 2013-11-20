@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vt.team9.checkers"
+    package="vt.team9.customgames"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -11,12 +11,12 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/app_checkers"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="vt.team9.checkers.MainActivity"
+            android:name="vt.team9.customgames.CheckersActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_checkers" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

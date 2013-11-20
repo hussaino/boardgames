@@ -1,6 +1,7 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 import android.util.Log;
+import vt.team9.customgames.R;
 
 public class Pawn extends Piece {
 

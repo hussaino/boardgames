@@ -1,4 +1,4 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 
 
@@ -16,8 +16,9 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import vt.team9.customgames.R;
 
-public class MainActivity extends Activity {
+public class ChessActivity extends Activity {
 	static final int numOfColumns = 8;
 	static final int numOfRows = 8;
 	private static Context context_;
@@ -28,7 +29,7 @@ public class MainActivity extends Activity {
 		GridView grid = (GridView)findViewById(R.id.Grid);
 		LinearLayout ll = (LinearLayout)findViewById(R.id.LinearLayout1);
 		int width = ll.getWidth();
-		Board board = new ChessBoard(8,8);
+		ChessBoard board = new ChessBoard(8,8);
 		Button button = (Button) findViewById(R.id.submitButton);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
 		layoutParams.height = width;
@@ -37,10 +38,10 @@ public class MainActivity extends Activity {
 		grid.setColumnWidth(grid.getWidth()/numOfColumns);
 		grid.setBackgroundResource(R.drawable.checkered_background);
 		PiecesAdapter adapter = new PiecesAdapter(this,board);
-		GameController controller = new ChessController(adapter, board, button,(Activity)this);
+		ChessController controller = new ChessController(adapter, board, button,(Activity)this);
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
-		MainActivity.context_ = getApplicationContext();
+		ChessActivity.context_ = getApplicationContext();
 
 		
 	}

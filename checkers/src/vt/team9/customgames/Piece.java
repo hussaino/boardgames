@@ -1,4 +1,4 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 import java.util.List;
 

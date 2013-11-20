@@ -1,4 +1,4 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 import android.content.Context;
 import android.util.Log;

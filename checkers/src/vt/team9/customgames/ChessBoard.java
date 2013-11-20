@@ -1,11 +1,11 @@
-package vt.team9.checkers;
+package vt.team9.customgames;
 
 public class ChessBoard extends Board {
 
 	
 	ChessBoard(int length, int width) {
 		super(length, width);
-		// TODO Auto-generated constructor stub
+
 		team1QueenSideCast = true;
 		team1KingSideCast = true;
 		team2QueenSideCast = true;
@@ -35,7 +35,7 @@ public class ChessBoard extends Board {
 		Pieces_[7][7] = new Rook(Team2,"rook4");
 		
 
-		/*
+		
 		Pieces_[1][0] = new Knight(Team1,"knight1");
 		Pieces_[6][0] = new Knight(Team1,"knight2");
 		Pieces_[1][7] = new Knight(Team2,"knight3");
@@ -45,11 +45,11 @@ public class ChessBoard extends Board {
 		Pieces_[5][0] = new Bishop(Team1,"bishop2");
 		Pieces_[2][7] = new Bishop(Team2,"bishop3");
 		Pieces_[5][7] = new Bishop(Team2,"bishop4");
-		*/
-		//Pieces_[3][0] = new Queen(Team1,"queen1");
+		
+		Pieces_[3][0] = new Queen(Team1,"queen1");
 		Pieces_[4][0] = new ChessKing(Team1,"king1");
 		
-		//Pieces_[3][7] = new Queen(Team2,"queen2");
+		Pieces_[3][7] = new Queen(Team2,"queen2");
 		Pieces_[4][7] = new ChessKing(Team2,"king2");
 		
 
