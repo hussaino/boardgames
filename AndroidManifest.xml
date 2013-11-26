@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-    package="test.team9.boardgame"
-=======
-    package="vt.team9.customgames"
->>>>>>> hussain-development
+    package="edu.vt.boardgames"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-         >
+        android:theme="@style/AppTheme" >
         <activity
-<<<<<<< HEAD
-            android:name="com.edu.vt.boardgames.MainActivity"
-=======
-            android:name="vt.team9.layouts.ItemListActivity"
->>>>>>> hussain-development
+            android:name="edu.vt.boardgames.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,36 +23,17 @@
             </intent-filter>
         </activity>
         <activity
-<<<<<<< HEAD
-            android:name="vt.team9.checkers.MainActivity"
-            android:label="@string/app_name">
-=======
-            android:name="vt.team9.layouts.ItemDetailActivity"
-            android:label="@string/title_item_detail"
-            android:parentActivityName="vt.team9.layouts.ItemListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ItemListActivity" />
-        </activity>
-        <activity
-            android:name="vt.team9.games.ChessActivity"
+            android:name="vt.team9.customgames.ChessActivity"
             android:label="Chess"
             android:screenOrientation="portrait"
-            android:parentActivityName="vt.team9.layouts.ItemListActivity" >
+            android:parentActivityName="edu.vt.boardgames.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChessActivity" />
-        </activity>
-        <activity
-            android:name="vt.team9.games.CheckersActivity"
-            android:label="Checkers"
-            android:screenOrientation="portrait"
-            android:parentActivityName="vt.team9.layouts.ItemListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CheckersActivity" />
->>>>>>> hussain-development
-        </activity>
+            
+            </activity>
+            
+        
     </application>
 
 </manifest>
