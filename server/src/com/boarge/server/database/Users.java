@@ -1,4 +1,4 @@
-package com.boarge.server;
+package com.boarge.server.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseBoards
+public class Users
 {
 	private static Connection s_connection;
 

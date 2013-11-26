@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.boarge.server.Database;
-import com.boarge.server.DatabaseBoards;
+import com.boarge.server.database.Games;
+import com.boarge.server.temp.Database;
 
 public class MainServlet extends HttpServlet
 {
@@ -28,7 +28,7 @@ public class MainServlet extends HttpServlet
 		server.setHandler(context);
 
 		Database.init();
-		DatabaseBoards.init();
+		Games.init();
 
 		server.start();
 		server.join();
