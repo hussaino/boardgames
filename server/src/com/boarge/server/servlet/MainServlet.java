@@ -1,7 +1,6 @@
 package com.boarge.server.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import com.boarge.server.database.Games;
-import com.boarge.server.temp.Database;
+import com.boarge.server.database.GamesTable;
 
 public class MainServlet extends HttpServlet
 {
@@ -27,8 +25,7 @@ public class MainServlet extends HttpServlet
 		context.setContextPath("/");
 		server.setHandler(context);
 
-		Database.init();
-		Games.init();
+		GamesTable.init();
 
 		server.start();
 		server.join();
@@ -39,37 +36,17 @@ public class MainServlet extends HttpServlet
 			IOException
 	{
 		resp.setContentType("text/plain");
-		try
-		{
-			resp.getWriter().write("Main Servlet!\n" + "Students:\n" + Database.getStudents());
-		}
-		catch (SQLException e)
-		{
-			resp.getWriter().write("Error");
-			e.printStackTrace();
-		}
+		resp.getWriter().write("Main Servlet!\n");
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException
 	{
-		try
-		{
-			Integer id = Integer.valueOf(req.getParameter("id"));
-			String name = req.getParameter("name");
-			Integer age = Integer.valueOf(req.getParameter("age"));
-			String grade = req.getParameter("grade");
-			Database.addStudent(id, name, age, grade);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		Integer id = Integer.valueOf(req.getParameter("id"));
+		String name = req.getParameter("name");
+		Integer age = Integer.valueOf(req.getParameter("age"));
+		String grade = req.getParameter("grade");
 	}
 
 }
