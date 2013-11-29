@@ -29,25 +29,14 @@ javaee/web-app_3_0.xsd"
 		<url-pattern>/api</url-pattern>
 	</servlet-mapping>
 	
-	<!-- Data Servlet -->
-	<servlet>
-		<servlet-name>Data</servlet-name>
-		<servlet-class>com.boarge.server.servlet.DataServlet
-		</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Data</servlet-name>
-		<url-pattern>/data</url-pattern>
-	</servlet-mapping>
-	
 	<!-- Games Servlet -->
 	<servlet>
-		<servlet-name>Game</servlet-name>
+		<servlet-name>Games</servlet-name>
 		<servlet-class>com.boarge.server.servlet.GamesServlet
 		</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Game</servlet-name>
-		<url-pattern>/games</url-pattern>
+		<servlet-name>Games</servlet-name>
+		<url-pattern>/games/*</url-pattern>
 	</servlet-mapping>
 </web-app>
