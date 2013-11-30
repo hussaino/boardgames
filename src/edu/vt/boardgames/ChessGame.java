@@ -76,7 +76,6 @@ public class ChessGame extends Fragment
 			if (getResponseGames != null)
 			{
 				controller.setGame(getResponseGames.get(0));
-				//controller.updateBoard();
 				Log.d("Hussain", controller.game_.toString());
 			}
 		}
