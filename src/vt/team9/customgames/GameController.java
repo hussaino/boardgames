@@ -1,5 +1,13 @@
 package vt.team9.customgames;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import edu.vt.boardgames.network.UtilsJSON;
+import edu.vt.boardgames.network.UtilsServer;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,7 +24,7 @@ public class GameController extends Object {
 	int currentTeam = 1;
 	int oldX;
 	int oldY;
-
+	
 	public GameController(PiecesAdapter adapter, Board board, Button submit) {
 		adapter_ = adapter;
 		board_ = board;
@@ -29,6 +37,7 @@ public class GameController extends Object {
 			}
 		
 		});
+		
 	}
 
 	public void submitClick() {
@@ -38,7 +47,7 @@ public class GameController extends Object {
 			moved = false;
 			board_.clearAllHighlights();
 			currentTeam = -currentTeam;
-		
+			
 		Toast.makeText(submit_.getContext(), "Move submitted.", Toast.LENGTH_SHORT).show();
 		}
 

@@ -23,7 +23,7 @@ public class Piece {
 	{
 		return 0;
 	}
-	Piece(int team,String name)
+	public Piece(int team,String name)
 	{
 		name_ = name;
 		team_ = team;
