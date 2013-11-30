@@ -4,10 +4,6 @@ import edu.vt.boardgames.R;
 
 public class Bishop extends Piece {
 
-	Bishop() {
-
-	}
-
 	Bishop(int team,String name) {
 		super(team,name);
 	}

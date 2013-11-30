@@ -3,9 +3,7 @@ package vt.team9.customgames;
 import edu.vt.boardgames.R;
 
 public class King extends Piece {
-	King(){
-		
-	}
+	
 	King(int team,String name) {
 		super(team,name);
 		// TODO Auto-generated constructor stub

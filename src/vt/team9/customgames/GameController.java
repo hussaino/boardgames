@@ -10,7 +10,7 @@ import android.widget.Toast;
 import edu.vt.boardgames.network.Game;
 import edu.vt.boardgames.network.UtilsServer;
 
-public class GameController extends Object
+public abstract class GameController extends Object
 {
 
 	PiecesAdapter adapter_;
@@ -51,6 +51,7 @@ public class GameController extends Object
 			board_.clearAllHighlights();
 			currentTeam = -currentTeam;
 			game_.setBoard(board_);
+			game_.setTurn(currentTeam);
 			UtilsServer.submitNewGameState(handler_, game_);
 		}
 
@@ -69,7 +70,15 @@ public class GameController extends Object
 		}
 	};
 
-	void itemClicked(int position) throws InstantiationException, IllegalAccessException
-	{
+	abstract void itemClicked(int position) throws InstantiationException, IllegalAccessException;
+
+	public void setGame(Game game) {
+		// TODO Auto-generated method stub
+		game_ = game;
+		if(game.getTurn() != 0)
+			currentTeam = game.getTurn();
+		
+		board_.updateBoard(game.getBoard().Pieces_);
+		adapter_.notifyDataSetChanged();
 	}
 }

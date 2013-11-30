@@ -4,10 +4,6 @@ import edu.vt.boardgames.R;
 
 public class Rook extends Piece {
 
-	Rook() {
-
-	}
-
 	Rook(int team,String name) {
 		super(team,name);
 	}

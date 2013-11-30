@@ -1,5 +1,6 @@
 package vt.team9.customgames;
 
+import edu.vt.boardgames.network.Game;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,15 +23,6 @@ public class ChessController extends GameController {
 		check = false;
 		main = activity;
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	void itemClicked(int position) throws InstantiationException,
 			IllegalAccessException {
@@ -510,16 +502,13 @@ public class ChessController extends GameController {
 						return;
 					}
 				}
-
 			}
 		}
 		check = false;
 		board_.clearAllHighlights();
 	}
 
-	public void resetRound() {
 
-	}
 	
 	
 }

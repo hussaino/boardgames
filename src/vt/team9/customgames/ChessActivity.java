@@ -24,6 +24,7 @@ public class ChessActivity extends Activity {
 	public static Context context_;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		/*
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_main);
 		GridView grid = (GridView)findViewById(R.id.Grid);
@@ -42,7 +43,7 @@ public class ChessActivity extends Activity {
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
 		ChessActivity.context_ = getApplicationContext();
-
+	   */
 		
 	}
 

@@ -43,7 +43,7 @@ public class ChessGame extends Fragment
 		int width = ll.getWidth();
 		// Game game = new Game(true, false,5,2,1,-1,-1);
 		// Game game = UtilsServer.getGame(id);
-		UtilsServer.getGameFromServer(handler, 2);
+		UtilsServer.getGameFromServer(handler, 1);
 
 		ChessBoard board = new ChessBoard(8, 8);
 		Button button = (Button) rootView.findViewById(R.id.submitButton);
@@ -58,9 +58,6 @@ public class ChessGame extends Fragment
 				(Activity) this.getActivity());
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
-		// ChessActivity.context_ = getActivity().getApplicationContext();
-		// progress = new ProgressDialog(this.getActivity());
-		// progress.setMessage("Creating new Game");
 		progress = ProgressDialog.show(getActivity(), "Wait!", "Retrieving your game.", true, true);
 		return rootView;
 	}
@@ -78,7 +75,8 @@ public class ChessGame extends Fragment
 					.getSerializable("response");
 			if (getResponseGames != null)
 			{
-				controller.game_ = getResponseGames.get(0);
+				controller.setGame(getResponseGames.get(0));
+				//controller.updateBoard();
 				Log.d("Hussain", controller.game_.toString());
 			}
 		}
