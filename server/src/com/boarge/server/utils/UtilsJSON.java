@@ -1,4 +1,4 @@
-package com.boarge.server.temp;
+package com.boarge.server.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,5 +33,17 @@ public class UtilsJSON
 		gameJSON.put(JSON_KEY_GAME_TIME_LIMIT, timeLimitPerMove);
 		gameJSON.put(JSON_KEY_GAME_TURN_STRATEGY, turnStrategy);
 		return gameJSON;
-	}
+	}/* ** end Game class JSON interface ** */
+
+	/* ** User class JSON interface ** */
+	private static final String JSON_KEY_USER_ID = "k_id";
+	private static final String JSON_KEY_USER_NAME = "k_nm";
+
+	public static JSONObject getJSON(int id, String userName) throws JSONException
+	{
+		JSONObject gameJSON = new JSONObject();
+		gameJSON.put(JSON_KEY_USER_ID, id);
+		gameJSON.put(JSON_KEY_USER_NAME, userName);
+		return gameJSON;
+	} /* ** End User class JSON interface ** */
 }

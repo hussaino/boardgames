@@ -15,11 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.boarge.server.database.GamesTable;
+import com.boarge.server.database.UsersTable;
 
-public class GamesServlet extends HttpServlet
+public class UsersServlet extends HttpServlet
 {
 	private static final String URL_PARAM_USER_ID = "user";
-	private static final String URL_PARAM_TURN = "turn";
 
 	/**
 	 * Used to access the games table.
@@ -33,65 +33,77 @@ public class GamesServlet extends HttpServlet
 
 		try
 		{
-			Integer gameID = getUrlGameId(req);
-			String gameCriteria = req.getParameter("criteria");
-			String userID = req.getParameter(URL_PARAM_USER_ID);
-			String teamID = req.getParameter("team");
-			boolean isRetTurns = Boolean.valueOf(req.getParameter("turns"));
-			boolean isRetGames = Boolean.valueOf(req.getParameter("games"));
-
-			if (gameID >= 0)
-			{
-				// Get game with associated game id
-				response = GamesTable.getGame(gameID);
-			}
-			else if (gameCriteria != null)
-			{
-				// Get all open games that fit game criteria
-				response = GamesTable.getOpenGames(gameCriteria);
-			}
-			else if (userID != null)
-			{
-				if (isRetTurns)
-				{
-					// Return all games where it is this users turn
-					response = GamesTable.getUserTurns(userID);
-				}
-				else if (isRetGames)
-				{
-					// Return all games that this user is active in
-					response = GamesTable.getUserGames(userID);
-				}
-			}
-			else if (teamID != null)
-			{
-				if (isRetTurns)
-				{
-					// Return all games where it is this team's turn
-					response = GamesTable.getTeamTurns(teamID);
-				}
-				else if (isRetGames)
-				{
-					// Return all games that this team is active in
-					response = GamesTable.getTeamGames(teamID);
-				}
-			}
-			else
-			{
-				// Return all games.
-				response = GamesTable.getAllGames();
-			}
+			response = UsersTable.getAllUsers();
 		}
-		catch (SQLException | JSONException e)
+		catch (SQLException e)
 		{
-			response = "400";
 			e.printStackTrace();
 		}
-		catch (Exception e)
+		catch (JSONException e)
 		{
-			response = "400";
 			e.printStackTrace();
 		}
+		// try
+		// {
+		// Integer gameID = getUrlGameId(req);
+		// String gameCriteria = req.getParameter("criteria");
+		// String userID = req.getParameter(URL_PARAM_USER_ID);
+		// String teamID = req.getParameter("team");
+		// boolean isRetTurns = Boolean.valueOf(req.getParameter("turns"));
+		// boolean isRetGames = Boolean.valueOf(req.getParameter("games"));
+		//
+		// if (gameID >= 0)
+		// {
+		// // Get game with associated game id
+		// response = GamesTable.getGame(gameID);
+		// }
+		// else if (gameCriteria != null)
+		// {
+		// // Get all open games that fit game criteria
+		// response = GamesTable.getOpenGames(gameCriteria);
+		// }
+		// else if (userID != null)
+		// {
+		// if (isRetTurns)
+		// {
+		// // Return all games where it is this users turn
+		// response = GamesTable.getUserTurns(userID);
+		// }
+		// else if (isRetGames)
+		// {
+		// // Return all games that this user is active in
+		// response = GamesTable.getUserGames(userID);
+		// }
+		// }
+		// else if (teamID != null)
+		// {
+		// if (isRetTurns)
+		// {
+		// // Return all games where it is this team's turn
+		// response = GamesTable.getTeamTurns(teamID);
+		// }
+		// else if (isRetGames)
+		// {
+		// // Return all games that this team is active in
+		// response = GamesTable.getTeamGames(teamID);
+		// }
+		// }
+		// else
+		// {
+		// // Return all games.
+		// response = GamesTable.getAllGames();
+		// }
+		// }
+		// catch (SQLException | JSONException e)
+		// {
+		// response = "400";
+		// e.printStackTrace();
+		// }
+		// catch (Exception e)
+		// {
+		// response = "400";
+		// e.printStackTrace();
+		// }
 
 		if (response != null)
 		{
@@ -164,7 +176,6 @@ public class GamesServlet extends HttpServlet
 		// extract game id
 		Integer gameID = getUrlGameId(req);
 		String userID = req.getParameter(URL_PARAM_USER_ID);
-		Integer nextTurn = Integer.valueOf(req.getParameter(URL_PARAM_TURN));
 
 		String response = null;
 		// Extract the entity attached to the request here
@@ -177,18 +188,18 @@ public class GamesServlet extends HttpServlet
 				 * assume that we have a valid board object if JSONObject
 				 * contruction did not throw exception and the map is not empty.
 				 */
-				GamesTable.updateGameState(gameID, strEntity, nextTurn);
+				// GamesTable.updateGameState(gameID, strEntity);
 				// notify all members in game other than userID.
 				System.out.print("Notification all but user: " + userID);
 
 				response = "put new game state Success.";
 			}
 		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			response += "400";
-		}
+		// catch (SQLException e)
+		// {
+		// e.printStackTrace();
+		// response += "400";
+		// }
 		catch (IOException e)
 		{
 			e.printStackTrace();

@@ -1,7 +1,6 @@
 package com.boarge.server.database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.boarge.server.temp.UtilsJSON;
+import com.boarge.server.utils.UtilsDB;
+import com.boarge.server.utils.UtilsJSON;
 
 public class GamesTable
 {
@@ -28,29 +28,37 @@ public class GamesTable
 	private static final String COL_TimeLimit = "TimeLimit";
 	private static final String COL_TurnStrategy = "TurnStrategy";
 
-	public static void init()
+	public static void init(Connection conn)
 	{
+		s_connection = conn;
 		try
 		{
-			Class.forName("org.sqlite.JDBC");
-			s_connection = DriverManager.getConnection("jdbc:sqlite:" + TABLE_Name + ".db");
-			System.out.println("Opened database");
-
 			createGamesDBTable();
-			// createGame(true, false, 9, 4, 2, 10, 1);
-			// createGame(false, true, 3, 2, 1, -1, -1);
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			e.printStackTrace();
 		}
+		try
+		{
+			createGame(true, false, 9, 4, 2, 10, 1);
+			// createGame(false, true, 3, 2, 1, -1, -1);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void createGamesDBTable() throws SQLException
 	{
-		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_Name
-				+ " (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + COL_GameState
+		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_Name + " (" + COL_Id
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + COL_GameState
 				+ " TEXT NOT NULL, " + COL_Turn + " INTEGER NOT NULL, " + COL_Private
 				+ " INTEGER NOT NULL, " + COL_Ranked + " INTEGER NOT NULL, " + COL_Difficulty
 				+ " INTEGER NOT NULL, " + COL_NumberTeams + " INTEGER NOT NULL, "
@@ -67,48 +75,31 @@ public class GamesTable
 		String sql = "INSERT INTO " + TABLE_Name + " (" + COL_GameState + ", " + COL_Turn + ", "
 				+ COL_Private + ", " + COL_Ranked + ", " + COL_Difficulty + ", " + COL_NumberTeams
 				+ ", " + COL_PlayersPerTeams + ", " + COL_TimeLimit + ", " + COL_TurnStrategy
-				+ ") VALUES ('none', 0, " + getSqlVal(isPrivate) + "," + getSqlVal(isRanked) + ","
-				+ getSqlVal(difficulty) + "," + getSqlVal(numTeams) + ","
-				+ getSqlVal(numPlayersPerTeam) + "," + getSqlVal(timeLimitPerMove) + ","
-				+ getSqlVal(turnStrategy) + ");";
+				+ ") VALUES ('none', 0, " + UtilsDB.getSqlVal(isPrivate) + ","
+				+ UtilsDB.getSqlVal(isRanked) + "," + UtilsDB.getSqlVal(difficulty) + ","
+				+ UtilsDB.getSqlVal(numTeams) + "," + UtilsDB.getSqlVal(numPlayersPerTeam) + ","
+				+ UtilsDB.getSqlVal(timeLimitPerMove) + "," + UtilsDB.getSqlVal(turnStrategy)
+				+ ");";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
 		stmt.executeUpdate();
 		stmt.close();
 
 		// Return game created without querying table again.
-		JSONObject gameCreated = UtilsJSON.getJSON(getLastInsertId(), "none", 0, isPrivate,
-				isRanked, difficulty, numTeams, numPlayersPerTeam, timeLimitPerMove, turnStrategy);
+		JSONObject gameCreated = UtilsJSON.getJSON(UtilsDB.getLastInsertId(s_connection), "none",
+				0, isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam, timeLimitPerMove,
+				turnStrategy);
 		return gameCreated.toString();
 	}
 
-	private static int getLastInsertId() throws SQLException
+	public static void updateGameState(int gameId, String gameState, int nextTurn)
+			throws SQLException
 	{
-		String lastInsertCol = "last_insert_rowid()";
-		String sql = "SELECT " + lastInsertCol;
-		PreparedStatement stmt = s_connection.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		int id = rs.getInt(lastInsertCol);
-		stmt.close();
-		return id;
-	}
-
-	private static String getSqlVal(boolean bool)
-	{
-		return bool ? "1" : "0";
-	}
-
-	private static String getSqlVal(Integer num)
-	{
-		return String.valueOf(num);
-	}
-
-	public static void updateGameState(int gameId, String gameState) throws SQLException
-	{
-		String sql = "UPDATE " + TABLE_Name + " SET " + COL_GameState + "=? WHERE " + COL_Id
-				+ "=?;";
+		String sql = "UPDATE " + TABLE_Name + " SET " + COL_GameState + "=?, " + COL_Turn
+				+ "=? WHERE " + COL_Id + "=?;";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
 		stmt.setString(1, gameState);
-		stmt.setInt(2, gameId);
+		stmt.setInt(2, nextTurn);
+		stmt.setInt(3, gameId);
 		stmt.executeUpdate();
 		stmt.close();
 	}

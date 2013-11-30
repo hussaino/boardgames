@@ -1,6 +1,8 @@
 package com.boarge.server.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,9 +13,11 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.boarge.server.database.GamesTable;
+import com.boarge.server.database.UsersTable;
 
 public class MainServlet extends HttpServlet
 {
+	private static final String DB_NAME = "Boarge";
 
 	public static void main(String[] args) throws Exception
 	{
@@ -25,7 +29,11 @@ public class MainServlet extends HttpServlet
 		context.setContextPath("/");
 		server.setHandler(context);
 
-		GamesTable.init();
+		Class.forName("org.sqlite.JDBC");
+		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_NAME + ".db");
+		System.out.println("Opened database");
+		GamesTable.init(conn);
+		UsersTable.init(conn);
 
 		server.start();
 		server.join();
