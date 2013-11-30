@@ -6,18 +6,13 @@ public class Board extends Object{
 	static final int Team1 = 1;
 	static final int Team2 = -1;
 	boolean pieceType[];
-	Piece Pieces_[][];
-	int width_;
-	int length_;
+	public Piece Pieces_[][];
+	public int width_;
+	public int length_;
 	boolean isHighlighted;
 
-	public boolean team1QueenSideCast;
-	public boolean team1KingSideCast;
-	public boolean team2QueenSideCast;
-	public boolean team2KingSideCast;
-	public int enPass;
 	
-	Board(int length, int width){
+	public Board(int length, int width){
 		width_ = width;
 		length_ = length;
 		Pieces_ = new Piece[width][length];

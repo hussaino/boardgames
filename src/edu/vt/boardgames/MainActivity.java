@@ -173,7 +173,7 @@ public class MainActivity extends Activity {
 //			return;
 			
 		case 1:
-			fragment = new ChessGames();
+			fragment = new ChessGame();
 			break;
 			//Intent intent = new Intent(this,ChessActivity.class);
 			//startActivity(intent);

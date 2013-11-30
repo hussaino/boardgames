@@ -2,6 +2,12 @@ package vt.team9.customgames;
 
 public class ChessBoard extends Board {
 
+
+	public boolean team1QueenSideCast;
+	public boolean team1KingSideCast;
+	public boolean team2QueenSideCast;
+	public boolean team2KingSideCast;
+	public int enPass;
 	
 	public ChessBoard(int length, int width) {
 		super(length, width);
