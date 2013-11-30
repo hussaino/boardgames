@@ -12,7 +12,6 @@ import edu.vt.boardgames.network.UtilsServer;
 
 public abstract class GameController extends Object
 {
-
 	PiecesAdapter adapter_;
 	private Board board_;
 	public Game game_;
@@ -54,7 +53,6 @@ public abstract class GameController extends Object
 			game_.setTurn(currentTeam);
 			UtilsServer.submitNewGameState(handler_, game_);
 		}
-
 	}
 
 	private Handler handler_ = new Handler()
@@ -72,13 +70,28 @@ public abstract class GameController extends Object
 
 	abstract void itemClicked(int position) throws InstantiationException, IllegalAccessException;
 
-	public void setGame(Game game) {
-		// TODO Auto-generated method stub
+	public void setGame(Game game)
+	{
 		game_ = game;
-		if(game.getTurn() != 0)
+		if (game.getTurn() != 0)
 			currentTeam = game.getTurn();
-		
-		board_.updateBoard(game.getBoard().Pieces_);
-		adapter_.notifyDataSetChanged();
+
+		Board board = game.getBoard();
+		if (board != null)
+		{
+			board_ = board;
+			adapter_.setBoardToDraw(board_);
+			adapter_.notifyDataSetChanged();
+		}
+	}
+
+	public Board getBoard()
+	{
+		return board_;
+	}
+
+	public void setBoard(Board board)
+	{
+		board_ = board;
 	}
 }

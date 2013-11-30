@@ -19,6 +19,7 @@ public class UtilsServer
 	private static final String URL_GAMES = URL_BASE + URL_SERVLET_EXTENSION_GAMES;
 
 	private static final String URL_PARAM_USER_ID = "user";
+	private static final String URL_PARAM_TURN = "turn";
 	private static final String URL_PARAM_PRIVATE = "private";
 	private static final String URL_PARAM_RANKED = "ranked";
 	private static final String URL_PARAM_DIFFICULTY = "difficulty";
@@ -52,16 +53,6 @@ public class UtilsServer
 
 	}
 
-	private static String formatUrlParam(String paramName, int val)
-	{
-		return paramName + "=" + String.valueOf(val);
-	}
-
-	private static String formatUrlParam(String paramName, boolean val)
-	{
-		return paramName + "=" + String.valueOf(val);
-	}
-
 	/*
 	 * Currently unrealistic API. Normally to submit a move and get a board from
 	 * the server, the user would need a game id. But since I don't assign this,
@@ -73,7 +64,8 @@ public class UtilsServer
 		try
 		{
 			String urlParams = URL_GAMES + "/" + updatedGame.getId() + "?"
-					+ formatUrlParam(URL_PARAM_USER_ID, updatedGame.getId());
+					+ formatUrlParam(URL_PARAM_USER_ID, updatedGame.getId()) + "&"
+					+ formatUrlParam(URL_PARAM_TURN, updatedGame.getTurn());
 			AsyncTaskPostPutRequest asyncPost = new AsyncTaskPostPutRequest(handler, urlParams,
 					false);
 			Board board = updatedGame.getBoard();
@@ -86,8 +78,7 @@ public class UtilsServer
 		}
 		catch (JSONException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyLogger.logExceptionSevere(UtilsServer.class.getName(), "submitMoveToServer", "", e);
 		}
 	}
 
@@ -123,6 +114,16 @@ public class UtilsServer
 		spiegelHtmlController.fetchAndParseResources();
 
 		// Boards gotten from server will be returned to Handler
+	}
+
+	private static String formatUrlParam(String paramName, int val)
+	{
+		return paramName + "=" + String.valueOf(val);
+	}
+
+	private static String formatUrlParam(String paramName, boolean val)
+	{
+		return paramName + "=" + String.valueOf(val);
 	}
 
 }

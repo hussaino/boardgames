@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import vt.team9.customgames.Board;
+import vt.team9.customgames.EmptySpace;
 import vt.team9.customgames.Piece;
 
 public class UtilsJSON
@@ -49,7 +50,8 @@ public class UtilsJSON
 		Game game = new Game(isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
 				timeLimitPerMove, turnStrategy);
 
-		//The following parts of a game object may or may not be mapped to already.
+		// The following parts of a game object may or may not be mapped to
+		// already.
 		try
 		{
 			JSONObject boardJSON = new JSONObject(gameJSON.getString(JSON_KEY_GAME_STATE));
@@ -59,7 +61,7 @@ public class UtilsJSON
 		{
 
 		}
-		
+
 		try
 		{
 			game.setId(gameJSON.getInt(JSON_KEY_GAME_ID));
@@ -68,7 +70,7 @@ public class UtilsJSON
 		{
 
 		}
-		
+
 		try
 		{
 			game.setTurn(gameJSON.getInt(JSON_KEY_GAME_TURN));
@@ -85,6 +87,7 @@ public class UtilsJSON
 	private static final String JSON_KEY_BOARD_WIDTH = "k_w";
 	private static final String JSON_KEY_BOARD_LENGTH = "k_l";
 	private static final String JSON_KEY_BOARD_PIECES_ARRAY = "k_arr";
+	private static final String JSON_KEY_BOARD_CLASS = "k_cls";
 
 	public static JSONObject getJSON(Board board) throws JSONException
 	{
@@ -95,6 +98,7 @@ public class UtilsJSON
 
 		boardJSON.put(JSON_KEY_BOARD_WIDTH, width);
 		boardJSON.put(JSON_KEY_BOARD_LENGTH, length);
+		boardJSON.put(JSON_KEY_BOARD_CLASS, board.getClass().getName());
 
 		JSONArray piecesArrayJSON = new JSONArray();
 		for (int i = 0; i < width; i++)
@@ -110,38 +114,81 @@ public class UtilsJSON
 
 	public static Board getBoardFromJSON(JSONObject boardJSON) throws JSONException
 	{
+		Board board = null;
 		int width = (int) boardJSON.getInt(JSON_KEY_BOARD_WIDTH);
 		int length = (int) boardJSON.getInt(JSON_KEY_BOARD_LENGTH);
-		Board board = new Board(length, width);
+		String objClassName = boardJSON.getString(JSON_KEY_BOARD_CLASS);
+		try
+		{
+			Class<Board> objClass = (Class<Board>) Class.forName(objClassName);
+			board = objClass.newInstance();
+			board.width_ = width;
+			board.length_ = length;
+		}
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 
-		Piece[][] boardPieces = board.Pieces_;
-
+		Piece[][] boardPieces = new Piece[width][length];
 		JSONArray piecesArrayJSON = (JSONArray) boardJSON.get(JSON_KEY_BOARD_PIECES_ARRAY);
 		for (int i = 0; i < piecesArrayJSON.length(); i++)
 		{
 			JSONObject pieceJSON = piecesArrayJSON.getJSONObject(i);
 			boardPieces[i / width][i % width] = getPieceFromJSON(pieceJSON);
 		}
+		board.Pieces_ = boardPieces;
 		return board;
 	}/* ** End Board JSON interface ** */
 
 	/* ** Piece JSON interface ** */
-	private static final String JSON_KEY_BOARD_PIECE_NAME = "k_pce";
+	private static final String JSON_KEY_BOARD_PIECE_NAME = "k_nm";
 	private static final String JSON_KEY_BOARD_PIECE_TEAM = "k_tm";
+	private static final String JSON_KEY_BOARD_PIECE_CLASS = "k_cls";
 
 	public static JSONObject getJSON(Piece piece) throws JSONException
 	{
 		JSONObject pieceJSON = new JSONObject();
 		pieceJSON.put(JSON_KEY_BOARD_PIECE_NAME, piece.getName());
 		pieceJSON.put(JSON_KEY_BOARD_PIECE_TEAM, piece.getTeam_());
+		pieceJSON.put(JSON_KEY_BOARD_PIECE_CLASS, piece.getClass().getName());
 		return pieceJSON;
 	}
 
 	public static Piece getPieceFromJSON(JSONObject pieceJSON) throws JSONException
 	{
+		Piece piece = null;
 		String name = pieceJSON.getString(JSON_KEY_BOARD_PIECE_NAME);
 		int team = pieceJSON.getInt(JSON_KEY_BOARD_PIECE_TEAM);
-		return new Piece(team, name);
-	}/* ** End Piece JSON interface ** */
+		String objClassName = pieceJSON.getString(JSON_KEY_BOARD_PIECE_CLASS);
+		try
+		{
+			Class<Piece> objClass = (Class<Piece>) Class.forName(objClassName);
+			piece = (Piece) objClass.newInstance();
+			piece.setTeam_(team);
+			piece.setName(name);
+		}
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 
+		return piece;
+	}/* ** End Piece JSON interface ** */
 }

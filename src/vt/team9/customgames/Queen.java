@@ -4,6 +4,10 @@ import edu.vt.boardgames.R;
 
 public class Queen extends Piece {
 	
+	public Queen()
+	{
+		super();
+	}
 	Queen(int team,String name) {
 		super(team,name);
 	}

@@ -4,6 +4,10 @@ import edu.vt.boardgames.R;
 
 public class Knight extends Piece {
 
+	public Knight()
+	{
+		super();
+	}
 	Knight(int team,String name) {
 		super(team,name);
 	}

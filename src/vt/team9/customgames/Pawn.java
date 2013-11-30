@@ -5,6 +5,10 @@ import edu.vt.boardgames.R;
 
 public class Pawn extends Piece {
 
+	public Pawn()
+	{
+		super();
+	}
 	Pawn(int team,String name) {
 		super(team,name);
 	}

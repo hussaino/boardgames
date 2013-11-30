@@ -41,8 +41,6 @@ public class ChessGame extends Fragment
 		GridView grid = (GridView) rootView.findViewById(R.id.Grid);
 		LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.LinearLayout1);
 		int width = ll.getWidth();
-		// Game game = new Game(true, false,5,2,1,-1,-1);
-		// Game game = UtilsServer.getGame(id);
 		UtilsServer.getGameFromServer(handler, 1);
 
 		ChessBoard board = new ChessBoard(8, 8);
@@ -54,11 +52,11 @@ public class ChessGame extends Fragment
 		grid.setColumnWidth(grid.getWidth() / numOfColumns);
 		grid.setBackgroundResource(R.drawable.checkered_background);
 		PiecesAdapter adapter = new PiecesAdapter(this.getActivity().getApplicationContext(), board);
-		/* ChessController */controller = new ChessController(adapter, board, button,
+		controller = new ChessController(adapter, board, button,
 				(Activity) this.getActivity());
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
-		progress = ProgressDialog.show(getActivity(), "Wait!", "Retrieving your game.", true, true);
+		progress = ProgressDialog.show(getActivity(), "Wait!", "Retrieving your game.", true, false);
 		return rootView;
 	}
 
@@ -73,7 +71,7 @@ public class ChessGame extends Fragment
 			Bundle msgBundle = msg.getData();
 			ArrayList<Game> getResponseGames = (ArrayList<Game>) msgBundle
 					.getSerializable("response");
-			if (getResponseGames != null)
+			if (getResponseGames != null && getResponseGames.size() > 0)
 			{
 				controller.setGame(getResponseGames.get(0));
 				Log.d("Hussain", controller.game_.toString());
