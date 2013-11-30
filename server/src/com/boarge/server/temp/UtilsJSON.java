@@ -1,6 +1,5 @@
 package com.boarge.server.temp;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,39 +17,21 @@ public class UtilsJSON
 	private static final String JSON_KEY_GAME_TIME_LIMIT = "k_time";
 	private static final String JSON_KEY_GAME_TURN_STRATEGY = "k_trnStr";
 
-	public static JSONObject getJSON(Game game) throws JSONException
+	public static JSONObject getJSON(Integer id, String gameState, Integer turn, Boolean isPrivate,
+			Boolean isRanked, Integer difficulty, Integer numTeams, Integer numPlayersPerTeam,
+			Integer timeLimitPerMove, Integer turnStrategy) throws JSONException
 	{
 		JSONObject gameJSON = new JSONObject();
-		gameJSON.put(JSON_KEY_GAME_ID, game.getId());
-		gameJSON.put(JSON_KEY_GAME_STATE, game.getGameState());
-		gameJSON.put(JSON_KEY_GAME_TURN, game.getTurn());
-		gameJSON.put(JSON_KEY_GAME_PRIVATE, game.isPrivate());
-		gameJSON.put(JSON_KEY_GAME_RANKED, game.isRanked());
-		gameJSON.put(JSON_KEY_GAME_DIFFICULTY, game.getDifficulty());
-		gameJSON.put(JSON_KEY_GAME_NUM_TEAMS, game.getNumTeams());
-		gameJSON.put(JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM, game.getNumPlayersPerTeam());
-		gameJSON.put(JSON_KEY_GAME_TIME_LIMIT, game.getTimeLimitPerMove());
-		gameJSON.put(JSON_KEY_GAME_TURN_STRATEGY, game.getTurnStrategy());
+		gameJSON.put(JSON_KEY_GAME_ID, id);
+		gameJSON.put(JSON_KEY_GAME_STATE, gameState);
+		gameJSON.put(JSON_KEY_GAME_TURN, turn);
+		gameJSON.put(JSON_KEY_GAME_PRIVATE, isPrivate);
+		gameJSON.put(JSON_KEY_GAME_RANKED, isRanked);
+		gameJSON.put(JSON_KEY_GAME_DIFFICULTY, difficulty);
+		gameJSON.put(JSON_KEY_GAME_NUM_TEAMS, numTeams);
+		gameJSON.put(JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM, numPlayersPerTeam);
+		gameJSON.put(JSON_KEY_GAME_TIME_LIMIT, timeLimitPerMove);
+		gameJSON.put(JSON_KEY_GAME_TURN_STRATEGY, turnStrategy);
 		return gameJSON;
 	}
-
-	public static Game getGameFromJSON(JSONObject gameJSON) throws JSONException
-	{
-		boolean isPrivate = gameJSON.getBoolean(JSON_KEY_GAME_PRIVATE);
-		boolean isRanked = gameJSON.getBoolean(JSON_KEY_GAME_RANKED);
-		int difficulty = gameJSON.getInt(JSON_KEY_GAME_DIFFICULTY);
-		int numTeams = gameJSON.getInt(JSON_KEY_GAME_NUM_TEAMS);
-		int numPlayersPerTeam = gameJSON.getInt(JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM);
-		int timeLimitPerMove = gameJSON.getInt(JSON_KEY_GAME_TIME_LIMIT);
-		int turnStrategy = gameJSON.getInt(JSON_KEY_GAME_TURN_STRATEGY);
-		Game game = new Game(isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
-				timeLimitPerMove, turnStrategy);
-
-		game.setGameState(gameJSON.getString(JSON_KEY_GAME_STATE));
-		game.setId(gameJSON.getInt(JSON_KEY_GAME_ID));
-		game.setTurn(gameJSON.getInt(JSON_KEY_GAME_TURN));
-
-		return game;
-	}/* ** End Game JSON interface ** */
-
 }

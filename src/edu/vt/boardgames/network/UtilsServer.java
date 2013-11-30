@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import vt.team9.customgames.Board;
 import android.os.Handler;
@@ -28,17 +27,16 @@ public class UtilsServer
 	private static final String URL_PARAM_TIME_LIMIT = "timeLimit";
 	private static final String URL_PARAM_TURN_STRAT = "turnStrat";
 
-	public static void createNewGame(Handler handler, String keyMsgType, short msgType,
-			String keyResponse, Game game)
+	public static void createNewGame(Handler handler, Game game)
 	{
-		createNewGame(handler, keyMsgType, msgType, keyResponse, game.isPrivate(), game.isRanked(),
-				game.getDifficulty(), game.getNumTeams(), game.getNumPlayersPerTeam(),
-				game.getTimeLimitPerMove(), game.getTurnStrategy());
+		createNewGame(handler, game.isPrivate(), game.isRanked(), game.getDifficulty(),
+				game.getNumTeams(), game.getNumPlayersPerTeam(), game.getTimeLimitPerMove(),
+				game.getTurnStrategy());
 	}
 
-	public static void createNewGame(Handler handler, String keyMsgType, short msgType,
-			String keyResponse, boolean isPrivate, boolean isRanked, int difficulty, int numTeams,
-			int numPlayersPerTeam, int timeLimitPerMove, int turnStrategy)
+	public static void createNewGame(Handler handler, boolean isPrivate, boolean isRanked,
+			int difficulty, int numTeams, int numPlayersPerTeam, int timeLimitPerMove,
+			int turnStrategy)
 	{
 		String urlParams = "?" + formatUrlParam(URL_PARAM_PRIVATE, isPrivate) + "&"
 				+ formatUrlParam(URL_PARAM_RANKED, isRanked) + "&"
@@ -47,8 +45,8 @@ public class UtilsServer
 				+ formatUrlParam(URL_PARAM_PLAYERS_PER_TEAM, numPlayersPerTeam) + "&"
 				+ formatUrlParam(URL_PARAM_TIME_LIMIT, timeLimitPerMove) + "&"
 				+ formatUrlParam(URL_PARAM_TURN_STRAT, turnStrategy);
-		AsyncTaskPostPutRequest asyncPost = new AsyncTaskPostPutRequest(handler, keyMsgType,
-				msgType, keyResponse, URL_GAMES + urlParams, true);
+		AsyncTaskPostPutRequest asyncPost = new AsyncTaskPostPutRequest(handler, URL_GAMES
+				+ urlParams, true);
 
 		asyncPost.execute();
 
@@ -70,27 +68,30 @@ public class UtilsServer
 	 * I just save all submitted boards as a new entry in the DB and return all
 	 * boards when getBoadFromServer is called.
 	 */
-	public static void submitNewGameState(Handler handler, String keyMsgType, short msgType,
-			String keyResponse, Game updatedGame)
+	public static void submitNewGameState(Handler handler, Game updatedGame)
 	{
 		try
 		{
-			int userId = 1;
 			String urlParams = URL_GAMES + "/" + updatedGame.getId() + "?"
-					+ formatUrlParam(URL_PARAM_USER_ID, userId);
-			AsyncTaskPostPutRequest asyncPost = new AsyncTaskPostPutRequest(handler, keyMsgType,
-					msgType, keyResponse, urlParams, false);
-			StringEntity boardEntity = new StringEntity(updatedGame.getGameState());
+					+ formatUrlParam(URL_PARAM_USER_ID, updatedGame.getId());
+			AsyncTaskPostPutRequest asyncPost = new AsyncTaskPostPutRequest(handler, urlParams,
+					false);
+			Board board = updatedGame.getBoard();
+			StringEntity boardEntity = new StringEntity(UtilsJSON.getJSON(board).toString());
 			asyncPost.execute(boardEntity);
 		}
 		catch (UnsupportedEncodingException e)
 		{
 			MyLogger.logExceptionSevere(UtilsServer.class.getName(), "submitMoveToServer", "", e);
 		}
+		catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public static void getGamesFromServer(Handler handler, String keyMsgType, short msgType,
-			String keyResponse)
+	public static void getAllGamesFromServer(Handler handler)
 	{
 		String[] urlsToFetch = { URL_GAMES };
 
@@ -100,7 +101,24 @@ public class UtilsServer
 		ResourceParserGame gameParser = new ResourceParserGame();
 
 		ControllerHttpGetResource<Game> spiegelHtmlController = new ControllerHttpGetResource<Game>(
-				gameParser, handler, keyMsgType, msgType, keyResponse, urlsToFetch);
+				gameParser, handler, urlsToFetch);
+
+		spiegelHtmlController.fetchAndParseResources();
+
+		// Boards gotten from server will be returned to Handler
+	}
+
+	public static void getGameFromServer(Handler handler, int gameId)
+	{
+		String[] urlsToFetch = { URL_GAMES + "/" + gameId };
+
+		// Set up content/error handler that will be used during parsing of the
+		// rss resource.
+		// ResourceParserJSON jsonParser = new ResourceParserJSON();
+		ResourceParserGame gameParser = new ResourceParserGame();
+
+		ControllerHttpGetResource<Game> spiegelHtmlController = new ControllerHttpGetResource<Game>(
+				gameParser, handler, urlsToFetch);
 
 		spiegelHtmlController.fetchAndParseResources();
 

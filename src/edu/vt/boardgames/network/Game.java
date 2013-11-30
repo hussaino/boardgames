@@ -1,18 +1,11 @@
 package edu.vt.boardgames.network;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import vt.team9.customgames.Board;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.widget.Toast;
 
 public class Game
 {
 	private int m_id;
-	private String m_gameState;
+	private Board m_gameState;
 	private int m_turn;
 	private boolean m_isPrivate;
 	private boolean m_isRanked;
@@ -21,7 +14,7 @@ public class Game
 	private int m_numPlayersPerTeam;
 	private int m_timeLimitPerMove;
 	private int m_turnStrategy;
-	
+
 	public Game(Boolean isPrivate, Boolean isRanked, Integer difficulty, Integer numTeams,
 			Integer numPlayersPerTeam, Integer timeLimitPerMove, Integer turnStrategy)
 	{
@@ -33,15 +26,17 @@ public class Game
 		m_timeLimitPerMove = timeLimitPerMove != null ? timeLimitPerMove : -1;
 		m_turnStrategy = turnStrategy != null ? turnStrategy : -1;
 	}
-	public Board getBoard(){
-		try {
-			return UtilsJSON.getBoardFromJSON(new JSONObject(m_gameState));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+
+	public Board getBoard()
+	{
+		return m_gameState;
 	}
+
+	public void setBoard(Board board)
+	{
+		m_gameState = board;
+	}
+
 	public int getId()
 	{
 		return m_id;
@@ -50,16 +45,6 @@ public class Game
 	public void setId(int m_id)
 	{
 		this.m_id = m_id;
-	}
-
-	public String getGameState()
-	{
-		return m_gameState;
-	}
-
-	public void setGameState(String gameState)
-	{
-		this.m_gameState = gameState;
 	}
 
 	public int getTurn()

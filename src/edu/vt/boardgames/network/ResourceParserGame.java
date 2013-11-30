@@ -18,7 +18,7 @@ import edu.vt.boardgames.debug.MyLogger;
  * GET and getting a single JSON response element.
  */
 public class ResourceParserGame extends ResourceParser<Game>
-{
+{	
 	@Override
 	public ArrayList<Game> getResourceParsedElems(InputStream is)
 	{

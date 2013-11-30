@@ -14,14 +14,13 @@ public class ControllerHttpGetResource<T>
 	private AsyncTaskParseResource<T> asyncParseHtml;
 
 	public ControllerHttpGetResource(ResourceParser<T> resourceParser,
-			Handler handlerToReportParsedElems, String keyMsgType, short msgType,
-			String keyPayload, String... listUrl)
+			Handler handlerToReportParsedElems, String... listUrl)
 	{
 		ArrayBlockingQueue<ResourceStream> blockingQueue = new ArrayBlockingQueue<ResourceStream>(
 				listUrl.length + 1); // +1 because DONE signal is sent
 		asyncFetchHtml = new AsyncTaskFetchResource(blockingQueue);
 		asyncParseHtml = new AsyncTaskParseResource<T>(blockingQueue, resourceParser,
-				handlerToReportParsedElems, keyMsgType, msgType, keyPayload);
+				handlerToReportParsedElems);
 		m_listUrls = listUrl;
 	}
 

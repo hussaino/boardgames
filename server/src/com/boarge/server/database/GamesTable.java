@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.boarge.server.temp.Game;
 import com.boarge.server.temp.UtilsJSON;
 
 public class GamesTable
@@ -61,9 +60,9 @@ public class GamesTable
 		stmt.executeUpdate();
 	}
 
-	public static Game createGame(boolean isPrivate, boolean isRanked, int difficulty,
+	public static String createGame(boolean isPrivate, boolean isRanked, int difficulty,
 			int numTeams, int numPlayersPerTeam, int timeLimitPerMove, int turnStrategy)
-			throws SQLException
+			throws SQLException, JSONException
 	{
 		String sql = "INSERT INTO " + TABLE_Name + " (" + COL_GameState + ", " + COL_Turn + ", "
 				+ COL_Private + ", " + COL_Ranked + ", " + COL_Difficulty + ", " + COL_NumberTeams
@@ -75,12 +74,11 @@ public class GamesTable
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
 		stmt.executeUpdate();
 		stmt.close();
-		Game gameCreated = new Game(isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
-				timeLimitPerMove, turnStrategy);
-		gameCreated.setTurn(0);
-		gameCreated.setId(getLastInsertId());
-		gameCreated.setGameState("none");
-		return gameCreated; // id of game created.
+
+		// Return game created without querying table again.
+		JSONObject gameCreated = UtilsJSON.getJSON(getLastInsertId(), "none", 0, isPrivate,
+				isRanked, difficulty, numTeams, numPlayersPerTeam, timeLimitPerMove, turnStrategy);
+		return gameCreated.toString();
 	}
 
 	private static int getLastInsertId() throws SQLException
@@ -124,9 +122,12 @@ public class GamesTable
 		String gameJSON = null;
 		if (rs.next())
 		{
-			gameJSON = getGameJSONResultSet(rs).toString();
+			JSONArray array = new JSONArray();
+			array.put(getGameJSONResultSet(rs));
+			gameJSON = array.toString();
 		}
 		stmt.close();
+
 		return gameJSON;
 	}
 
@@ -181,6 +182,9 @@ public class GamesTable
 	private static JSONObject getGameJSONResultSet(ResultSet resultGame) throws JSONException,
 			SQLException
 	{
+		int id = resultGame.getInt(COL_Id);
+		String gameState = resultGame.getString(COL_GameState);
+		int turn = resultGame.getInt(COL_Turn);
 		boolean isPrivate = resultGame.getBoolean(COL_Private);
 		boolean isRanked = resultGame.getBoolean(COL_Ranked);
 		int difficulty = resultGame.getInt(COL_Difficulty);
@@ -188,12 +192,7 @@ public class GamesTable
 		int numPlayersPerTeam = resultGame.getInt(COL_PlayersPerTeams);
 		int timeLimitPerMove = resultGame.getInt(COL_TimeLimit);
 		int turnStrategy = resultGame.getInt(COL_TurnStrategy);
-		Game game = new Game(isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
-				timeLimitPerMove, turnStrategy);
-
-		game.setGameState(resultGame.getString(COL_GameState));
-		game.setId(resultGame.getInt(COL_Id));
-		game.setTurn(resultGame.getInt(COL_Turn));
-		return UtilsJSON.getJSON(game);
+		return UtilsJSON.getJSON(id, gameState, turn, isPrivate, isRanked, difficulty, numTeams,
+				numPlayersPerTeam, timeLimitPerMove, turnStrategy);
 	}
 }

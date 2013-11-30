@@ -24,23 +24,16 @@ import edu.vt.boardgames.debug.MyLogger;
 public class AsyncTaskPostPutRequest extends AsyncTask<HttpEntity, Void, Void>
 {
 	private Handler m_handler;
-	private short m_msgType;
-	private String m_keyMsgType;
-	private String m_keyResponse;
 	private String m_resourcePath;
 	private boolean m_isHttpPost;
 
-	public AsyncTaskPostPutRequest(Handler handler, String keyMsgType, short msgType,
-			String keyResponse, String resourcePath, boolean isHttpPost)
+	public AsyncTaskPostPutRequest(Handler handler, String resourcePath, boolean isHttpPost)
 	{
 		/*
 		 * Used to send callback response message to any Handler after the post
 		 * has been made.
 		 */
 		m_handler = handler;
-		m_keyMsgType = keyMsgType;
-		m_msgType = msgType;
-		m_keyResponse = keyResponse;
 
 		// Used to make single post request.
 		m_resourcePath = resourcePath;
@@ -106,13 +99,9 @@ public class AsyncTaskPostPutRequest extends AsyncTask<HttpEntity, Void, Void>
 	private void sendResponseToHandler(String response)
 	{
 		Bundle bundle = new Bundle();
-		if (m_keyMsgType != null)
+		if (response != null)
 		{
-			bundle.putShort(m_keyMsgType, m_msgType);
-		}
-		if (m_keyResponse != null && response != null)
-		{
-			bundle.putSerializable(m_keyResponse, response);
+			bundle.putSerializable("response", response);
 		}
 		Message msg = new Message();
 		msg.setData(bundle);

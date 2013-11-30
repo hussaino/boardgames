@@ -21,21 +21,14 @@ public class AsyncTaskParseResource<T> extends AsyncTask<Object, Void, Void>
 	private ArrayBlockingQueue<ResourceStream> m_inputBlockingQueue;
 	private ResourceParser m_resourceParser;
 	private Handler m_handler;
-	private final String m_keyMsgType;
-	private final short m_msgType;
-	private final String m_keyPayload;
 
 	public AsyncTaskParseResource(ArrayBlockingQueue<ResourceStream> inputProcessingQueue,
-			ResourceParser<T> resourceParser, Handler handlerToSendParsedElems, String keyMsgType,
-			short msgType, String keyPayload)
+			ResourceParser<T> resourceParser, Handler handlerToSendParsedElems)
 
 	{
 		m_inputBlockingQueue = inputProcessingQueue;
 		m_resourceParser = resourceParser;
 		m_handler = handlerToSendParsedElems;
-		m_keyMsgType = keyMsgType;
-		m_msgType = msgType;
-		m_keyPayload = keyPayload;
 	}
 
 	@Override
@@ -74,13 +67,9 @@ public class AsyncTaskParseResource<T> extends AsyncTask<Object, Void, Void>
 	private void sendParsedElemsToHandler(ArrayList<T> elementsParsed)
 	{
 		Bundle bundle = new Bundle();
-		if (m_keyMsgType != null)
+		if (elementsParsed != null)
 		{
-			bundle.putShort(m_keyMsgType, m_msgType);
-		}
-		if (m_keyPayload != null && elementsParsed != null)
-		{
-			bundle.putSerializable(m_keyPayload, elementsParsed);
+			bundle.putSerializable("response", elementsParsed);
 		}
 		Message msg = new Message();
 		msg.setData(bundle);

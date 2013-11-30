@@ -15,8 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.boarge.server.database.GamesTable;
-import com.boarge.server.temp.Game;
-import com.boarge.server.temp.UtilsJSON;
 
 public class GamesServlet extends HttpServlet
 {
@@ -129,9 +127,9 @@ public class GamesServlet extends HttpServlet
 			 * assume that we have a valid board object if JSONObject
 			 * contruction did not throw exception and the map is not empty.
 			 */
-			Game newGame = GamesTable.createGame(isPrivate, isRanked, difficulty, numTeams,
+			String newGame = GamesTable.createGame(isPrivate, isRanked, difficulty, numTeams,
 					numPlayersPerTeam, timeLimitPerMove, turnStrategy);
-			response = UtilsJSON.getJSON(newGame).toString();
+			response = newGame;
 		}
 		catch (SQLException e)
 		{

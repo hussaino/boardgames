@@ -25,7 +25,7 @@ public class UtilsJSON
 	{
 		JSONObject gameJSON = new JSONObject();
 		gameJSON.put(JSON_KEY_GAME_ID, game.getId());
-		gameJSON.put(JSON_KEY_GAME_STATE, game.getGameState());
+		gameJSON.put(JSON_KEY_GAME_STATE, UtilsJSON.getJSON(game.getBoard()));
 		gameJSON.put(JSON_KEY_GAME_TURN, game.getTurn());
 		gameJSON.put(JSON_KEY_GAME_PRIVATE, game.isPrivate());
 		gameJSON.put(JSON_KEY_GAME_RANKED, game.isRanked());
@@ -49,9 +49,34 @@ public class UtilsJSON
 		Game game = new Game(isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
 				timeLimitPerMove, turnStrategy);
 
-		game.setGameState(gameJSON.getString(JSON_KEY_GAME_STATE));
-		game.setId(gameJSON.getInt(JSON_KEY_GAME_ID));
-		game.setTurn(gameJSON.getInt(JSON_KEY_GAME_TURN));
+		//The following parts of a game object may or may not be mapped to already.
+		try
+		{
+			JSONObject boardJSON = new JSONObject(gameJSON.getString(JSON_KEY_GAME_STATE));
+			game.setBoard(UtilsJSON.getBoardFromJSON(boardJSON));
+		}
+		catch (JSONException e)
+		{
+
+		}
+		
+		try
+		{
+			game.setId(gameJSON.getInt(JSON_KEY_GAME_ID));
+		}
+		catch (JSONException e)
+		{
+
+		}
+		
+		try
+		{
+			game.setTurn(gameJSON.getInt(JSON_KEY_GAME_TURN));
+		}
+		catch (JSONException e)
+		{
+
+		}
 
 		return game;
 	}/* ** End Game JSON interface ** */
@@ -64,7 +89,6 @@ public class UtilsJSON
 	public static JSONObject getJSON(Board board) throws JSONException
 	{
 		JSONObject boardJSON = new JSONObject();
-		
 
 		int width = board.width_;
 		int length = board.length_;
@@ -91,7 +115,7 @@ public class UtilsJSON
 		Board board = new Board(length, width);
 
 		Piece[][] boardPieces = board.Pieces_;
-		
+
 		JSONArray piecesArrayJSON = (JSONArray) boardJSON.get(JSON_KEY_BOARD_PIECES_ARRAY);
 		for (int i = 0; i < piecesArrayJSON.length(); i++)
 		{
