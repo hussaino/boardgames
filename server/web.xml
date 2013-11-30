@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/
+javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/
+javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>FirstJettyApp</display-name>
+
+	<!-- MainServlet -->
+	<servlet>
+		<servlet-name>Main</servlet-name>
+		<servlet-class>com.boarge.server.servlet.MainServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Main</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- Api Servlet -->
+	<servlet>
+		<servlet-name>Api</servlet-name>
+		<servlet-class>com.boarge.server.servlet.ApiServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Api</servlet-name>
+		<url-pattern>/api</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Games Servlet -->
+	<servlet>
+		<servlet-name>Games</servlet-name>
+		<servlet-class>com.boarge.server.servlet.GamesServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Games</servlet-name>
+		<url-pattern>/games/*</url-pattern>
+	</servlet-mapping>
+</web-app>
