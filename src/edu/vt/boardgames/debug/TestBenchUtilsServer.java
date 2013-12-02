@@ -147,29 +147,80 @@ public class TestBenchUtilsServer
 
 	public static void testGetAllUsers()
 	{
-		UtilsServer.getAllUsers(new Handler()
-		{
-			@Override
-			public void handleMessage(Message msg)
-			{
-				super.handleMessage(msg);
-
-				Bundle msgBundle = msg.getData();
-				ArrayList<User> allUsers = (ArrayList<User>) msgBundle
-						.getSerializable(KEY_RESPONSE);
-				if (allUsers != null)
-				{
-					Toast.makeText(s_context, "Put new state response: " + allUsers.get(0),
-							Toast.LENGTH_LONG).show();
-
-				}
-				else
-				{
-					Toast.makeText(s_context, "Received null put new game state response",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		});
+		UtilsServer.getAllUsers(handlerResponseUser);
 	}
+
+	public static void testGetUser(String usr)
+	{
+		UtilsServer.getUser(handlerResponseUser, usr);
+	}
+
+	public static void testGetUser(int usrId)
+	{
+		UtilsServer.getUser(handlerResponseUser, usrId);
+	}
+
+	public static void testCreateUser(String username)
+	{
+		UtilsServer.createNewUser(handlerResponseUser, username);
+	}
+
+	private static Handler handlerResponseUser = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			super.handleMessage(msg);
+
+			Bundle msgBundle = msg.getData();
+			ArrayList<User> allUsers = (ArrayList<User>) msgBundle.getSerializable(KEY_RESPONSE);
+			if (allUsers != null)
+			{
+				String toast = "";
+				for (User usr : allUsers)
+				{
+					toast += usr + "\n";
+				}
+				Toast.makeText(s_context, toast, Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Toast.makeText(s_context, "Received null put new game state response",
+						Toast.LENGTH_LONG).show();
+			}
+		}
+	};
+
+	public static void testDeleteUser(int userId)
+	{
+		UtilsServer.deleteUser(handlerResponseUserDelete, userId);
+	}
+
+	public static void testDeleteUser(String username)
+	{
+		UtilsServer.deleteUser(handlerResponseUserDelete, username);
+	}
+
+	private static Handler handlerResponseUserDelete = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			super.handleMessage(msg);
+
+			Bundle msgBundle = msg.getData();
+			ArrayList<String> putNewStateResponse = (ArrayList<String>) msgBundle
+					.getSerializable(KEY_RESPONSE);
+			if (putNewStateResponse != null)
+			{
+				Toast.makeText(s_context, "Delete response: " + putNewStateResponse.get(0),
+						Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Toast.makeText(s_context, "Delete response is null.", Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 
 }

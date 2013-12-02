@@ -1,4 +1,4 @@
-package edu.vt.boardgames.network;
+package edu.vt.boardgames.network.response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import edu.vt.boardgames.debug.MyLogger;
 
 /**
- * Created by Justin on 11/21/13. A resource parser that expects a single
- * JSONObject object to be within an input stream. Use this after calling http
- * GET and getting a single JSON response element.
+ * Created by Justin on 11/21/13.
  */
 public class ResponseParserString extends ResponseParser<String>
 {

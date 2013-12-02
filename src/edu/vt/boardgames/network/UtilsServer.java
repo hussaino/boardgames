@@ -2,6 +2,7 @@ package edu.vt.boardgames.network;
 
 import java.io.UnsupportedEncodingException;
 
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -11,6 +12,10 @@ import org.json.JSONException;
 import vt.team9.customgames.Board;
 import android.os.Handler;
 import edu.vt.boardgames.debug.MyLogger;
+import edu.vt.boardgames.network.async.ControllerHttpRequestAndParse;
+import edu.vt.boardgames.network.response.ResponseParserGame;
+import edu.vt.boardgames.network.response.ResponseParserString;
+import edu.vt.boardgames.network.response.ResponseParserUser;
 
 public class UtilsServer
 {
@@ -129,6 +134,50 @@ public class UtilsServer
 		HttpGet getRequest = new HttpGet(URL_USERS);
 		new ControllerHttpRequestAndParse<User>()
 				.fetchAndParseRequests(handler, parser, getRequest);
+	}
+
+	public static void getUser(Handler handler, int usrId)
+	{
+		getUserWithUrl(handler, URL_USERS + "/" + usrId);
+	}
+
+	public static void getUser(Handler handler, String usr)
+	{
+		getUserWithUrl(handler, URL_USERS + "/" + usr);
+	}
+
+	public static void getUserWithUrl(Handler handler, String url)
+	{
+		ResponseParserUser parser = new ResponseParserUser();
+		HttpGet getRequest = new HttpGet(url);
+		new ControllerHttpRequestAndParse<User>()
+				.fetchAndParseRequests(handler, parser, getRequest);
+	}
+
+	public static void createNewUser(Handler handler, String username)
+	{
+		ResponseParserUser parser = new ResponseParserUser();
+		HttpPost getRequest = new HttpPost(URL_USERS + "/" + username);
+		new ControllerHttpRequestAndParse<User>()
+				.fetchAndParseRequests(handler, parser, getRequest);
+	}
+
+	public static void deleteUser(Handler handler, int userId)
+	{
+		deleteUserWithUrl(handler, URL_USERS + "/" + userId);
+	}
+
+	public static void deleteUser(Handler handler, String username)
+	{
+		deleteUserWithUrl(handler, URL_USERS + "/" + username);
+	}
+
+	public static void deleteUserWithUrl(Handler handler, String url)
+	{
+		ResponseParserString parser = new ResponseParserString();
+		HttpDelete getRequest = new HttpDelete(url);
+		new ControllerHttpRequestAndParse<String>().fetchAndParseRequests(handler, parser,
+				getRequest);
 	}
 
 }

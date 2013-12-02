@@ -1,9 +1,11 @@
-package edu.vt.boardgames.network;
+package edu.vt.boardgames.network.async;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.http.client.methods.HttpRequestBase;
 
+import edu.vt.boardgames.network.response.ResponseParser;
+import edu.vt.boardgames.network.response.ResponseStream;
 import android.os.Handler;
 
 /**

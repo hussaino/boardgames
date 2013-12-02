@@ -1,11 +1,11 @@
 package edu.vt.boardgames.network;
 
-public class User
+public class Team
 {
 	private int m_id;
 	private String m_name;
 
-	public User(String name)
+	public Team(String name)
 	{
 		setName(name);
 	}

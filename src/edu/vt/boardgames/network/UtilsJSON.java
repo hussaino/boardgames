@@ -198,20 +198,43 @@ public class UtilsJSON
 
 	public static JSONObject getJSON(User user) throws JSONException
 	{
-		JSONObject pieceJSON = new JSONObject();
-		pieceJSON.put(JSON_KEY_USER_ID, user.getId());
-		pieceJSON.put(JSON_KEY_USER_NAME, user.getName());
-		return pieceJSON;
+		JSONObject userJSON = new JSONObject();
+		userJSON.put(JSON_KEY_USER_ID, user.getId());
+		userJSON.put(JSON_KEY_USER_NAME, user.getName());
+		return userJSON;
 	}
 
 	public static User getUserFromJSON(JSONObject userJSON) throws JSONException
 	{
-		String name = userJSON.getString(JSON_KEY_USER_NAME);
 		Integer id = userJSON.getInt(JSON_KEY_USER_ID);
+		String name = userJSON.getString(JSON_KEY_USER_NAME);
 
 		User user = new User(name);
 		user.setId(id);
 
 		return user;
 	}/* ** End User JSON interface ** */
+
+	/* ** Team JSON interface ** */
+	private static final String JSON_KEY_TEAM_ID = "k_id";
+	private static final String JSON_KEY_TEAM_NAME = "k_nm";
+
+	public static JSONObject getJSON(Team team) throws JSONException
+	{
+		JSONObject teamJSON = new JSONObject();
+		teamJSON.put(JSON_KEY_TEAM_ID, team.getId());
+		teamJSON.put(JSON_KEY_TEAM_NAME, team.getName());
+		return teamJSON;
+	}
+
+	public static Team getTeamFromJSON(JSONObject teamJSON) throws JSONException
+	{
+		Integer id = teamJSON.getInt(JSON_KEY_TEAM_ID);
+		String name = teamJSON.getString(JSON_KEY_TEAM_NAME);
+
+		Team team = new Team(name);
+		team.setId(id);
+
+		return team;
+	}/* ** End Team JSON interface ** */
 }

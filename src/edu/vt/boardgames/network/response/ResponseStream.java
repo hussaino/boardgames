@@ -1,4 +1,4 @@
-package edu.vt.boardgames.network;
+package edu.vt.boardgames.network.response;
 
 import java.io.InputStream;
 

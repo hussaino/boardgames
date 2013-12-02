@@ -1,4 +1,4 @@
-package edu.vt.boardgames.network;
+package edu.vt.boardgames.network.async;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import edu.vt.boardgames.debug.MyLogger;
+import edu.vt.boardgames.network.response.ResponseParser;
+import edu.vt.boardgames.network.response.ResponseStream;
 
 /**
  * Created by Justin on 10/2/13. This task acts as a consumer to the producer:
