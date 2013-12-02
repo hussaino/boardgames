@@ -26,18 +26,18 @@ public class TeamsTable
 		try
 		{
 			createTeamsDBTable();
-			createTeam("Ramrod");
-			createTeam("Oaf Squad");
-			createTeam("City Shlickers");
+			// createTeam("Ramrod");
+			// createTeam("Oaf Squad");
+			// createTeam("City Shlickers");
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-		}
+		// catch (JSONException e)
+		// {
+		// e.printStackTrace();
+		// }
 
 	}
 
@@ -60,7 +60,9 @@ public class TeamsTable
 
 		// Return game created without querying table again.
 		int createdTeamId = UtilsDB.getLastInsertId(s_connection);
-		return UtilsJSON.getTeamJSON(createdTeamId, teamName).toString();
+		JSONArray arrayWrapper = new JSONArray();
+		arrayWrapper.put(UtilsJSON.getTeamJSON(createdTeamId, teamName));
+		return arrayWrapper.toString();
 
 	}
 
