@@ -46,4 +46,16 @@ public class UtilsJSON
 		gameJSON.put(JSON_KEY_USER_NAME, userName);
 		return gameJSON;
 	} /* ** End User class JSON interface ** */
+
+	/* ** Team class JSON interface ** */
+	private static final String JSON_KEY_TEAM_ID = "k_id";
+	private static final String JSON_KEY_TEAM_NAME = "k_nm";
+
+	public static JSONObject getTeamJSON(int id, String teamName) throws JSONException
+	{
+		JSONObject gameJSON = new JSONObject();
+		gameJSON.put(JSON_KEY_TEAM_ID, id);
+		gameJSON.put(JSON_KEY_TEAM_NAME, teamName);
+		return gameJSON;
+	}/* ** End Team class JSON interface ** */
 }
