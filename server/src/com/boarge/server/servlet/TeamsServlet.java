@@ -13,7 +13,7 @@ import org.json.JSONException;
 import com.boarge.server.database.UsersTable;
 import com.boarge.server.utils.UtilsServlet;
 
-public class UsersServlet extends HttpServlet
+public class TeamsServlet extends HttpServlet
 {
 	/**
 	 * 

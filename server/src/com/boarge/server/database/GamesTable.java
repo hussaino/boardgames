@@ -84,11 +84,14 @@ public class GamesTable
 		stmt.executeUpdate();
 		stmt.close();
 
-		// Return game created without querying table again.
+		// Return game created without querying table again. Always return array
+		// of games from servlet.
+		JSONArray arrayWrapper = new JSONArray();
 		JSONObject gameCreated = UtilsJSON.getJSON(UtilsDB.getLastInsertId(s_connection), "none",
 				0, isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam, timeLimitPerMove,
 				turnStrategy);
-		return gameCreated.toString();
+		arrayWrapper.put(gameCreated);
+		return arrayWrapper.toString();
 	}
 
 	public static void updateGameState(int gameId, String gameState, int nextTurn)

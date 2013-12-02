@@ -15,9 +15,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.boarge.server.database.GamesTable;
+import com.boarge.server.utils.UtilsServlet;
 
 public class GamesServlet extends HttpServlet
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1258665950470025593L;
 	private static final String URL_PARAM_USER_ID = "user";
 	private static final String URL_PARAM_TURN = "turn";
 
@@ -33,7 +38,7 @@ public class GamesServlet extends HttpServlet
 
 		try
 		{
-			Integer gameID = getUrlGameId(req);
+			Integer gameID = UtilsServlet.getIntegerUrlPathInfo(req);
 			String gameCriteria = req.getParameter("criteria");
 			String userID = req.getParameter(URL_PARAM_USER_ID);
 			String teamID = req.getParameter("team");
@@ -128,9 +133,8 @@ public class GamesServlet extends HttpServlet
 			 * assume that we have a valid board object if JSONObject
 			 * contruction did not throw exception and the map is not empty.
 			 */
-			String newGame = GamesTable.createGame(isPrivate, isRanked, difficulty, numTeams,
+			response = GamesTable.createGame(isPrivate, isRanked, difficulty, numTeams,
 					numPlayersPerTeam, timeLimitPerMove, turnStrategy);
-			response = newGame;
 		}
 		catch (SQLException e)
 		{
@@ -148,6 +152,10 @@ public class GamesServlet extends HttpServlet
 		{
 			resp.getWriter().write(response);
 		}
+		else
+		{
+			resp.getWriter().write("400");
+		}
 	}
 
 	/**
@@ -161,15 +169,15 @@ public class GamesServlet extends HttpServlet
 	{
 		resp.setContentType("text/plain");
 
-		// extract game id
-		Integer gameID = getUrlGameId(req);
-		String userID = req.getParameter(URL_PARAM_USER_ID);
-		Integer nextTurn = Integer.valueOf(req.getParameter(URL_PARAM_TURN));
-
 		String response = null;
 		// Extract the entity attached to the request here
 		try
 		{
+			// extract game id
+			Integer gameID = UtilsServlet.getIntegerUrlPathInfo(req);
+			String userID = req.getParameter(URL_PARAM_USER_ID);
+			Integer nextTurn = Integer.valueOf(req.getParameter(URL_PARAM_TURN));
+
 			String strEntity = getEntityFromInput(req.getInputStream());
 			if (isValidJSON(strEntity))
 			{
@@ -238,13 +246,4 @@ public class GamesServlet extends HttpServlet
 
 		return stringBoard.toString();
 	}
-
-	private Integer getUrlGameId(HttpServletRequest req)
-	{
-		String pathInfo = req.getPathInfo();
-		String extractGameId = pathInfo == null ? "" : pathInfo.toString().replaceAll("/", "");
-		Integer gameID = extractGameId.length() > 0 ? Integer.valueOf(extractGameId) : -1;
-		return gameID;
-	}
-
 }

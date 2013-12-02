@@ -9,117 +9,107 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.boarge.server.utils.UtilsDB;
 import com.boarge.server.utils.UtilsJSON;
 
 public class TeamsTable
 {
 	private static Connection s_connection;
 
-	private static final String TABLE_Name = "Games";
+	private static final String TABLE_Name = "Teams";
 	private static final String COL_Id = "id";
-	private static final String COL_GameState = "GameState";
-	private static final String COL_Turn = "Turn";
-	private static final String COL_Private = "Private";
-	private static final String COL_Ranked = "Ranked";
-	private static final String COL_Difficulty = "Difficulty";
-	private static final String COL_NumberTeams = "NumberTeams";
-	private static final String COL_PlayersPerTeams = "PlayersPerTeam";
-	private static final String COL_TimeLimit = "TimeLimit";
-	private static final String COL_TurnStrategy = "TurnStrategy";
+	private static final String COL_UserName = "name";
 
 	public static void init(Connection conn)
 	{
 		s_connection = conn;
 		try
 		{
-			createGamesDBTable();
+			createTeamsDBTable();
+			createTeam("Ramrod");
+			createTeam("Oaf Squad");
+			createTeam("City Shlickers");
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		// createGame(true, false, 9, 4, 2, 10, 1);
-		// createGame(false, true, 3, 2, 1, -1, -1);
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 
 	}
 
-	public static void createGamesDBTable() throws SQLException
+	public static void createTeamsDBTable() throws SQLException
 	{
-		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_Name
-				+ " (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + COL_GameState
-				+ " TEXT NOT NULL, " + COL_Turn + " INTEGER NOT NULL, " + COL_Private
-				+ " INTEGER NOT NULL, " + COL_Ranked + " INTEGER NOT NULL, " + COL_Difficulty
-				+ " INTEGER NOT NULL, " + COL_NumberTeams + " INTEGER NOT NULL, "
-				+ COL_PlayersPerTeams + " INTEGER NOT NULL, " + COL_TimeLimit
-				+ " INTEGER NOT NULL, " + COL_TurnStrategy + " INTEGER NOT NULL);";
+		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_Name + " (" + COL_Id
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + COL_UserName
+				+ " TEXT NOT NULL);";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
 		stmt.executeUpdate();
 	}
 
-	public static String createGame(boolean isPrivate, boolean isRanked, int difficulty,
-			int numTeams, int numPlayersPerTeam, int timeLimitPerMove, int turnStrategy)
-			throws SQLException, JSONException
+	public static String createTeam(String userName) throws SQLException, JSONException
 	{
-		String sql = "INSERT INTO " + TABLE_Name + " (" + COL_GameState + ", " + COL_Turn + ", "
-				+ COL_Private + ", " + COL_Ranked + ", " + COL_Difficulty + ", " + COL_NumberTeams
-				+ ", " + COL_PlayersPerTeams + ", " + COL_TimeLimit + ", " + COL_TurnStrategy
-				+ ") VALUES ('none', 0, " + getSqlVal(isPrivate) + "," + getSqlVal(isRanked) + ","
-				+ getSqlVal(difficulty) + "," + getSqlVal(numTeams) + ","
-				+ getSqlVal(numPlayersPerTeam) + "," + getSqlVal(timeLimitPerMove) + ","
-				+ getSqlVal(turnStrategy) + ");";
+		if (getUser(userName) == null)
+		{
+			String sql = "INSERT INTO " + TABLE_Name + " (" + COL_UserName + ") VALUES ("
+					+ UtilsDB.getSqlVal(userName) + ");";
+			PreparedStatement stmt = s_connection.prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.close();
+
+			// Return game created without querying table again.
+			int createdUserId = UtilsDB.getLastInsertId(s_connection);
+			return UtilsJSON.getJSON(createdUserId, userName).toString();
+		}
+		return null;
+	}
+
+	public static void removeTeam(int userId) throws SQLException
+	{
+		String sql = "DELETE FROM " + TABLE_Name + " WHERE " + COL_Id + "=?;";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
-		stmt.executeUpdate();
-		stmt.close();
-
-		// Return game created without querying table again.
-		JSONObject gameCreated = UtilsJSON.getJSON(getLastInsertId(), "none", 0, isPrivate,
-				isRanked, difficulty, numTeams, numPlayersPerTeam, timeLimitPerMove, turnStrategy);
-		return gameCreated.toString();
-	}
-
-	private static int getLastInsertId() throws SQLException
-	{
-		String lastInsertCol = "last_insert_rowid()";
-		String sql = "SELECT " + lastInsertCol;
-		PreparedStatement stmt = s_connection.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		int id = rs.getInt(lastInsertCol);
-		stmt.close();
-		return id;
-	}
-
-	private static String getSqlVal(boolean bool)
-	{
-		return bool ? "1" : "0";
-	}
-
-	private static String getSqlVal(Integer num)
-	{
-		return String.valueOf(num);
-	}
-
-	public static void updateGameState(int gameId, String gameState) throws SQLException
-	{
-		String sql = "UPDATE " + TABLE_Name + " SET " + COL_GameState + "=? WHERE " + COL_Id
-				+ "=?;";
-		PreparedStatement stmt = s_connection.prepareStatement(sql);
-		stmt.setString(1, gameState);
-		stmt.setInt(2, gameId);
+		stmt.setInt(1, userId);
 		stmt.executeUpdate();
 		stmt.close();
 	}
 
-	public static String getGame(Integer gameId) throws SQLException, JSONException
+	public static void removeUser(String userName) throws SQLException
+	{
+		String sql = "DELETE FROM " + TABLE_Name + " WHERE " + COL_UserName + "=?;";
+		PreparedStatement stmt = s_connection.prepareStatement(sql);
+		stmt.setString(1, userName);
+		stmt.executeUpdate();
+		stmt.close();
+	}
+
+	public static String getUser(int userId) throws SQLException, JSONException
 	{
 		String sql = "SELECT * FROM " + TABLE_Name + " WHERE  " + COL_Id + "=?";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
-		stmt.setInt(1, gameId);
+		stmt.setInt(1, userId);
+		return getUserUsingStmt(stmt);
+	}
+
+	public static String getUser(String userName) throws SQLException, JSONException
+	{
+		String sql = "SELECT * FROM " + TABLE_Name + " WHERE  " + COL_UserName + "=?";
+		PreparedStatement stmt = s_connection.prepareStatement(sql);
+		stmt.setString(1, userName);
+		return getUserUsingStmt(stmt);
+	}
+
+	private static String getUserUsingStmt(PreparedStatement stmt) throws SQLException,
+			JSONException
+	{
 		ResultSet rs = stmt.executeQuery();
 		String gameJSON = null;
 		if (rs.next())
 		{
 			JSONArray array = new JSONArray();
-			array.put(getGameJSONResultSet(rs));
+			array.put(getUserFromJSONResultSet(rs));
 			gameJSON = array.toString();
 		}
 		stmt.close();
@@ -127,68 +117,34 @@ public class TeamsTable
 		return gameJSON;
 	}
 
-	public static String getOpenGames(String gameCriteria)
-	{
-		return null;
-	}
-
-	public static String getUserTurns(String userID)
-	{
-		return null;
-	}
-
-	public static String getUserGames(String userID)
-	{
-		return null;
-	}
-
-	public static String getTeamTurns(String teamID)
-	{
-		return null;
-	}
-
-	public static String getTeamGames(String teamID)
-	{
-		return null;
-	}
-
-	public static String getAllGames() throws SQLException, JSONException
+	public static String getAllUsers() throws SQLException, JSONException
 	{
 		PreparedStatement stmt = s_connection.prepareStatement("SELECT * FROM " + TABLE_Name + ";");
 		ResultSet rs = stmt.executeQuery();
-		String games = getArrayGamesJSONResultSet(rs);
+		String games = getArrayUsersJSONResultSet(rs);
 		rs.close();
 		stmt.close();
 		return games;
 	}
 
-	private static String getArrayGamesJSONResultSet(ResultSet resultingGames)
+	private static String getArrayUsersJSONResultSet(ResultSet resultingGames)
 			throws JSONException, SQLException
 	{
 		JSONArray gamesArrayJSON = new JSONArray();
 		while (resultingGames.next())
 		{
-			gamesArrayJSON.put(getGameJSONResultSet(resultingGames));
+			gamesArrayJSON.put(getUserFromJSONResultSet(resultingGames));
 		}
 		if (gamesArrayJSON.length() == 0)
 			return null;
 		return gamesArrayJSON.toString();
 	}
 
-	private static JSONObject getGameJSONResultSet(ResultSet resultGame) throws JSONException,
+	private static JSONObject getUserFromJSONResultSet(ResultSet resultGame) throws JSONException,
 			SQLException
 	{
 		int id = resultGame.getInt(COL_Id);
-		String gameState = resultGame.getString(COL_GameState);
-		int turn = resultGame.getInt(COL_Turn);
-		boolean isPrivate = resultGame.getBoolean(COL_Private);
-		boolean isRanked = resultGame.getBoolean(COL_Ranked);
-		int difficulty = resultGame.getInt(COL_Difficulty);
-		int numTeams = resultGame.getInt(COL_NumberTeams);
-		int numPlayersPerTeam = resultGame.getInt(COL_PlayersPerTeams);
-		int timeLimitPerMove = resultGame.getInt(COL_TimeLimit);
-		int turnStrategy = resultGame.getInt(COL_TurnStrategy);
-		return UtilsJSON.getJSON(id, gameState, turn, isPrivate, isRanked, difficulty, numTeams,
-				numPlayersPerTeam, timeLimitPerMove, turnStrategy);
+		String userName = resultGame.getString(COL_UserName);
+		return UtilsJSON.getJSON(id, userName);
 	}
 }

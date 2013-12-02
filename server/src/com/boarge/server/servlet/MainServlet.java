@@ -13,10 +13,15 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.boarge.server.database.GamesTable;
+import com.boarge.server.database.TeamsTable;
 import com.boarge.server.database.UsersTable;
 
 public class MainServlet extends HttpServlet
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6702193108118827420L;
 	private static final String DB_NAME = "Boarge";
 
 	public static void main(String[] args) throws Exception
@@ -34,6 +39,7 @@ public class MainServlet extends HttpServlet
 		System.out.println("Opened database");
 		GamesTable.init(conn);
 		UsersTable.init(conn);
+		TeamsTable.init(conn);
 
 		server.start();
 		server.join();
@@ -45,16 +51,6 @@ public class MainServlet extends HttpServlet
 	{
 		resp.setContentType("text/plain");
 		resp.getWriter().write("Main Servlet!\n");
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException
-	{
-		Integer id = Integer.valueOf(req.getParameter("id"));
-		String name = req.getParameter("name");
-		Integer age = Integer.valueOf(req.getParameter("age"));
-		String grade = req.getParameter("grade");
 	}
 
 }

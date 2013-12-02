@@ -26,47 +26,57 @@ public class UsersTable
 		try
 		{
 			createUsersDBTable();
-			// createUser("Hussain");
+			createUser("jboblitt");
+			createUser("arhea");
+			createUser("hussain");
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		// catch (JSONException e)
-		// {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 
 	}
 
 	public static void createUsersDBTable() throws SQLException
 	{
 		String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_Name + " (" + COL_Id
-				+ " INTEGER NOT NULL, " + COL_UserName + " TEXT PRIMARY KEY NOT NULL);";
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + COL_UserName
+				+ " TEXT NOT NULL);";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
 		stmt.executeUpdate();
 	}
 
 	public static String createUser(String userName) throws SQLException, JSONException
 	{
-		String sql = "INSERT INTO " + TABLE_Name + " (" + COL_Id + ", " + COL_UserName
-				+ ") VALUES ((SELECT IFNULL(MAX(id), 0) + 1 FROM " + TABLE_Name + ")" + ", "
-				+ UtilsDB.getSqlVal(userName) + ");";
-		// String sql = "INSERT INTO Users ('JBoblitt'
-		// + ") VALUES ((SELECT IFNULL(MAX(id), 0) + 1 FROM Users)"
-		// + UtilsDB.getSqlVal(userName) + ");";
+		if (getUser(userName) == null)
+		{
+			String sql = "INSERT INTO " + TABLE_Name + " (" + COL_UserName + ") VALUES ("
+					+ UtilsDB.getSqlVal(userName) + ");";
+			PreparedStatement stmt = s_connection.prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.close();
+
+			// Return game created without querying table again.
+			int createdUserId = UtilsDB.getLastInsertId(s_connection);
+			JSONArray arrayWrapper = new JSONArray();
+			JSONObject userJSON = UtilsJSON.getJSON(createdUserId, userName);
+			arrayWrapper.put(userJSON);
+			return arrayWrapper.toString();
+		}
+		return null;
+	}
+
+	public static void removeUser(int userId) throws SQLException
+	{
+		String sql = "DELETE FROM " + TABLE_Name + " WHERE " + COL_Id + "=?;";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
+		stmt.setInt(1, userId);
 		stmt.executeUpdate();
 		stmt.close();
-
-		// Return game created without querying table again.
-		/*
-		 * JSONObject userCreated = UtilsJSON.getJSON(getLastInsertId(), "none",
-		 * 0, isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
-		 * timeLimitPerMove, turnStrategy); return gameCreated.toString();
-		 */
-		return "new user";
 	}
 
 	public static void removeUser(String userName) throws SQLException
@@ -78,11 +88,25 @@ public class UsersTable
 		stmt.close();
 	}
 
+	public static String getUser(int userId) throws SQLException, JSONException
+	{
+		String sql = "SELECT * FROM " + TABLE_Name + " WHERE  " + COL_Id + "=?";
+		PreparedStatement stmt = s_connection.prepareStatement(sql);
+		stmt.setInt(1, userId);
+		return getUserUsingStmt(stmt);
+	}
+
 	public static String getUser(String userName) throws SQLException, JSONException
 	{
 		String sql = "SELECT * FROM " + TABLE_Name + " WHERE  " + COL_UserName + "=?";
 		PreparedStatement stmt = s_connection.prepareStatement(sql);
 		stmt.setString(1, userName);
+		return getUserUsingStmt(stmt);
+	}
+
+	private static String getUserUsingStmt(PreparedStatement stmt) throws SQLException,
+			JSONException
+	{
 		ResultSet rs = stmt.executeQuery();
 		String gameJSON = null;
 		if (rs.next())
