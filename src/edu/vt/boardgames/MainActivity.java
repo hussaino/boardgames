@@ -47,11 +47,17 @@ public class MainActivity extends Activity
 		// TestBenchUtilsServer.testPostNewGame();
 		// TestBenchUtilsServer.testGetAllBoards();
 		// TestBenchUtilsServer.testGetBoard();
+
 		// TestBenchUtilsServer.testGetAllUsers();
 		// TestBenchUtilsServer.testGetUser(1);
 		// TestBenchUtilsServer.testGetUser("jboblitt");
 		// TestBenchUtilsServer.testCreateUser("daMan198");
 		// TestBenchUtilsServer.testDeleteUser("jboblitt");
+
+		// TestBenchUtilsServer.testGetAllTeams();
+		// TestBenchUtilsServer.testGetTeam(4);
+		// TestBenchUtilsServer.testCreateTeam("YOyoYo234");
+		TestBenchUtilsServer.testDeleteTeam(11);
 
 		mTitle = mDrawerTitle = getTitle();
 
