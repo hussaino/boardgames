@@ -5,18 +5,18 @@ import java.io.InputStream;
 /**
  * Created by Justin on 10/7/13.
  */
-public class ResourceStream
+public class ResponseStream
 {
 	private InputStream m_inputStream;
 	private boolean m_doneFetchingFlag;
 
-	public ResourceStream(InputStream is)
+	public ResponseStream(InputStream is)
 	{
 		m_inputStream = is;
 		m_doneFetchingFlag = false;
 	}
 
-	public ResourceStream()
+	public ResponseStream()
 	{
 		m_doneFetchingFlag = true;
 	}

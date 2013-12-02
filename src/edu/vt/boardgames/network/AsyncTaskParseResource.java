@@ -1,5 +1,9 @@
 package edu.vt.boardgames.network;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -18,12 +22,12 @@ import edu.vt.boardgames.debug.MyLogger;
  */
 public class AsyncTaskParseResource<T> extends AsyncTask<Object, Void, Void>
 {
-	private ArrayBlockingQueue<ResourceStream> m_inputBlockingQueue;
-	private ResourceParser m_resourceParser;
+	private ArrayBlockingQueue<ResponseStream> m_inputBlockingQueue;
+	private ResponseParser<T> m_resourceParser;
 	private Handler m_handler;
 
-	public AsyncTaskParseResource(ArrayBlockingQueue<ResourceStream> inputProcessingQueue,
-			ResourceParser<T> resourceParser, Handler handlerToSendParsedElems)
+	public AsyncTaskParseResource(ArrayBlockingQueue<ResponseStream> inputProcessingQueue,
+			ResponseParser<T> resourceParser, Handler handlerToSendParsedElems)
 
 	{
 		m_inputBlockingQueue = inputProcessingQueue;
@@ -38,7 +42,7 @@ public class AsyncTaskParseResource<T> extends AsyncTask<Object, Void, Void>
 		{
 			// All elements parsed from the
 			ArrayList<T> elementsParsed = new ArrayList<T>();
-			ResourceStream resStream;
+			ResponseStream resStream;
 			/*
 			 * Take resource streams from the blocking queue until the kill flag
 			 * is sent from the producer thread.
@@ -52,6 +56,7 @@ public class AsyncTaskParseResource<T> extends AsyncTask<Object, Void, Void>
 				}
 			}
 
+			// The elements parsed from all requests are sent at once to handler
 			sendParsedElemsToHandler(elementsParsed);
 		}
 

@@ -43,10 +43,11 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// TestBenchUtilsServer.tbInit(this);
+		TestBenchUtilsServer.tbInit(this);
 		// TestBenchUtilsServer.testPostNewGame();
 		// TestBenchUtilsServer.testGetAllBoards();
 		// TestBenchUtilsServer.testGetBoard();
+		TestBenchUtilsServer.testGetAllUsers();
 
 		mTitle = mDrawerTitle = getTitle();
 

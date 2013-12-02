@@ -17,8 +17,8 @@ import edu.vt.boardgames.debug.MyLogger;
  * JSONObject object to be within an input stream. Use this after calling http
  * GET and getting a single JSON response element.
  */
-public class ResourceParserGame extends ResourceParser<Game>
-{	
+public class ResponseParserGame extends ResponseParser<Game>
+{
 	@Override
 	public ArrayList<Game> getResourceParsedElems(InputStream is)
 	{
@@ -35,7 +35,7 @@ public class ResourceParserGame extends ResourceParser<Game>
 		}
 		catch (IOException e)
 		{
-			MyLogger.logExceptionSevere(ResourceParserGame.class.getName(),
+			MyLogger.logExceptionSevere(ResponseParserGame.class.getName(),
 					"getResourceParsedElems", null, e);
 		}
 
@@ -52,7 +52,7 @@ public class ResourceParserGame extends ResourceParser<Game>
 		}
 		catch (JSONException e)
 		{
-			MyLogger.logExceptionSevere(ResourceParserGame.class.getName(),
+			MyLogger.logExceptionSevere(ResponseParserGame.class.getName(),
 					"getResourceParsedElems", null, e);
 		}
 

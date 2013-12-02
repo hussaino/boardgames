@@ -6,18 +6,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import edu.vt.boardgames.debug.MyLogger;
 
 /**
  * Created by Justin on 11/21/13. A resource parser that expects a single
  * JSONObject object to be within an input stream. Use this after calling http
  * GET and getting a single JSON response element.
  */
-public class ResourceParserJSON extends ResourceParser<JSONObject>
+public class ResponseParserUser extends ResponseParser<User>
 {
 	@Override
-	public ArrayList<JSONObject> getResourceParsedElems(InputStream is)
+	public ArrayList<User> getResourceParsedElems(InputStream is)
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		StringBuilder sb = new StringBuilder();
@@ -32,19 +35,27 @@ public class ResourceParserJSON extends ResourceParser<JSONObject>
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			MyLogger.logExceptionSevere(ResponseParserUser.class.getName(),
+					"getResourceParsedElems", null, e);
 		}
 
-		// Only expect one JSONObject per GET request input stream.
-		ArrayList<JSONObject> jsonObjectsParsedFromInputStream = new ArrayList<JSONObject>();
+		ArrayList<User> boardsParsedFromInputStream = new ArrayList<User>();
 		try
 		{
-			jsonObjectsParsedFromInputStream.add(new JSONObject(sb.toString()));
+
+			JSONArray jsonUsers = new JSONArray(sb.toString());
+			for (int i = 0; i < jsonUsers.length(); i++)
+			{
+				JSONObject jsonBoard = jsonUsers.getJSONObject(i);
+				boardsParsedFromInputStream.add(UtilsJSON.getUserFromJSON(jsonBoard));
+			}
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			MyLogger.logExceptionSevere(ResponseParserUser.class.getName(),
+					"getResourceParsedElems", null, e);
 		}
-		return jsonObjectsParsedFromInputStream;
+
+		return boardsParsedFromInputStream;
 	}
 }
