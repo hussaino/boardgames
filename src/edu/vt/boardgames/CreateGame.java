@@ -24,19 +24,19 @@ public class CreateGame extends Fragment {
 		//LinearLayout linear = (LinearLayout) rootView.findViewById(R.id.creatgame_linearlayout);
 		edittext = (EditText) rootView.findViewById(R.id.opponent);
 		Button create = (Button) rootView.findViewById(R.id.btn_create);
-		final String[] opponents = edittext.getText().toString().split(",");
 		//usernames[0] = savedInstanceState.getString("username");
 		//usernames[1] = edittext.getText().toString();
-		final Bundle bundle = new Bundle();
-		//bundle.putString("username", savedInstanceState.getString("username"));
-		bundle.putSerializable("opponenets", opponents);
+		final Bundle bundle = new Bundle(this.getArguments());
 		create.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				final FragmentTransaction ft = getFragmentManager().beginTransaction();
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+				String[] opponents = edittext.getText().toString().split(",");
+				bundle.putSerializable("opponenets", opponents);
 				if(opponents[0] == ""){
 					Toast.makeText(getActivity(), "Invalid opponent", Toast.LENGTH_SHORT).show();
+					return;
 				}
 				Fragment chessgame = new ChessGame();
 				chessgame.setArguments(bundle);

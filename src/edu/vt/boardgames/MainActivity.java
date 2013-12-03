@@ -5,7 +5,6 @@ import edu.vt.boardgames.R;
 import java.util.ArrayList;
 
 import vt.team9.customgames.ChessActivity;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -21,12 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-
+	public static String username_ = "";
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
-			displayView(0);
+			displayView(2);
 		}
 	}
 
@@ -166,7 +166,14 @@ public class MainActivity extends Activity {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
+			if(username_ == ""){
+				Toast.makeText(getApplicationContext(), "You have to login through facebook first", Toast.LENGTH_SHORT).show();
+				break;
+			}
+			Bundle bundle = new Bundle();
+			Log.d("Hussain",username_);
 			fragment = new CreateGame();
+			fragment.setArguments(bundle);
 			break;
 			
 		case 1:

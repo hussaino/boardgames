@@ -48,7 +48,7 @@ public class ChessGame extends Fragment {
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
 		Bundle bundle = new Bundle();
-		bundle.putInt("id", 1);
+		bundle.putInt("id", -1);
 		controller.retrieveGame(bundle);
 		return rootView;
 	}

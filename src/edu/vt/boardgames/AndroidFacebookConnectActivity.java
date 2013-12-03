@@ -29,6 +29,7 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+
 //import com.facebook.boardgames.R;
 import edu.vt.boardgames.R;
 
@@ -234,6 +235,7 @@ public class AndroidFacebookConnectActivity extends Fragment {
 					// getting email of the user
 					final String email = profile.getString("email");
 					final String user = profile.getString("username");
+					MainActivity.username_ = user;
 					
 				Log.d("NAme", name);
 				Log.d("id", email);
@@ -317,61 +319,5 @@ public class AndroidFacebookConnectActivity extends Fragment {
 
 	}
 
-	/**
-	 * Function to show Access Tokens
-	 * */
-//	public void showAccessTokens() {
-//		String access_token = facebook.getAccessToken();
-//
-//		Toast.makeText(getApplicationContext(),
-//				"Access Token: " + access_token, Toast.LENGTH_LONG).show();
-//	}
-	
-	/**
-	 * Function to Logout user from Facebook
-	 * */
-//	public void logoutFromFacebook() {
-//		mAsyncRunner.logout(this.getActivity(), new RequestListener() {
-//			@Override
-//			public void onComplete(String response, Object state) {
-//				Log.d("Logout from Facebook", response);
-//				if (Boolean.parseBoolean(response) == true) {
-//					runOnUiThread(new Runnable() {
-//
-//						@Override
-//						public void run() {
-//							// make Login button visible
-//							btnFbLogin.setVisibility(View.VISIBLE);
-//
-//							// making all remaining buttons invisible
-//							btnFbGetProfile.setVisibility(View.INVISIBLE);
-//							btnPostToWall.setVisibility(View.INVISIBLE);
-//							btnShowAccessTokens.setVisibility(View.INVISIBLE);
-//						}
-//
-//					});
-//
-//				}
-//			}
-//
-//			@Override
-//			public void onIOException(IOException e, Object state) {
-//			}
-//
-//			@Override
-//			public void onFileNotFoundException(FileNotFoundException e,
-//					Object state) {
-//			}
-//
-//			@Override
-//			public void onMalformedURLException(MalformedURLException e,
-//					Object state) {
-//			}
-//
-//			@Override
-//			public void onFacebookError(FacebookError e, Object state) {
-//			}
-//		});
-//	}
 
 }
