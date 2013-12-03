@@ -1,25 +1,25 @@
 package edu.vt.boardgames;
 
-import edu.vt.boardgames.R;
-
 import java.util.ArrayList;
 
-import vt.team9.customgames.ChessActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	public static String username_ = "";
+	
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -44,7 +45,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -170,10 +170,7 @@ public class MainActivity extends Activity {
 				Toast.makeText(getApplicationContext(), "You have to login through facebook first", Toast.LENGTH_SHORT).show();
 				break;
 			}
-			Bundle bundle = new Bundle();
-			Log.d("Hussain",username_);
-			fragment = new CreateGame();
-			fragment.setArguments(bundle);
+			showNoticeDialog();
 			break;
 			
 		case 1:
@@ -228,4 +225,60 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
+	public void showNoticeDialog() {
+		// Create an instance of the dialog fragment and show it
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Get the layout inflater
+		LayoutInflater inflater = getLayoutInflater();
+
+		final View view = inflater.inflate(R.layout.dialog, null);
+
+		// Inflate and set the layout for the dialog
+		// Pass null as the parent view because its going in the dialog layout
+		builder.setView(view)
+				// Add action buttons
+				.setPositiveButton("Create",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								TextView textview = (TextView) view
+										.findViewById(R.id.opponent);
+								if (!textview.getText().toString().isEmpty()) {
+									String opponents[] = textview.getText().toString().split(",");
+
+
+									Bundle bundle = new Bundle();
+									bundle.putInt("id", -1);
+									bundle.putString("username", username_);
+									bundle.putSerializable("opponents", opponents);
+									Fragment fragment = new ChessGame();
+									fragment.setArguments(bundle);
+
+									FragmentManager fragmentManager = getFragmentManager();
+									fragmentManager.beginTransaction()
+											.replace(R.id.frame_container, fragment).commit();
+									mDrawerList.setItemChecked(0, true);
+									mDrawerList.setSelection(0);
+									setTitle(navMenuTitles[0]);
+									mDrawerLayout.closeDrawer(mDrawerList);
+								}
+								else{
+									Toast.makeText(getApplicationContext(), "Invalid opponents usernames", Toast.LENGTH_SHORT).show();
+									
+								}
+
+							}
+
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+		builder.create();
+		builder.show();
+	}
 }
