@@ -28,7 +28,7 @@ public class CreateGame extends Fragment {
 		//usernames[0] = savedInstanceState.getString("username");
 		//usernames[1] = edittext.getText().toString();
 		final Bundle bundle = new Bundle();
-		bundle.putString("username", savedInstanceState.getString("username"));
+		//bundle.putString("username", savedInstanceState.getString("username"));
 		bundle.putSerializable("opponenets", opponents);
 		create.setOnClickListener(new OnClickListener() {
 			

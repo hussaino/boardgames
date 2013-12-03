@@ -1,12 +1,20 @@
 package vt.team9.customgames;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+import edu.vt.boardgames.MainActivity;
+import edu.vt.boardgames.R;
 import edu.vt.boardgames.network.Game;
 import edu.vt.boardgames.network.UtilsServer;
 import edu.vt.boardgames.network.response.HandlerResponse;
@@ -24,8 +32,9 @@ public abstract class GameController extends Object
 	int currentTeam = 1;
 	int oldX;
 	int oldY;
-	int thisTeam = -1;
+	int thisTeam = 1;
 	boolean timerFlag = false;
+	CountDownTimer countdown;
 	int id_ = -1;
 
 	public GameController(PiecesAdapter adapter, Board board, Button submit)
@@ -42,6 +51,15 @@ public abstract class GameController extends Object
 				submitClick();
 			}
 		});
+		countdown = new CountDownTimer(30000, 1000) {
+			
+			public void onTick(long millisUntilFinished) {
+			    //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+			}
+			public void onFinish() {
+				UtilsServer.getGameFromServer(handler, id_);
+			}
+		};
 
 	}
 
@@ -58,22 +76,8 @@ public abstract class GameController extends Object
 			game_.setTurn(currentTeam);
 			UtilsServer.submitNewGameState(handler_, game_);
 			timerFlag = true;
-			timer();
+			countdown.start();
 		}
-	}
-	public void timer(){
-		new CountDownTimer(30000, 1000) {
-		
-			public void onTick(long millisUntilFinished) {
-			    //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-			}
-			public void onFinish() {
-				UtilsServer.getGameFromServer(handler, id_);
-			    //mTextField.setText("done!");
-				if(timerFlag)
-					timer();
-			}
-		}.start();
 	}
 
 	private HandlerResponse<String> handler_ = new HandlerResponse<String>()
@@ -89,8 +93,26 @@ public abstract class GameController extends Object
 	public void setGame(Game game)
 	{
 		game_ = game;
-		if(game.getTurn() != currentTeam)
-			timerFlag = false;
+		if(game.getTurn() == thisTeam){
+			countdown.cancel();
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(submit_.getContext())
+			.setSmallIcon(R.drawable.icon_chess)
+			.setContentTitle("Chess")
+			.setContentText("It's your move!");
+			Intent mainIntent = new Intent(submit_.getContext(), MainActivity.class);
+			TaskStackBuilder stackBuilder = TaskStackBuilder.create(submit_.getContext());
+			stackBuilder.addParentStack(MainActivity.class);
+			stackBuilder.addNextIntent(mainIntent);
+			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+			mBuilder.setContentIntent(resultPendingIntent);
+			NotificationManager mNotificationManager = (NotificationManager) submit_.getContext() .getSystemService(submit_.getContext().NOTIFICATION_SERVICE);
+			int mID = 0;
+			mNotificationManager.notify(mID, mBuilder.build());
+			Log.d("Hussain","notification");
+		}
+		else
+			countdown.start();
+		
 		if (game.getTurn() != 0)
 			currentTeam = game.getTurn();
 
