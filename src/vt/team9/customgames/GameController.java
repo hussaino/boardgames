@@ -1,5 +1,6 @@
 package vt.team9.customgames;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,10 +10,12 @@ import android.widget.Button;
 import android.widget.Toast;
 import edu.vt.boardgames.network.Game;
 import edu.vt.boardgames.network.UtilsServer;
+import edu.vt.boardgames.network.response.HandlerResponse;
 
 public abstract class GameController extends Object
 {
 	PiecesAdapter adapter_;
+	ProgressDialog progress;
 	private Board board_;
 	public Game game_;
 	Button submit_;
@@ -85,6 +88,10 @@ public abstract class GameController extends Object
 			adapter_.notifyDataSetChanged();
 		}
 	}
+	
+	public void setThisTeam(int thisTeam) {
+		this.thisTeam = thisTeam;
+	}
 
 	public Board getBoard()
 	{
@@ -95,4 +102,29 @@ public abstract class GameController extends Object
 	{
 		board_ = board;
 	}
+	public void retrieveGame(Bundle bundle){
+		int id = bundle.getInt("id");
+		String[] username = bundle.getStringArray("usernames");
+		if(id == -1){
+			UtilsServer.createNewGame(handler, true, false, 5, 2, 1 ,-1 ,-1);
+			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Creating your game.", true, false);
+		}
+		else{
+			UtilsServer.getGameFromServer(handler, id);
+			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Retrieving your game.", true, false);
+		}
+	}
+	private HandlerResponse<Game> handler = new HandlerResponse<Game>()
+			{
+				public void onResponseArrayObj(java.util.ArrayList<Game> response) {
+					
+					progress.dismiss();
+					
+					if (response != null && response.size() > 0)
+					{
+						setGame(response.get(0));
+						//Log.d("Hussain", controller.game_.toString());
+					}
+				};
+			};
 }
