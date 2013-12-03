@@ -135,14 +135,7 @@ public class TeamsServlet extends HttpServlet
 			e.printStackTrace();
 		}
 
-		if (response != null)
-		{
-			resp.getWriter().write(response);
-		}
-		else
-		{
-			resp.getWriter().write("400");
-		}
+		resp.getWriter().write(response);
 	}
 
 }

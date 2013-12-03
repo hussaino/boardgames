@@ -2,10 +2,6 @@ package edu.vt.boardgames.debug;
 
 import java.util.ArrayList;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import vt.team9.customgames.Board;
 import vt.team9.customgames.ChessBoard;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,9 +9,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 import edu.vt.boardgames.network.Game;
+import edu.vt.boardgames.network.Team;
 import edu.vt.boardgames.network.User;
-import edu.vt.boardgames.network.UtilsJSON;
 import edu.vt.boardgames.network.UtilsServer;
+import edu.vt.boardgames.network.response.HandlerResponse;
 
 public class TestBenchUtilsServer
 {
@@ -223,4 +220,56 @@ public class TestBenchUtilsServer
 		}
 	};
 
+	/* Test Team Interface */
+	public static void testGetAllTeams()
+	{
+		UtilsServer.getAllTeams(handlerResponseTeam);
+	}
+
+	public static void testGetTeam(int teamId)
+	{
+		UtilsServer.getTeam(handlerResponseTeam, teamId);
+	}
+
+	public static void testCreateTeam(String teamName)
+	{
+		UtilsServer.createNewTeam(handlerResponseTeam, teamName);
+	}
+
+	private static Handler handlerResponseTeam = new HandlerResponse<Team>()
+	{
+		@Override
+		public void onResponseArrayObj(ArrayList<Team> response)
+		{
+			String strResp = "Team response: ";
+			if (response != null && response.size() > 0)
+			{
+				for (Team t : response)
+				{
+					strResp += (t + "\n");
+				}
+			}
+			Toast.makeText(s_context, strResp, Toast.LENGTH_LONG).show();
+		}
+	};
+
+	public static void testDeleteTeam(int teamId)
+	{
+		UtilsServer.deleteTeam(new HandlerResponse<String>()
+		{
+			@Override
+			public void onResponseArrayObj(ArrayList<String> response)
+			{
+				String strResp = "Delete resp: ";
+				if (response != null && response.size() > 0)
+				{
+					for (String s : response)
+					{
+						strResp += (s + "\n");
+					}
+				}
+				Toast.makeText(s_context, strResp, Toast.LENGTH_LONG).show();
+			}
+		}, teamId);
+	}
 }

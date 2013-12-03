@@ -13,8 +13,10 @@ import vt.team9.customgames.Board;
 import android.os.Handler;
 import edu.vt.boardgames.debug.MyLogger;
 import edu.vt.boardgames.network.async.ControllerHttpRequestAndParse;
+import edu.vt.boardgames.network.response.ResponseParser;
 import edu.vt.boardgames.network.response.ResponseParserGame;
 import edu.vt.boardgames.network.response.ResponseParserString;
+import edu.vt.boardgames.network.response.ResponseParserTeam;
 import edu.vt.boardgames.network.response.ResponseParserUser;
 
 public class UtilsServer
@@ -26,8 +28,10 @@ public class UtilsServer
 
 	private static final String URL_SERVLET_EXTENSION_GAMES = "/games";
 	private static final String URL_SERVLET_EXTENSION_USERS = "/users";
+	private static final String URL_SERVLET_EXTENSION_TEAMS = "/teams";
 	private static final String URL_GAMES = URL_BASE + URL_SERVLET_EXTENSION_GAMES;
 	private static final String URL_USERS = URL_BASE + URL_SERVLET_EXTENSION_USERS;
+	private static final String URL_TEAMS = URL_BASE + URL_SERVLET_EXTENSION_TEAMS;
 
 	private static final String URL_PARAM_USER_ID = "user";
 	private static final String URL_PARAM_TURN = "turn";
@@ -39,6 +43,7 @@ public class UtilsServer
 	private static final String URL_PARAM_TIME_LIMIT = "timeLimit";
 	private static final String URL_PARAM_TURN_STRAT = "turnStrat";
 
+	/* Start Games interface */
 	public static void createNewGame(Handler handler, Game game)
 	{
 		createNewGame(handler, game.isPrivate(), game.isRanked(), game.getDifficulty(),
@@ -101,10 +106,7 @@ public class UtilsServer
 	 */
 	public static void getAllGamesFromServer(Handler handler)
 	{
-		ResponseParserGame parser = new ResponseParserGame();
-		HttpGet getRequest = new HttpGet(URL_GAMES);
-		new ControllerHttpRequestAndParse<Game>()
-				.fetchAndParseRequests(handler, parser, getRequest);
+		getGameUsingUrl(handler, URL_GAMES);
 	}
 
 	/*
@@ -112,8 +114,13 @@ public class UtilsServer
 	 */
 	public static void getGameFromServer(Handler handler, int gameId)
 	{
+		getGameUsingUrl(handler, URL_GAMES + "/" + gameId);
+	}
+
+	private static void getGameUsingUrl(Handler handler, String url)
+	{
 		ResponseParserGame gameParser = new ResponseParserGame();
-		HttpGet getRequest = new HttpGet(URL_GAMES + "/" + gameId);
+		HttpGet getRequest = new HttpGet(url);
 		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, gameParser,
 				getRequest);
 	}
@@ -126,14 +133,12 @@ public class UtilsServer
 	private static String formatUrlParam(String paramName, boolean val)
 	{
 		return paramName + "=" + String.valueOf(val);
-	}
+	}/* End Games interface */
 
+	/* Start Users interface */
 	public static void getAllUsers(Handler handler)
 	{
-		ResponseParserUser parser = new ResponseParserUser();
-		HttpGet getRequest = new HttpGet(URL_USERS);
-		new ControllerHttpRequestAndParse<User>()
-				.fetchAndParseRequests(handler, parser, getRequest);
+		getUserWithUrl(handler, URL_USERS);
 	}
 
 	public static void getUser(Handler handler, int usrId)
@@ -146,7 +151,7 @@ public class UtilsServer
 		getUserWithUrl(handler, URL_USERS + "/" + usr);
 	}
 
-	public static void getUserWithUrl(Handler handler, String url)
+	private static void getUserWithUrl(Handler handler, String url)
 	{
 		ResponseParserUser parser = new ResponseParserUser();
 		HttpGet getRequest = new HttpGet(url);
@@ -172,12 +177,48 @@ public class UtilsServer
 		deleteUserWithUrl(handler, URL_USERS + "/" + username);
 	}
 
-	public static void deleteUserWithUrl(Handler handler, String url)
+	private static void deleteUserWithUrl(Handler handler, String url)
 	{
 		ResponseParserString parser = new ResponseParserString();
 		HttpDelete getRequest = new HttpDelete(url);
 		new ControllerHttpRequestAndParse<String>().fetchAndParseRequests(handler, parser,
 				getRequest);
+	}/* End Users interface */
+
+	/* Start Teams interface */
+	public static void getAllTeams(Handler handler)
+	{
+		getTeamUsingUrl(handler, URL_TEAMS);
 	}
+
+	public static void getTeam(Handler handler, int teamId)
+	{
+		getTeamUsingUrl(handler, URL_TEAMS + "/" + teamId);
+	}
+
+	private static void getTeamUsingUrl(Handler handler, String url)
+	{
+		ResponseParserTeam parser = new ResponseParserTeam();
+		HttpGet getRequest = new HttpGet(url);
+		new ControllerHttpRequestAndParse<Team>()
+				.fetchAndParseRequests(handler, parser, getRequest);
+	}
+
+	public static void createNewTeam(Handler handler, String teamName)
+	{
+		ResponseParserTeam parser = new ResponseParserTeam();
+		HttpPost getRequest = new HttpPost(URL_TEAMS + "/" + teamName);
+		new ControllerHttpRequestAndParse<Team>()
+				.fetchAndParseRequests(handler, parser, getRequest);
+
+	}
+
+	public static void deleteTeam(Handler handler, int teamId)
+	{
+		ResponseParserString parser = new ResponseParserString();
+		HttpDelete getRequest = new HttpDelete(URL_TEAMS + "/" + teamId);
+		new ControllerHttpRequestAndParse<String>().fetchAndParseRequests(handler, parser,
+				getRequest);
+	}/* End Teams interface */
 
 }
