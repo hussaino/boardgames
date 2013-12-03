@@ -2,8 +2,7 @@ package vt.team9.customgames;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,6 +25,8 @@ public abstract class GameController extends Object
 	int oldX;
 	int oldY;
 	int thisTeam = -1;
+	boolean timerFlag = false;
+	int id_ = -1;
 
 	public GameController(PiecesAdapter adapter, Board board, Button submit)
 	{
@@ -56,20 +57,31 @@ public abstract class GameController extends Object
 			game_.setBoard(board_);
 			game_.setTurn(currentTeam);
 			UtilsServer.submitNewGameState(handler_, game_);
+			timerFlag = true;
+			timer();
 		}
 	}
+	public void timer(){
+		new CountDownTimer(30000, 1000) {
+		
+			public void onTick(long millisUntilFinished) {
+			    //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+			}
+			public void onFinish() {
+				UtilsServer.getGameFromServer(handler, id_);
+			    //mTextField.setText("done!");
+				if(timerFlag)
+					timer();
+			}
+		}.start();
+	}
 
-	private Handler handler_ = new Handler()
+	private HandlerResponse<String> handler_ = new HandlerResponse<String>()
 	{
-		@Override
-		public void handleMessage(Message msg)
-		{
-			super.handleMessage(msg);
-			Bundle msgBundle = msg.getData();
-			String putNewStateResponse = msgBundle.getString("response");
-			Toast.makeText(submit_.getContext(), "Move submitted. " + putNewStateResponse,
+		public void onResponseArrayObj(java.util.ArrayList<String> response) {
+			Toast.makeText(submit_.getContext(), "Move submitted. " + response.get(0),
 					Toast.LENGTH_SHORT).show();
-		}
+		};
 	};
 
 	abstract void itemClicked(int position) throws InstantiationException, IllegalAccessException;
@@ -77,6 +89,8 @@ public abstract class GameController extends Object
 	public void setGame(Game game)
 	{
 		game_ = game;
+		if(game.getTurn() != currentTeam)
+			timerFlag = false;
 		if (game.getTurn() != 0)
 			currentTeam = game.getTurn();
 
@@ -102,15 +116,17 @@ public abstract class GameController extends Object
 	{
 		board_ = board;
 	}
+
+	//@SuppressWarnings("unchecked")
 	public void retrieveGame(Bundle bundle){
-		int id = bundle.getInt("id");
-		String[] username = bundle.getStringArray("usernames");
-		if(id == -1){
+		id_ = bundle.getInt("id");
+		//ArrayList<String> usernames = (ArrayList<String>) bundle.getSerializable("usernames");
+		if(id_ == -1){
 			UtilsServer.createNewGame(handler, true, false, 5, 2, 1 ,-1 ,-1);
 			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Creating your game.", true, false);
 		}
 		else{
-			UtilsServer.getGameFromServer(handler, id);
+			UtilsServer.getGameFromServer(handler, id_);
 			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Retrieving your game.", true, false);
 		}
 	}
@@ -123,7 +139,6 @@ public abstract class GameController extends Object
 					if (response != null && response.size() > 0)
 					{
 						setGame(response.get(0));
-						//Log.d("Hussain", controller.game_.toString());
 					}
 				};
 			};

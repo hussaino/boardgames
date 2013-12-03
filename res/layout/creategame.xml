@@ -9,10 +9,10 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Opponent&apos;s username:" />
+        android:text="Opponents&apos; username: (separated by commas)" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/opponent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" >
@@ -21,7 +21,7 @@
     </EditText>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btn_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Creat Game" />

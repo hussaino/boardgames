@@ -47,7 +47,9 @@ public class ChessGame extends Fragment {
 				(Activity) this.getActivity());
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
-		controller.retrieveGame(savedInstanceState);
+		Bundle bundle = new Bundle();
+		bundle.putInt("id", 1);
+		controller.retrieveGame(bundle);
 		return rootView;
 	}
 }
