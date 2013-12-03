@@ -37,12 +37,13 @@ public class ChessController extends GameController
 		{
 			Piece piece = board.Pieces_[x][y];
 
-			if (piece.getName().contains("king"))
+			
+			if (piece.team_ == currentTeam && currentTeam == thisTeam)
 			{
-				checkCast();
-			}
-			if (piece.team_ == currentTeam)
-			{
+				if (piece.getName().contains("king"))
+				{
+					checkCast();
+				}
 				piece.getMoves(x, y, board);
 				oldX = x;
 				oldY = y;
@@ -181,7 +182,7 @@ public class ChessController extends GameController
 		{
 			break;
 		}
-
+		
 		}
 		adapter_.notifyDataSetChanged();
 

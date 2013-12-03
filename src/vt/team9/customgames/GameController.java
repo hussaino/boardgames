@@ -22,6 +22,7 @@ public abstract class GameController extends Object
 	int currentTeam = 1;
 	int oldX;
 	int oldY;
+	int thisTeam = -1;
 
 	public GameController(PiecesAdapter adapter, Board board, Button submit)
 	{
