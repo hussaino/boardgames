@@ -13,7 +13,6 @@ import vt.team9.customgames.Board;
 import android.os.Handler;
 import edu.vt.boardgames.debug.MyLogger;
 import edu.vt.boardgames.network.async.ControllerHttpRequestAndParse;
-import edu.vt.boardgames.network.response.ResponseParser;
 import edu.vt.boardgames.network.response.ResponseParserGame;
 import edu.vt.boardgames.network.response.ResponseParserString;
 import edu.vt.boardgames.network.response.ResponseParserTeam;
@@ -27,9 +26,12 @@ public class UtilsServer
 			: "http://ec2-54-234-246-223.compute-1.amazonaws.com";
 
 	private static final String URL_SERVLET_EXTENSION_GAMES = "/games";
+	private static final String URL_SERVLET_EXTENSION_JOIN = URL_SERVLET_EXTENSION_GAMES + "/teams";
 	private static final String URL_SERVLET_EXTENSION_USERS = "/users";
 	private static final String URL_SERVLET_EXTENSION_TEAMS = "/teams";
+
 	private static final String URL_GAMES = URL_BASE + URL_SERVLET_EXTENSION_GAMES;
+	private static final String URL_GAMES_JOIN = URL_BASE + URL_SERVLET_EXTENSION_JOIN;
 	private static final String URL_USERS = URL_BASE + URL_SERVLET_EXTENSION_USERS;
 	private static final String URL_TEAMS = URL_BASE + URL_SERVLET_EXTENSION_TEAMS;
 
@@ -42,18 +44,19 @@ public class UtilsServer
 	private static final String URL_PARAM_PLAYERS_PER_TEAM = "playersPerTeam";
 	private static final String URL_PARAM_TIME_LIMIT = "timeLimit";
 	private static final String URL_PARAM_TURN_STRAT = "turnStrat";
+	private static final String URL_PARAM_GAMES_OPEN = "open";
 
 	/* Start Games interface */
 	public static void createNewGame(Handler handler, Game game)
 	{
 		createNewGame(handler, game.isPrivate(), game.isRanked(), game.getDifficulty(),
 				game.getNumTeams(), game.getNumPlayersPerTeam(), game.getTimeLimitPerMove(),
-				game.getTurnStrategy());
+				game.getTurnStrategy(), game.getPlayers().get(0));
 	}
 
 	public static void createNewGame(Handler handler, boolean isPrivate, boolean isRanked,
 			int difficulty, int numTeams, int numPlayersPerTeam, int timeLimitPerMove,
-			int turnStrategy)
+			int turnStrategy, User user)
 	{
 		String urlParams = "?" + formatUrlParam(URL_PARAM_PRIVATE, isPrivate) + "&"
 				+ formatUrlParam(URL_PARAM_RANKED, isRanked) + "&"
@@ -61,10 +64,12 @@ public class UtilsServer
 				+ formatUrlParam(URL_PARAM_TEAMS, numTeams) + "&"
 				+ formatUrlParam(URL_PARAM_PLAYERS_PER_TEAM, numPlayersPerTeam) + "&"
 				+ formatUrlParam(URL_PARAM_TIME_LIMIT, timeLimitPerMove) + "&"
-				+ formatUrlParam(URL_PARAM_TURN_STRAT, turnStrategy);
+				+ formatUrlParam(URL_PARAM_TURN_STRAT, turnStrategy) + "&"
+				+ formatUrlParam(URL_PARAM_USER_ID, user.getId());
 
 		ResponseParserGame parser = new ResponseParserGame();
 		HttpPost postNewGameRequest = new HttpPost(URL_GAMES + urlParams);
+
 		// Boards gotten from server will be returned to Handler
 		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, parser,
 				postNewGameRequest);
@@ -159,7 +164,7 @@ public class UtilsServer
 				.fetchAndParseRequests(handler, parser, getRequest);
 	}
 
-	public static void createNewUser(Handler handler, String username)
+	public static void createOrLoginUser(Handler handler, String username)
 	{
 		ResponseParserUser parser = new ResponseParserUser();
 		HttpPost getRequest = new HttpPost(URL_USERS + "/" + username);
@@ -221,4 +226,20 @@ public class UtilsServer
 				getRequest);
 	}/* End Teams interface */
 
+	public static void joinGame(Handler handler, User user, Game game)
+	{
+		ResponseParserGame parser = new ResponseParserGame();
+		HttpPost postNewGameRequest = new HttpPost(URL_GAMES_JOIN);
+		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, parser,
+				postNewGameRequest);
+	}
+
+	public static void getAllOpenGames(Handler handler)
+	{
+		ResponseParserGame parser = new ResponseParserGame();
+		HttpGet postNewGameRequest = new HttpGet(URL_GAMES + "?"
+				+ formatUrlParam(URL_PARAM_GAMES_OPEN, true));
+		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, parser,
+				postNewGameRequest);
+	}
 }

@@ -1,5 +1,7 @@
 package edu.vt.boardgames.network;
 
+import java.util.ArrayList;
+
 import vt.team9.customgames.Board;
 
 public class Game
@@ -14,6 +16,7 @@ public class Game
 	private int m_numPlayersPerTeam;
 	private int m_timeLimitPerMove;
 	private int m_turnStrategy;
+	private ArrayList<User> m_players;
 
 	public Game(Boolean isPrivate, Boolean isRanked, Integer difficulty, Integer numTeams,
 			Integer numPlayersPerTeam, Integer timeLimitPerMove, Integer turnStrategy)
@@ -25,6 +28,7 @@ public class Game
 		m_numPlayersPerTeam = numPlayersPerTeam != null ? numPlayersPerTeam : -1;
 		m_timeLimitPerMove = timeLimitPerMove != null ? timeLimitPerMove : -1;
 		m_turnStrategy = turnStrategy != null ? turnStrategy : -1;
+		m_players = new ArrayList<User>();
 	}
 
 	public Board getBoard()
@@ -127,12 +131,44 @@ public class Game
 		this.m_turnStrategy = m_turnStrategy;
 	}
 
+	public ArrayList<User> getPlayers()
+	{
+		return m_players;
+	}
+
+	public void setPlayers(ArrayList<User> players)
+	{
+		this.m_players = players;
+	}
+
+	public void addPlayers(User... players)
+	{
+		for (int i = 0; i < players.length; i++)
+		{
+			this.m_players.add(players[i]);
+		}
+	}
+
+	public void clearAllPlayers()
+	{
+		this.m_players.clear();
+	}
+
 	public String toString()
 	{
 		return "Game{ " + "id: " + m_id + "\n gameState: " + m_gameState + "\n turn: " + m_turn
 				+ "\n isPrivate: " + m_isPrivate + "\n isRanked: " + m_isRanked + "\n difficulty: "
 				+ m_difficulty + "\n numTeams: " + m_numTeams + "\n numPlayersPerTeam: "
 				+ m_numPlayersPerTeam + "\n timeLimitPerMove: " + m_timeLimitPerMove
-				+ "\n turnStrategy: " + m_turnStrategy + " }\n";
+				+ "\n turnStrategy: " + m_turnStrategy + "\nplayers: " + getPlayersString()
+				+ " }\n";
+	}
+
+	private String getPlayersString()
+	{
+		String players = "{";
+		for (User usr : m_players)
+			players += usr + ", ";
+		return players + "}";
 	}
 }
