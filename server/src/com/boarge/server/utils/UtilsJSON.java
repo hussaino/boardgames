@@ -1,5 +1,6 @@
 package com.boarge.server.utils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,10 +17,11 @@ public class UtilsJSON
 	private static final String JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM = "k_numP";
 	private static final String JSON_KEY_GAME_TIME_LIMIT = "k_time";
 	private static final String JSON_KEY_GAME_TURN_STRATEGY = "k_trnStr";
+	private static final String JSON_KEY_GAME_USERS = "k_usrs";
 
 	public static JSONObject getJSON(Integer id, String gameState, Integer turn, Boolean isPrivate,
 			Boolean isRanked, Integer difficulty, Integer numTeams, Integer numPlayersPerTeam,
-			Integer timeLimitPerMove, Integer turnStrategy) throws JSONException
+			Integer timeLimitPerMove, Integer turnStrategy, String usersArray) throws JSONException
 	{
 		JSONObject gameJSON = new JSONObject();
 		gameJSON.put(JSON_KEY_GAME_ID, id);
@@ -32,6 +34,7 @@ public class UtilsJSON
 		gameJSON.put(JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM, numPlayersPerTeam);
 		gameJSON.put(JSON_KEY_GAME_TIME_LIMIT, timeLimitPerMove);
 		gameJSON.put(JSON_KEY_GAME_TURN_STRATEGY, turnStrategy);
+		gameJSON.put(JSON_KEY_GAME_USERS, usersArray);
 		return gameJSON;
 	}/* ** end Game class JSON interface ** */
 
@@ -58,4 +61,18 @@ public class UtilsJSON
 		gameJSON.put(JSON_KEY_TEAM_NAME, teamName);
 		return gameJSON;
 	}/* ** End Team class JSON interface ** */
+
+	/**
+	 * 
+	 * @param str
+	 *            - to try converting to json
+	 * @return - true if string is valid json object and it is not empty. Will
+	 *         throw an exception if not valid json.
+	 * @throws JSONException
+	 */
+	public static boolean isValidJSON(String str) throws JSONException
+	{
+		JSONObject jsonMapEntities = new JSONObject(str);
+		return jsonMapEntities.length() > 0;
+	}
 }

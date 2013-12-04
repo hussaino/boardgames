@@ -3,6 +3,7 @@ package com.boarge.server.utils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class UtilsDB
@@ -34,5 +35,29 @@ public class UtilsDB
 	public static String getSqlVal(String val)
 	{
 		return "'" + val + "'";
+	}
+
+	public static String getResultSetTable(ResultSet rs, String delimiter) throws SQLException
+	{
+		String table = "";
+
+		ResultSetMetaData meta = rs.getMetaData();
+		for (int i = 0; i < meta.getColumnCount(); i++)
+		{
+			table += meta.getColumnLabel(i + 1) + delimiter;
+		}
+
+		table += "\n";
+
+		while (rs.next())
+		{
+			for (int i = 0; i < rs.getMetaData().getColumnCount(); i++)
+			{
+				table += rs.getObject(i + 1).toString() + delimiter;
+			}
+			table += "\n";
+		}
+
+		return table;
 	}
 }

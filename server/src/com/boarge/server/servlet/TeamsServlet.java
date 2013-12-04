@@ -18,7 +18,7 @@ public class TeamsServlet extends HttpServlet
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1439105270668087974L;
+	private static final long serialVersionUID = 6096833452014849075L;
 
 	/**
 	 * Used to access the games table.

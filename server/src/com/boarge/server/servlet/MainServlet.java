@@ -14,6 +14,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.boarge.server.database.GamesTable;
 import com.boarge.server.database.TeamsTable;
+import com.boarge.server.database.UsersGamesTable;
 import com.boarge.server.database.UsersTable;
 
 public class MainServlet extends HttpServlet
@@ -37,9 +38,10 @@ public class MainServlet extends HttpServlet
 		Class.forName("org.sqlite.JDBC");
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_NAME + ".db");
 		System.out.println("Opened database");
-		GamesTable.init(conn);
 		UsersTable.init(conn);
 		TeamsTable.init(conn);
+		UsersGamesTable.init(conn);
+		GamesTable.init(conn);
 
 		server.start();
 		server.join();

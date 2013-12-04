@@ -18,7 +18,7 @@ public class TeamsTable
 
 	private static final String TABLE_Name = "Teams";
 	private static final String COL_Id = "id";
-	private static final String COL_TeamName = "name";
+	private static final String COL_TeamName = "Name";
 
 	public static void init(Connection conn)
 	{
@@ -26,7 +26,7 @@ public class TeamsTable
 		try
 		{
 			createTeamsDBTable();
-			// createTeam("Ramrod");
+			createTeam("Ramrod");
 			// createTeam("Oaf Squad");
 			// createTeam("City Shlickers");
 		}
@@ -34,10 +34,10 @@ public class TeamsTable
 		{
 			e.printStackTrace();
 		}
-		// catch (JSONException e)
-		// {
-		// e.printStackTrace();
-		// }
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 
 	}
 

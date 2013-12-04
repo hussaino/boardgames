@@ -17,8 +17,8 @@ public class UsersTable
 	private static Connection s_connection;
 
 	private static final String TABLE_Name = "Users";
-	private static final String COL_Id = "id";
-	private static final String COL_UserName = "name";
+	public static final String COL_Id = "UserId";
+	private static final String COL_UserName = "Name";
 
 	public static void init(Connection conn)
 	{
@@ -26,9 +26,10 @@ public class UsersTable
 		try
 		{
 			createUsersDBTable();
-			createUser("jboblitt");
-			createUser("arhea");
-			createUser("hussain");
+			createOrLoginUser("jboblitt");
+			createOrLoginUser("arhea");
+			createOrLoginUser("hussain");
+			createOrLoginUser("whasup98");
 		}
 		catch (SQLException e)
 		{
@@ -50,9 +51,10 @@ public class UsersTable
 		stmt.executeUpdate();
 	}
 
-	public static String createUser(String userName) throws SQLException, JSONException
+	public static String createOrLoginUser(String userName) throws SQLException, JSONException
 	{
-		if (getUser(userName) == null)
+		String user = getUser(userName);
+		if (user == null)
 		{
 			String sql = "INSERT INTO " + TABLE_Name + " (" + COL_UserName + ") VALUES ("
 					+ UtilsDB.getSqlVal(userName) + ");";
@@ -67,7 +69,10 @@ public class UsersTable
 			arrayWrapper.put(userJSON);
 			return arrayWrapper.toString();
 		}
-		return null;
+		else
+		{
+			return user;
+		}
 	}
 
 	public static void removeUser(int userId) throws SQLException
@@ -108,15 +113,8 @@ public class UsersTable
 			JSONException
 	{
 		ResultSet rs = stmt.executeQuery();
-		String gameJSON = null;
-		if (rs.next())
-		{
-			JSONArray array = new JSONArray();
-			array.put(getUserFromJSONResultSet(rs));
-			gameJSON = array.toString();
-		}
+		String gameJSON = getArrayUsersJSONResultSet(rs);
 		stmt.close();
-
 		return gameJSON;
 	}
 
@@ -130,24 +128,44 @@ public class UsersTable
 		return games;
 	}
 
+	public static String getUsersInGame(int gameId) throws SQLException, JSONException
+	{
+		String sql = "SELECT " + TABLE_Name + ".* FROM " + UsersGamesTable.TABLE_Name + " JOIN "
+				+ TABLE_Name + " USING " + "(" + COL_Id + ") WHERE " + UsersGamesTable.TABLE_Name
+				+ "." + UsersGamesTable.COL_GameId + "=?;";
+
+		PreparedStatement stmt = s_connection.prepareStatement(sql);
+		stmt.setInt(1, gameId);
+		ResultSet rs = stmt.executeQuery();
+		String games = getArrayUsersJSONResultSet(rs);
+		rs.close();
+		stmt.close();
+		return games;
+	}
+
 	private static String getArrayUsersJSONResultSet(ResultSet resultingGames)
 			throws JSONException, SQLException
 	{
 		JSONArray gamesArrayJSON = new JSONArray();
 		while (resultingGames.next())
 		{
-			gamesArrayJSON.put(getUserFromJSONResultSet(resultingGames));
+			int id = resultingGames.getInt(COL_Id);
+			String userName = resultingGames.getString(COL_UserName);
+			gamesArrayJSON.put(UtilsJSON.getJSON(id, userName));
 		}
 		if (gamesArrayJSON.length() == 0)
 			return null;
 		return gamesArrayJSON.toString();
 	}
 
-	private static JSONObject getUserFromJSONResultSet(ResultSet resultGame) throws JSONException,
-			SQLException
+	public static int getNumUsersInGame(int gameId) throws JSONException, SQLException
 	{
-		int id = resultGame.getInt(COL_Id);
-		String userName = resultGame.getString(COL_UserName);
-		return UtilsJSON.getJSON(id, userName);
+		String strUsersInGame = getUsersInGame(gameId);
+		return strUsersInGame != null ? new JSONArray(strUsersInGame).length() : 0;
+	}
+
+	public static boolean userExists(int userId) throws SQLException, JSONException
+	{
+		return getUser(userId) != null;
 	}
 }

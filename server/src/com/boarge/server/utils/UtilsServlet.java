@@ -1,5 +1,10 @@
 package com.boarge.server.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
 public class UtilsServlet
@@ -34,5 +39,19 @@ public class UtilsServlet
 	{
 		String pathInfo = req.getPathInfo();
 		return pathInfo == null ? "" : pathInfo.toString().replaceAll("/", "");
+	}
+
+	public static String getEntityFromInput(ServletInputStream inputStream) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+		StringBuilder stringBoard = new StringBuilder();
+		String read;
+
+		while ((read = br.readLine()) != null)
+		{
+			stringBoard.append(read);
+		}
+
+		return stringBoard.toString();
 	}
 }
