@@ -20,7 +20,7 @@ import edu.vt.boardgames.network.response.ResponseParserUser;
 
 public class UtilsServer
 {
-	private static final boolean IS_LOCAL_SERVER = true;
+	private static final boolean IS_LOCAL_SERVER = false;
 
 	private static final String URL_BASE = IS_LOCAL_SERVER ? "http://10.0.2.2"
 			: "http://ec2-54-234-246-223.compute-1.amazonaws.com";

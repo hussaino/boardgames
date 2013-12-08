@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical" >
+
+    <!-- Facebook Login Button -->
+
+    <Button
+        android:id="@+id/btn_fblogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dip"
+        android:src="@drawable/btn_login"
+        
+        android:background="@drawable/btn_login"
+         />
+
+    <!-- Facebook Post to Wall Button -->
+
+    <Button
+        android:id="@+id/btn_fb_post_to_wall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dip"
+        android:src="@drawable/btn_share"
+        android:background="@drawable/btn_share"
+         android:visibility="gone" />
+    <!-- Facebook Logout Button -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="1" >
+
+        <Button
+            android:id="@+id/btn_get_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dip"
+            android:layout_row="0"
+            android:text="Get Profile Data" 
+            android:visibility="gone"
+           />
+
+        <EditText
+            android:id="@+id/text_name_profile"
+			android:layout_width="wrap_content"            
+			android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="right|top"
+            android:layout_row="1"
+            android:editable="false"
+            android:ems="10"
+            android:visibility="gone"
+            />
+
+        <EditText
+            android:id="@+id/Name_Text"
+			android:layout_width="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_row="1"
+            android:editable="false"
+            android:ems="10"
+            android:text="Name:"
+            android:visibility="gone" 
+            />
+
+        <EditText
+            android:id="@+id/Name_Email"
+			android:layout_width="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left|center_vertical"
+            android:layout_row="1"
+            android:editable="false"
+            android:ems="10"
+            android:text="Email:"
+                        android:visibility="gone" 
+            
+             />
+
+        <EditText
+            android:id="@+id/text_email_profile"
+            android:layout_width="291dp"
+            android:layout_column="0"
+            android:layout_gravity="right|center_vertical"
+            android:layout_row="1"
+            android:editable="false"
+            android:ems="11"
+                        android:visibility="gone" 
+            
+             />
+
+
+        <EditText
+            android:id="@+id/Name_User"
+            android:layout_width="116dp"
+            android:layout_column="0"
+            android:layout_gravity="left|bottom"
+            android:layout_row="1"
+            android:ems="10"
+ 			android:editable="false"
+ 	        android:text="UserName:" 
+            android:visibility="gone" 
+            
+            />
+
+        <EditText
+            android:id="@+id/text_user_profile"
+            android:layout_width="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="right|bottom"
+            android:layout_row="1"
+            android:editable="false"
+            android:ems="10" />
+
+    </GridLayout>
+
+</LinearLayout>

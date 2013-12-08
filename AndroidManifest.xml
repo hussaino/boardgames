@@ -24,18 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="vt.team9.customgames.ChessActivity"
-            android:label="Chess"
-            android:screenOrientation="portrait"
-            android:parentActivityName="edu.vt.boardgames.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ChessActivity" />
-            
-            </activity>
-            
-        
     </application>
 
 </manifest>

@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class OtherGames extends Fragment {
+public class NewGame extends Fragment {
 	
-	public OtherGames(){}
+	public NewGame(){}
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

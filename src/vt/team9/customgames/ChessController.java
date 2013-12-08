@@ -19,7 +19,6 @@ public class ChessController extends GameController
 	public ChessController(PiecesAdapter adapter, Board board, Button submit, Activity activity)
 	{
 		super(adapter, board, submit);
-		// TODO Auto-generated constructor stub
 		checkmate = false;
 		check = false;
 		main = activity;
@@ -189,7 +188,6 @@ public class ChessController extends GameController
 
 	private void checkCast()
 	{
-		// TODO Auto-generated method stub
 		ChessBoard board = (ChessBoard) this.getBoard();
 		boolean flag1 = true;
 		boolean flag2 = true;
@@ -341,7 +339,6 @@ public class ChessController extends GameController
 	private void checkPromotion()
 	{
 		final ChessBoard board = (ChessBoard) this.getBoard();
-		// TODO Auto-generated method stub
 		for (int i = 0; i < 8; i++)
 		{
 			Piece pawn;
@@ -438,7 +435,6 @@ public class ChessController extends GameController
 	@Override
 	public void submitClick()
 	{
-		// TODO Auto-generated method stub
 		super.submitClick();
 
 	}
@@ -463,7 +459,6 @@ public class ChessController extends GameController
 				Piece temp = board.Pieces_[i][j];
 				if (temp.team_ == currentTeam)
 				{
-					int tempcoord[] = new int[2];
 					board.clearAllHighlights();
 					temp.getMoves(i, j, board);
 					if (king.highlight_)
@@ -503,7 +498,6 @@ public class ChessController extends GameController
 				Piece temp = board.Pieces_[i][j];
 				if (temp.team_ == currentTeam)
 				{
-					int tempcoord[] = new int[2];
 					board.clearAllHighlights();
 					temp.getMoves(i, j, board);
 					if (temp.getClass() == Pawn.class)
@@ -554,7 +548,6 @@ public class ChessController extends GameController
 				Piece temp = board.Pieces_[i][j];
 				if (temp.team_ == -currentTeam)
 				{
-					int tempcoord[] = new int[2];
 					board.clearAllHighlights();
 					temp.getMoves(i, j, board);
 					for (int m = 0; m < board.width_; m++)

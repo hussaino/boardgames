@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opponents&apos; usernames: (separated by commas)" />
+    
+    <EditText
+        android:id="@+id/opponent"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif"
+        android:hint="user1,user2,user3"
+        android:inputType="textUri" />
+
+</LinearLayout>

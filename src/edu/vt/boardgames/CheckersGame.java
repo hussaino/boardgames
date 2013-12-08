@@ -2,7 +2,6 @@ package edu.vt.boardgames;
 
 import vt.team9.customgames.CheckerBoard;
 import vt.team9.customgames.CheckersController;
-import vt.team9.customgames.ChessActivity;
 import vt.team9.customgames.ChessBoard;
 import vt.team9.customgames.ChessController;
 import vt.team9.customgames.PiecesAdapter;
