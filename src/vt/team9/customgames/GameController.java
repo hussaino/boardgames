@@ -32,10 +32,13 @@ public abstract class GameController extends Object
 	int currentTeam = 1;
 	int oldX;
 	int oldY;
+<<<<<<< HEAD
 	int thisTeam = 1;
 	boolean timerFlag = false;
 	CountDownTimer countdown;
 	int id_ = -1;
+=======
+>>>>>>> justin-development
 
 	public GameController(PiecesAdapter adapter, Board board, Button submit)
 	{

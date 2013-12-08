@@ -18,7 +18,7 @@ public class UsersServlet extends HttpServlet
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1439105270668087974L;
+	private static final long serialVersionUID = -6977238587268777814L;
 
 	/**
 	 * Used to access the games table.
@@ -34,6 +34,7 @@ public class UsersServlet extends HttpServlet
 		{
 			Integer userID = UtilsServlet.getIntegerUrlPathInfo(req);
 			String userName = UtilsServlet.getStringUrlPathInfo(req);
+			String gameId = req.getParameter("game");
 
 			if (userID >= 0)
 			{
@@ -47,7 +48,14 @@ public class UsersServlet extends HttpServlet
 			}
 			else
 			{
-				response = UsersTable.getAllUsers();
+				if (gameId == null)
+				{
+					response = UsersTable.getAllUsers();
+				}
+				else
+				{
+					response = UsersTable.getUsersInGame(Integer.valueOf(gameId));
+				}
 			}
 		}
 		catch (SQLException | JSONException e)
@@ -87,11 +95,10 @@ public class UsersServlet extends HttpServlet
 			// Username should already be valid since signing in w/ g+.
 			String userName = UtilsServlet.getStringUrlPathInfo(req);
 
-			// If username was actually specified in url, create user.
+			// If username was actually specified in url, create/login user.
 			if (userName.length() > 0)
 			{
-				// Get all open games that fit game criteria
-				response = UsersTable.createUser(userName);
+				response = UsersTable.createOrLoginUser(userName);
 			}
 		}
 		catch (SQLException e)

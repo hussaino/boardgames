@@ -29,6 +29,17 @@ javaee/web-app_3_0.xsd"
 		<url-pattern>/games/*</url-pattern>
 	</servlet-mapping>
 	
+	<!-- Games Servlet Join -->
+	<servlet>
+		<servlet-name>GamesJoin</servlet-name>
+		<servlet-class>com.boarge.server.servlet.GamesServletJoin
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GamesJoin</servlet-name>
+		<url-pattern>/games/join/*</url-pattern>
+	</servlet-mapping>
+	
 	
 	<!-- Users Servlet -->
 	<servlet>
@@ -50,5 +61,16 @@ javaee/web-app_3_0.xsd"
 	<servlet-mapping>
 		<servlet-name>Teams</servlet-name>
 		<url-pattern>/teams/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- UsersGames Servlet -->
+	<servlet>
+		<servlet-name>UsersGames</servlet-name>
+		<servlet-class>com.boarge.server.servlet.UsersGamesServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UsersGames</servlet-name>
+		<url-pattern>/usersgames/*</url-pattern>
 	</servlet-mapping>
 </web-app>

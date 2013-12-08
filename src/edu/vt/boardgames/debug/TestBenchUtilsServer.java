@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import vt.team9.customgames.ChessBoard;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.widget.Toast;
 import edu.vt.boardgames.network.Game;
 import edu.vt.boardgames.network.Team;
@@ -17,7 +15,6 @@ import edu.vt.boardgames.network.response.HandlerResponse;
 public class TestBenchUtilsServer
 {
 	private static Context s_context;
-	private static String KEY_RESPONSE = "response";
 
 	public static void tbInit(final Context context)
 	{
@@ -26,20 +23,16 @@ public class TestBenchUtilsServer
 
 	public static void testPostNewGame()
 	{
-		UtilsServer.createNewGame(new Handler()
+		User userCreatingGame = new User("doesn't matter");
+		userCreatingGame.setId(1);
+		UtilsServer.createNewGame(new HandlerResponse<Game>()
 		{
 			@Override
-			public void handleMessage(Message msg)
+			public void onResponseArrayObj(ArrayList<Game> response)
 			{
-				super.handleMessage(msg);
-
-				Bundle msgBundle = msg.getData();
-
-				ArrayList<Game> getResponseGames = (ArrayList<Game>) msgBundle
-						.getSerializable(KEY_RESPONSE);
-				if (getResponseGames != null)
+				if (response != null)
 				{
-					Game game = getResponseGames.get(0);
+					Game game = response.get(0);
 					ChessBoard board = new ChessBoard(8, 8);
 					board.initBoard();
 					game.setBoard(board);
@@ -52,84 +45,55 @@ public class TestBenchUtilsServer
 							.show();
 				}
 			}
-		}, true, false, 5, 2, 1, -1, -1);
+		}, true, false, 5, 2, 1, -1, -1, userCreatingGame);
 	}
 
-	public static void testGetAllBoards()
+	public static void testGetAllGames()
 	{
-		UtilsServer.getAllGamesFromServer(new Handler()
-		{
-			@Override
-			public void handleMessage(Message msg)
-			{
-				super.handleMessage(msg);
-
-				Bundle msgBundle = msg.getData();
-				ArrayList<Game> getResponseGames = (ArrayList<Game>) msgBundle
-						.getSerializable(KEY_RESPONSE);
-				if (getResponseGames != null)
-				{
-					String toast = "";
-					for (Game game : getResponseGames)
-					{
-						toast += game.toString();
-					}
-					Toast.makeText(s_context, "Post response: " + toast, Toast.LENGTH_LONG).show();
-				}
-				else
-				{
-					Toast.makeText(s_context, "Received null post response", Toast.LENGTH_LONG)
-							.show();
-				}
-
-			}
-		});
+		UtilsServer.getAllGamesFromServer(handlerPrintGames);
 	}
 
-	public static void testGetBoard()
+	public static void testGetGame()
 	{
-		UtilsServer.getGameFromServer(new Handler()
-		{
-			@Override
-			public void handleMessage(Message msg)
-			{
-				super.handleMessage(msg);
-
-				Bundle msgBundle = msg.getData();
-				ArrayList<Game> getResponseGames = (ArrayList<Game>) msgBundle
-						.getSerializable(KEY_RESPONSE);
-				if (getResponseGames != null)
-				{
-					Game gameFetched = getResponseGames.get(0);
-					Toast.makeText(s_context, "Post response: " + gameFetched, Toast.LENGTH_LONG)
-							.show();
-				}
-				else
-				{
-					Toast.makeText(s_context, "Received null post response", Toast.LENGTH_LONG)
-							.show();
-				}
-
-			}
-		}, 1);
+		UtilsServer.getGameFromServer(handlerPrintGames, 1);
 	}
+
+	public static void testGetAllOpenGames()
+	{
+		UtilsServer.getAllOpenGames(handlerPrintGames);
+	}
+
+	private static HandlerResponse<Game> handlerPrintGames = new HandlerResponse<Game>()
+	{
+		@Override
+		public void onResponseArrayObj(ArrayList<Game> response)
+		{
+			if (response != null)
+			{
+				String toast = "";
+				for (Game game : response)
+				{
+					toast += game.toString();
+				}
+				Toast.makeText(s_context, "Post response: " + toast, Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Toast.makeText(s_context, "Received null post response", Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 
 	public static void testSubmitNewGameState(Game game)
 	{
-		UtilsServer.submitNewGameState(new Handler()
+		UtilsServer.submitNewGameState(new HandlerResponse<String>()
 		{
 			@Override
-			public void handleMessage(Message msg)
+			public void onResponseArrayObj(ArrayList<String> response)
 			{
-				super.handleMessage(msg);
-
-				Bundle msgBundle = msg.getData();
-				ArrayList<String> putNewStateResponse = (ArrayList<String>) msgBundle
-						.getSerializable(KEY_RESPONSE);
-				if (putNewStateResponse != null)
+				if (response != null)
 				{
-					Toast.makeText(s_context,
-							"Put new state response: " + putNewStateResponse.get(0),
+					Toast.makeText(s_context, "Put new state response: " + response.get(0),
 							Toast.LENGTH_LONG).show();
 
 				}
@@ -144,37 +108,32 @@ public class TestBenchUtilsServer
 
 	public static void testGetAllUsers()
 	{
-		UtilsServer.getAllUsers(handlerResponseUser);
+		UtilsServer.getAllUsers(handlerResponsePrintUser);
 	}
 
 	public static void testGetUser(String usr)
 	{
-		UtilsServer.getUser(handlerResponseUser, usr);
+		UtilsServer.getUser(handlerResponsePrintUser, usr);
 	}
 
 	public static void testGetUser(int usrId)
 	{
-		UtilsServer.getUser(handlerResponseUser, usrId);
+		UtilsServer.getUser(handlerResponsePrintUser, usrId);
 	}
 
 	public static void testCreateUser(String username)
 	{
-		UtilsServer.createNewUser(handlerResponseUser, username);
+		UtilsServer.createOrLoginUser(handlerResponsePrintUser, username);
 	}
 
-	private static Handler handlerResponseUser = new Handler()
+	private static HandlerResponse<User> handlerResponsePrintUser = new HandlerResponse<User>()
 	{
-		@Override
-		public void handleMessage(Message msg)
+		public void onResponseArrayObj(java.util.ArrayList<User> response)
 		{
-			super.handleMessage(msg);
-
-			Bundle msgBundle = msg.getData();
-			ArrayList<User> allUsers = (ArrayList<User>) msgBundle.getSerializable(KEY_RESPONSE);
-			if (allUsers != null)
+			if (response != null)
 			{
 				String toast = "";
-				for (User usr : allUsers)
+				for (User usr : response)
 				{
 					toast += usr + "\n";
 				}
@@ -198,20 +157,14 @@ public class TestBenchUtilsServer
 		UtilsServer.deleteUser(handlerResponseUserDelete, username);
 	}
 
-	private static Handler handlerResponseUserDelete = new Handler()
+	private static HandlerResponse<String> handlerResponseUserDelete = new HandlerResponse<String>()
 	{
-		@Override
-		public void handleMessage(Message msg)
+		public void onResponseArrayObj(java.util.ArrayList<String> response)
 		{
-			super.handleMessage(msg);
-
-			Bundle msgBundle = msg.getData();
-			ArrayList<String> putNewStateResponse = (ArrayList<String>) msgBundle
-					.getSerializable(KEY_RESPONSE);
-			if (putNewStateResponse != null)
+			if (response != null)
 			{
-				Toast.makeText(s_context, "Delete response: " + putNewStateResponse.get(0),
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(s_context, "Delete response: " + response.get(0), Toast.LENGTH_LONG)
+						.show();
 			}
 			else
 			{
@@ -272,4 +225,31 @@ public class TestBenchUtilsServer
 			}
 		}, teamId);
 	}
+
+	public static void testJoinGame(User usr, Game game)
+	{
+		UtilsServer.joinGame(new HandlerResponse<Game>()
+		{
+			@Override
+			public void onResponseArrayObj(ArrayList<Game> response)
+			{
+				if (response != null)
+				{
+					String toast = "";
+					for (Game game : response)
+					{
+						toast += game.toString();
+					}
+					Toast.makeText(s_context, "Post response: " + toast, Toast.LENGTH_LONG).show();
+				}
+				else
+				{
+					Toast.makeText(s_context, "Received null post response", Toast.LENGTH_LONG)
+							.show();
+				}
+			}
+
+		}, usr, game);
+	}
+
 }

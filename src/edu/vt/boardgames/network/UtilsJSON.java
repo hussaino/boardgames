@@ -1,11 +1,12 @@
 package edu.vt.boardgames.network;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import vt.team9.customgames.Board;
-import vt.team9.customgames.EmptySpace;
 import vt.team9.customgames.Piece;
 
 public class UtilsJSON
@@ -21,6 +22,7 @@ public class UtilsJSON
 	private static final String JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM = "k_numP";
 	private static final String JSON_KEY_GAME_TIME_LIMIT = "k_time";
 	private static final String JSON_KEY_GAME_TURN_STRATEGY = "k_trnStr";
+	private static final String JSON_KEY_GAME_USERS = "k_usrs";
 
 	public static JSONObject getJSON(Game game) throws JSONException
 	{
@@ -35,6 +37,14 @@ public class UtilsJSON
 		gameJSON.put(JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM, game.getNumPlayersPerTeam());
 		gameJSON.put(JSON_KEY_GAME_TIME_LIMIT, game.getTimeLimitPerMove());
 		gameJSON.put(JSON_KEY_GAME_TURN_STRATEGY, game.getTurnStrategy());
+
+		// Add list of users
+		JSONArray arrayUsersInGame = new JSONArray();
+		for (User usr : game.getPlayers())
+		{
+			arrayUsersInGame.put(UtilsJSON.getJSON(usr));
+		}
+		gameJSON.put(JSON_KEY_GAME_USERS, arrayUsersInGame);
 		return gameJSON;
 	}
 
@@ -47,8 +57,18 @@ public class UtilsJSON
 		int numPlayersPerTeam = gameJSON.getInt(JSON_KEY_GAME_NUM_PLAYERS_PER_TEAM);
 		int timeLimitPerMove = gameJSON.getInt(JSON_KEY_GAME_TIME_LIMIT);
 		int turnStrategy = gameJSON.getInt(JSON_KEY_GAME_TURN_STRATEGY);
+		ArrayList<User> players = new ArrayList<User>();
+		JSONArray arrayUsersInGame = new JSONArray(gameJSON.getString(JSON_KEY_GAME_USERS));
+		for (int i = 0; i < arrayUsersInGame.length(); i++)
+		{
+			User usr = UtilsJSON.getUserFromJSON(arrayUsersInGame.getJSONObject(i));
+			players.add(usr);
+		}
+
 		Game game = new Game(isPrivate, isRanked, difficulty, numTeams, numPlayersPerTeam,
 				timeLimitPerMove, turnStrategy);
+
+		game.setPlayers(players);
 
 		// The following parts of a game object may or may not be mapped to
 		// already.
