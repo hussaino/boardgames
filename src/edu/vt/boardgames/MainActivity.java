@@ -2,10 +2,15 @@ package edu.vt.boardgames;
 
 import java.util.ArrayList;
 
+import edu.vt.boardgames.network.Game;
+import edu.vt.boardgames.network.User;
+import edu.vt.boardgames.network.UtilsServer;
+import edu.vt.boardgames.network.response.HandlerResponse;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -26,7 +31,9 @@ public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	public static String username_ = "";
+	public static User user_;
+	ArrayList<Game> listOfGames;
+	ProgressDialog progress;
 	
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -45,8 +52,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		user_ = new User("");
 		mTitle = mDrawerTitle = getTitle();
+		
 
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -68,7 +76,7 @@ public class MainActivity extends Activity {
 		// Photos
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// Communities, Will add a counter here
-//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "10"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "10"));
 //		// Pages
 //		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 //		// What's hot, We  will add a counter here
@@ -110,7 +118,7 @@ public class MainActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
-			displayView(2);
+			displayView(3);
 		}
 	}
 
@@ -167,17 +175,25 @@ public class MainActivity extends Activity {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			if(username_ == ""){
+			if(user_.getName() == ""){
 				Toast.makeText(getApplicationContext(), "You have to login through facebook first", Toast.LENGTH_SHORT).show();
 				break;
 			}
 			showNoticeDialog();
 			break;
-			
+
 		case 1:
-			fragment = new CustomListView();
+			//fragment = new CustomListView();
+			//UtilsServer.createNewGame(handler,false,false,5,2,1,-1,-1,user_);
+			UtilsServer.getAllOpenGames(handler);
+			progress = ProgressDialog.show(this, "Wait!", "Retrieving open games", true, false);
 			break;
 		case 2:
+			
+			fragment = new CustomListView();
+			break;
+			
+		case 3:
 			fragment = new AndroidFacebookConnectActivity();
 			break;
 
@@ -234,7 +250,6 @@ public class MainActivity extends Activity {
 		LayoutInflater inflater = getLayoutInflater();
 
 		final View view = inflater.inflate(R.layout.dialog, null);
-
 		// Inflate and set the layout for the dialog
 		// Pass null as the parent view because its going in the dialog layout
 		builder.setView(view)
@@ -243,31 +258,20 @@ public class MainActivity extends Activity {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								TextView textview = (TextView) view
-										.findViewById(R.id.opponent);
-								if (!textview.getText().toString().isEmpty()) {
-									String opponents[] = textview.getText().toString().split(",");
+								Bundle bundle = new Bundle();
+								bundle.putInt("id", -1);
+								bundle.putString("username", user_.getName());
+								bundle.putInt("userid", user_.getId());
+								Fragment fragment = new ChessGame();
+								fragment.setArguments(bundle);
 
-
-									Bundle bundle = new Bundle();
-									bundle.putInt("id", -1);
-									bundle.putString("username", username_);
-									bundle.putSerializable("opponents", opponents);
-									Fragment fragment = new ChessGame();
-									fragment.setArguments(bundle);
-
-									FragmentManager fragmentManager = getFragmentManager();
-									fragmentManager.beginTransaction()
-											.replace(R.id.frame_container, fragment).commit();
-									mDrawerList.setItemChecked(0, true);
-									mDrawerList.setSelection(0);
-									setTitle(navMenuTitles[0]);
-									mDrawerLayout.closeDrawer(mDrawerList);
-								}
-								else{
-									Toast.makeText(getApplicationContext(), "Invalid opponents usernames", Toast.LENGTH_SHORT).show();
-									
-								}
+								FragmentManager fragmentManager = getFragmentManager();
+								fragmentManager.beginTransaction()
+										.replace(R.id.frame_container, fragment).commit();
+								mDrawerList.setItemChecked(0, true);
+								mDrawerList.setSelection(0);
+								setTitle(navMenuTitles[0]);
+								mDrawerLayout.closeDrawer(mDrawerList);
 
 							}
 
@@ -282,4 +286,42 @@ public class MainActivity extends Activity {
 		builder.create();
 		builder.show();
 	}
+	public void getOpenGames() {
+		// Create an instance of the dialog fragment and show it
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Get the layout inflater
+		LayoutInflater inflater = getLayoutInflater();
+
+		final View view = inflater.inflate(R.layout.listview, null);
+		ListView listview = (ListView) findViewById(R.id.gameslist);
+		CustomImageAdapter adapter = new CustomImageAdapter(getApplicationContext(), R.id.list, listOfGames);
+		listview.setAdapter(adapter);
+		//listview.setAdapter(new CustomImageAdapter(getApplicationContext(), layoutResourceId, data));
+		// Inflate and set the layout for the dialog
+		// Pass null as the parent view because its going in the dialog layout
+		builder.setView(view)
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+				});
+		builder.create();
+		builder.show();
+	}
+	private HandlerResponse<Game> handler = new HandlerResponse<Game>()
+			{
+				public void onResponseArrayObj(java.util.ArrayList<Game> response) {
+					
+					progress.dismiss();
+					if (response != null && response.size() > 0)
+					{
+						listOfGames = response;
+						getOpenGames();
+						Log.d("Hussain","Not Null");
+					}
+				};
+			};
 }

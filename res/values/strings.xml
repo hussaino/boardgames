@@ -11,9 +11,9 @@
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item >New Game</item>
+        <item >Join Game</item>
         <item >All Games</item>
         <item >Account</item>
-        <item >Friends</item>
         <item >Other Games</item>
         <item >Settings</item>
     </string-array>

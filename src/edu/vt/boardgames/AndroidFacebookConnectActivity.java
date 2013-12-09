@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,8 +31,17 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
+
+
+
+
+
 //import com.facebook.boardgames.R;
 import edu.vt.boardgames.R;
+import edu.vt.boardgames.network.Game;
+import edu.vt.boardgames.network.User;
+import edu.vt.boardgames.network.UtilsServer;
+import edu.vt.boardgames.network.response.HandlerResponse;
 
 public class AndroidFacebookConnectActivity extends Fragment {
 
@@ -43,6 +53,7 @@ public class AndroidFacebookConnectActivity extends Fragment {
 	private AsyncFacebookRunner mAsyncRunner;
 	String FILENAME = "AndroidSSO_data";
 	private SharedPreferences mPrefs;
+	ProgressDialog progress;
 
 	// Buttons
 	Button btnFbLogin;
@@ -85,20 +96,12 @@ public class AndroidFacebookConnectActivity extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Log.d("Image Button", "button Clicked");
+				progress = ProgressDialog.show(getActivity(), "Wait!", "Signing in", true, false);
 				loginToFacebook();
 			}
 		});
 
-		/**
-		 * Getting facebook Profile info
-		 * */
-		btnFbGetProfile.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				getProfileInformation();
-			}
-		});
 
 		/**
 		 * Posting to Facebook Wall
@@ -139,19 +142,76 @@ public class AndroidFacebookConnectActivity extends Fragment {
 			facebook.setAccessToken(access_token);
 			
 			btnFbLogin.setVisibility(View.INVISIBLE);
-			//nameFacebook.setVisibility(View.INVISIBLE);
-			
-			// Making get profile button visible
-			btnFbGetProfile.setVisibility(View.VISIBLE);
-			//nameFacebook.setVisibility(View.VISIBLE);
+		
 
 			// Making post to wall visible
 			btnPostToWall.setVisibility(View.VISIBLE);
 
-			// Making show access tokens button visible
-			//btnShowAccessTokens.setVisibility(View.VISIBLE);
+			mAsyncRunner.request("me", new RequestListener() {
+				@Override
+				public void onComplete(String response, Object state) {
+					Log.d("Profile", response);
+					String json = response;
+					try {
+						// Facebook Profile JSON data
+						JSONObject profile = new JSONObject(json);
+						
+						// getting name of the user
+						final String name = profile.getString("name");
+						
+						// getting email of the user
+						final String email = profile.getString("email");
+						final String user = profile.getString("username");
+						
 
-			Log.d("FB Sessions", "" + facebook.isSessionValid());
+
+						
+						getActivity().runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								//btnFbGetProfile.setVisibility(View.INVISIBLE);
+								nameFacebook.setText(name);
+								UserFacebook.setText(user);
+								EmailFacebook.setText(email);
+								
+								
+								EmailText.setVisibility(View.VISIBLE);
+								EmailFacebook.setVisibility(View.VISIBLE);
+								UserText.setVisibility(View.VISIBLE);
+
+								NameText.setVisibility(View.VISIBLE);
+								nameFacebook.setVisibility(View.VISIBLE);
+								UtilsServer.createOrLoginUser(handler, user);
+								//Toast.makeText(getActivity().getApplicationContext(), "Name: " + name + "\nEmail: " + email, Toast.LENGTH_LONG).show();
+							}
+
+						});
+
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+
+				@Override
+				public void onIOException(IOException e, Object state) {
+				}
+
+				@Override
+				public void onFileNotFoundException(FileNotFoundException e,
+						Object state) {
+				}
+
+				@Override
+				public void onMalformedURLException(MalformedURLException e,
+						Object state) {
+				}
+
+				@Override
+				public void onFacebookError(FacebookError e, Object state) {
+				}
+			});
 		}
 
 		if (expires != 0) {
@@ -184,13 +244,77 @@ public class AndroidFacebookConnectActivity extends Fragment {
 							btnFbLogin.setVisibility(View.INVISIBLE);
 
 							// Making logout Button visible
-							btnFbGetProfile.setVisibility(View.VISIBLE);
+							//btnFbGetProfile.setVisibility(View.VISIBLE);
 
 							// Making post to wall visible
 							btnPostToWall.setVisibility(View.VISIBLE);
 
-							// Making show access tokens button visible
-							//btnShowAccessTokens.setVisibility(View.VISIBLE);
+							mAsyncRunner.request("me", new RequestListener() {
+								@Override
+								public void onComplete(String response, Object state) {
+									Log.d("Profile", response);
+									String json = response;
+									try {
+										// Facebook Profile JSON data
+										JSONObject profile = new JSONObject(json);
+										
+										// getting name of the user
+										final String name = profile.getString("name");
+										
+										// getting email of the user
+										final String email = profile.getString("email");
+										final String user = profile.getString("username");
+										
+
+
+										
+										getActivity().runOnUiThread(new Runnable() {
+
+											@Override
+											public void run() {
+												//btnFbGetProfile.setVisibility(View.INVISIBLE);
+												nameFacebook.setText(name);
+												UserFacebook.setText(user);
+												EmailFacebook.setText(email);
+												
+												
+												EmailText.setVisibility(View.VISIBLE);
+												EmailFacebook.setVisibility(View.VISIBLE);
+												UserText.setVisibility(View.VISIBLE);
+
+												NameText.setVisibility(View.VISIBLE);
+												nameFacebook.setVisibility(View.VISIBLE);
+												UtilsServer.createOrLoginUser(handler, user);
+												//progress = ProgressDialog.show(getActivity(), "Wait!", "Signing in", true, false);
+												//Toast.makeText(getActivity().getApplicationContext(), "Name: " + name + "\nEmail: " + email, Toast.LENGTH_LONG).show();
+											}
+
+										});
+
+										
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}
+
+								@Override
+								public void onIOException(IOException e, Object state) {
+								}
+
+								@Override
+								public void onFileNotFoundException(FileNotFoundException e,
+										Object state) {
+								}
+
+								@Override
+								public void onMalformedURLException(MalformedURLException e,
+										Object state) {
+								}
+
+								@Override
+								public void onFacebookError(FacebookError e, Object state) {
+								}
+							});
 						}
 
 						@Override
@@ -216,82 +340,7 @@ public class AndroidFacebookConnectActivity extends Fragment {
 	}
 
 
-	/**
-	 * Get Profile information by making request to Facebook Graph API
-	 * */
-	public void getProfileInformation() {
-		mAsyncRunner.request("me", new RequestListener() {
-			@Override
-			public void onComplete(String response, Object state) {
-				Log.d("Profile", response);
-				String json = response;
-				try {
-					// Facebook Profile JSON data
-					JSONObject profile = new JSONObject(json);
-					
-					// getting name of the user
-					final String name = profile.getString("name");
-					
-					// getting email of the user
-					final String email = profile.getString("email");
-					final String user = profile.getString("username");
-					MainActivity.username_ = user;
-					
-				Log.d("NAme", name);
-				Log.d("id", email);
-				Log.d("user", user);
-//				nameFacebook.setText(name);
-				
-				//btnFbGetProfile.setVisibility(View.INVISIBLE);
 
-
-					
-					getActivity().runOnUiThread(new Runnable() {
-
-						@Override
-						public void run() {
-							btnFbGetProfile.setVisibility(View.INVISIBLE);
-							nameFacebook.setText(name);
-							UserFacebook.setText(user);
-							EmailFacebook.setText(email);
-							
-							
-							EmailText.setVisibility(View.VISIBLE);
-							EmailFacebook.setVisibility(View.VISIBLE);
-							UserText.setVisibility(View.VISIBLE);
-
-							NameText.setVisibility(View.VISIBLE);
-							nameFacebook.setVisibility(View.VISIBLE);
-							//Toast.makeText(getActivity().getApplicationContext(), "Name: " + name + "\nEmail: " + email, Toast.LENGTH_LONG).show();
-						}
-
-					});
-
-					
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void onIOException(IOException e, Object state) {
-			}
-
-			@Override
-			public void onFileNotFoundException(FileNotFoundException e,
-					Object state) {
-			}
-
-			@Override
-			public void onMalformedURLException(MalformedURLException e,
-					Object state) {
-			}
-
-			@Override
-			public void onFacebookError(FacebookError e, Object state) {
-			}
-		});
-	}
 
 	/**
 	 * Function to post to facebook wall
@@ -318,6 +367,19 @@ public class AndroidFacebookConnectActivity extends Fragment {
 		});
 
 	}
+	private HandlerResponse<User> handler = new HandlerResponse<User>()
+	{
+		public void onResponseArrayObj(java.util.ArrayList<User> response) {
+			
+			progress.dismiss();
+			
+			if (response != null && response.size() > 0)
+			{
+				MainActivity.user_ = response.get(0);
+			}
+		};
+	};
+		
 
 
 }

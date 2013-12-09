@@ -16,6 +16,7 @@ import android.widget.Toast;
 import edu.vt.boardgames.MainActivity;
 import edu.vt.boardgames.R;
 import edu.vt.boardgames.network.Game;
+import edu.vt.boardgames.network.User;
 import edu.vt.boardgames.network.UtilsServer;
 import edu.vt.boardgames.network.response.HandlerResponse;
 
@@ -32,13 +33,11 @@ public abstract class GameController extends Object
 	int currentTeam = 1;
 	int oldX;
 	int oldY;
-<<<<<<< HEAD
 	int thisTeam = 1;
 	boolean timerFlag = false;
 	CountDownTimer countdown;
 	int id_ = -1;
-=======
->>>>>>> justin-development
+
 
 	public GameController(PiecesAdapter adapter, Board board, Button submit)
 	{
@@ -145,9 +144,11 @@ public abstract class GameController extends Object
 	//@SuppressWarnings("unchecked")
 	public void retrieveGame(Bundle bundle){
 		id_ = bundle.getInt("id");
+		User user = new User(bundle.getString("username"));
+		user.setId(bundle.getInt("userid"));
 		//ArrayList<String> usernames = (ArrayList<String>) bundle.getSerializable("usernames");
 		if(id_ == -1){
-			UtilsServer.createNewGame(handler, true, false, 5, 2, 1 ,-1 ,-1);
+			UtilsServer.createNewGame(handler, true, false, 5, 2, 1 ,-1 ,-1,user);
 			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Creating your game.", true, false);
 		}
 		else{
@@ -156,15 +157,15 @@ public abstract class GameController extends Object
 		}
 	}
 	private HandlerResponse<Game> handler = new HandlerResponse<Game>()
+	{
+		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
+			
+			progress.dismiss();
+			
+			if (response != null && response.size() > 0)
 			{
-				public void onResponseArrayObj(java.util.ArrayList<Game> response) {
-					
-					progress.dismiss();
-					
-					if (response != null && response.size() > 0)
-					{
-						setGame(response.get(0));
-					}
-				};
-			};
+				setGame(response.get(0));
+			}
+		};
+	};
 }
