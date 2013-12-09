@@ -3,7 +3,7 @@ package edu.vt.boardgames;
 import java.util.ArrayList;
 
 import edu.vt.boardgames.R;
-
+import edu.vt.boardgames.network.Game;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,11 +18,11 @@ public class CustomImageAdapter extends ArrayAdapter<Item> {
 	Context context;
 	int layoutResourceId;
 	LinearLayout linearMain;
-	ArrayList<Item> data = new ArrayList<Item>();
+	ArrayList<Game> data = new ArrayList<Game>();
 
 	public CustomImageAdapter(Context context, int layoutResourceId,
-			ArrayList<Item> data) {
-		super(context, layoutResourceId, data);
+			ArrayList<Game> data) {
+		super(context, layoutResourceId);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
@@ -38,15 +38,15 @@ public class CustomImageAdapter extends ArrayAdapter<Item> {
 
 			linearMain = (LinearLayout) row.findViewById(R.id.lineraMain);
 
-			Item myImage = data.get(position);
-			for (int j = 0; j < myImage.getName().length; j++) {
+			Game game = data.get(position);
+			for (int j = 0; j < data.size(); j++) {
 				TextView label = new TextView(context);
-				label.setText(myImage.name[j]);
+				label.setText(game.getId());
 				linearMain.addView(label);
 			}
 			ImageView image = new ImageView(context);
-			int outImage = myImage.image;
-			image.setImageResource(outImage);
+			//int outImage = myImage.image;
+			//image.setImageResource(outImage);
 			linearMain.addView(image);
 		}
 

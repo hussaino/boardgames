@@ -2,18 +2,15 @@ package edu.vt.boardgames;
 
 import java.util.ArrayList;
 
-import edu.vt.boardgames.R;
-
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.app.Activity;
-import android.app.Fragment;
 
 
-public class CustomListView extends Fragment {
+public class CustomListView extends DialogFragment {
 	ArrayList<Item> imageArry = new ArrayList<Item>();
 	CustomImageAdapter adapter;
 
@@ -23,7 +20,7 @@ public class CustomListView extends Fragment {
 //		setContentView(R.layout.main);
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
-	View rootView = inflater.inflate(R.layout.main, container, false);
+		View rootView = inflater.inflate(R.layout.listview, container, false);
 
 		// add image and text in arraylist
 		String Video[]={"Chess Game","User: test", "Score: .."};
@@ -33,9 +30,9 @@ public class CustomListView extends Fragment {
 		imageArry.add(new Item(R.drawable.checkers_icon, Song));
 		imageArry.add(new Item(R.drawable.icon_chess, Video));
 		imageArry.add(new Item(R.drawable.btn_login, Movi));
-		
+		//imageArry.add(new Item(checkers_icon, name))
 		// add data in contact image adapter
-		adapter = new CustomImageAdapter(this.getActivity(), R.layout.list, imageArry);
+		//adapter = new CustomImageAdapter(this.getActivity(), R.layout.list, imageArry);
 		ListView dataList = (ListView)rootView.findViewById(R.id.list);
 		dataList.setAdapter(adapter);
 		return rootView;
