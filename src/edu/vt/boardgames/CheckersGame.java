@@ -31,6 +31,7 @@ public class CheckersGame extends Fragment {
 		int width = ll.getWidth();
 		CheckerBoard board = new CheckerBoard(8, 8);
 		Button button = (Button) rootView.findViewById(R.id.submitButton);
+		Button reset = (Button) rootView.findViewById(R.id.resetButton);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
 		layoutParams.height = width;
 		grid.setLayoutParams(layoutParams);
@@ -40,7 +41,7 @@ public class CheckersGame extends Fragment {
 		PiecesAdapter adapter = new PiecesAdapter(this.getActivity()
 				.getApplicationContext(), board);
 		CheckersController controller = new CheckersController(adapter, board,
-				button, getActivity());
+				button, reset, getActivity());
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
 		// ChessActivity.context_ = getActivity().getApplicationContext();

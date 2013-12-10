@@ -35,6 +35,7 @@ public class ChessGame extends Fragment {
 
 		ChessBoard board = new ChessBoard(8, 8);
 		Button button = (Button) rootView.findViewById(R.id.submitButton);
+		Button reset = (Button) rootView.findViewById(R.id.resetButton);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
 		layoutParams.height = width;
 		grid.setLayoutParams(layoutParams);
@@ -43,7 +44,7 @@ public class ChessGame extends Fragment {
 		grid.setBackgroundResource(R.drawable.checkered_background);
 		PiecesAdapter adapter = new PiecesAdapter(this.getActivity()
 				.getApplicationContext(), board);
-		controller = new ChessController(adapter, board, button,
+		controller = new ChessController(adapter, board, button, reset,
 				(Activity) this.getActivity());
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));

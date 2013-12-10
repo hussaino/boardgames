@@ -26,6 +26,7 @@ public abstract class GameController extends Object {
 	private Board board_;
 	public Game game_;
 	Button submit_;
+	Button reset_;
 	boolean moved = false;
 	int old_team;
 	int gamePhase = 0;
@@ -38,15 +39,24 @@ public abstract class GameController extends Object {
 	int id_ = -1;
 	User thisUser;
 
-	public GameController(PiecesAdapter adapter, Board board, Button submit) {
+	public GameController(PiecesAdapter adapter, Board board, Button submit,
+			Button reset) {
 		adapter_ = adapter;
 		board_ = board;
 		submit_ = submit;
+		reset_ = reset;
 		board.initBoard();
 		submit_.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				submitClick();
+			}
+		});
+		reset_.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				UtilsServer.getGameFromServer(handler, id_);
+				gamePhase=0;
 			}
 		});
 		countdown = new CountDownTimer(30000, 1000) {

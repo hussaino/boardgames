@@ -18,8 +18,8 @@ public class ChessController extends GameController {
 
 	// ChessBoard board;
 	public ChessController(PiecesAdapter adapter, Board board, Button submit,
-			Activity activity) {
-		super(adapter, board, submit);
+			Button reset, Activity activity) {
+		super(adapter, board, submit,reset);
 		checkmate = false;
 		check = false;
 		main = activity;

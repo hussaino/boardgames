@@ -12,8 +12,8 @@ public class CheckersController extends GameController {
 	Activity main_;
 
 	public CheckersController(PiecesAdapter adapter, Board board,
-			Button submit, Activity activity) {
-		super(adapter, board, submit);
+			Button submit,Button reset, Activity activity) {
+		super(adapter, board, submit,reset);
 		board_ = (CheckerBoard) board;
 		main_ = activity;
 	}
