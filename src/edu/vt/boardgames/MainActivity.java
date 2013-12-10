@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		user_ = new User("");
+		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items

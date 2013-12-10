@@ -38,7 +38,6 @@ public abstract class GameController extends Object
 	CountDownTimer countdown;
 	int id_ = -1;
 
-
 	public GameController(PiecesAdapter adapter, Board board, Button submit)
 	{
 		adapter_ = adapter;

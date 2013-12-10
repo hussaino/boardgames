@@ -26,7 +26,7 @@ public class UtilsServer
 			: "http://ec2-54-234-246-223.compute-1.amazonaws.com";
 
 	private static final String URL_SERVLET_EXTENSION_GAMES = "/games";
-	private static final String URL_SERVLET_EXTENSION_JOIN = URL_SERVLET_EXTENSION_GAMES + "/teams";
+	private static final String URL_SERVLET_EXTENSION_JOIN = URL_SERVLET_EXTENSION_GAMES + "/join";
 	private static final String URL_SERVLET_EXTENSION_USERS = "/users";
 	private static final String URL_SERVLET_EXTENSION_TEAMS = "/teams";
 
@@ -229,7 +229,8 @@ public class UtilsServer
 	public static void joinGame(Handler handler, User user, Game game)
 	{
 		ResponseParserGame parser = new ResponseParserGame();
-		HttpPost postNewGameRequest = new HttpPost(URL_GAMES_JOIN);
+		HttpPost postNewGameRequest = new HttpPost(URL_GAMES_JOIN + "/" + game.getId() + "?"
+				+ formatUrlParam(URL_PARAM_USER_ID, user.getId()));
 		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, parser,
 				postNewGameRequest);
 	}
@@ -241,5 +242,14 @@ public class UtilsServer
 				+ formatUrlParam(URL_PARAM_GAMES_OPEN, true));
 		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, parser,
 				postNewGameRequest);
+	}
+
+	public static void getAllGamesForUser(Handler handler, User usr)
+	{
+		ResponseParserGame parser = new ResponseParserGame();
+		HttpGet getAllGamesForUserRequest = new HttpGet(URL_GAMES + "?"
+				+ formatUrlParam(URL_PARAM_USER_ID, usr.getId()));
+		new ControllerHttpRequestAndParse<Game>().fetchAndParseRequests(handler, parser,
+				getAllGamesForUserRequest);
 	}
 }
