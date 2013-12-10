@@ -1,9 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:id="@+id/lineraMain"
+    android:id="@+id/LinearLayout_JoinGameListView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/TextView_IdInListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="10sp"
+        android:textColor="@color/black">
+    </TextView>
+    
+    <TextView
+        android:id="@+id/TextView_RankedInListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="10sp"
+        android:textColor="@color/black">
+    </TextView>
+    
+    <LinearLayout
+        android:id="@+id/LinearLayout_PlayersInListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+    
+    
+    
+    
 
 </LinearLayout>

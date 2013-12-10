@@ -23,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +36,7 @@ public class MainActivity extends Activity {
 	public static User user_;
 	ArrayList<Game> listOfGames;
 	ProgressDialog progress;
-	
+
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -54,7 +56,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		user_ = new User("");
 		mTitle = mDrawerTitle = getTitle();
-		
 
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -70,18 +71,23 @@ public class MainActivity extends Activity {
 
 		// adding nav drawer items to array
 		// Home
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons
+				.getResourceId(0, -1)));
 		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons
+				.getResourceId(1, -1)));
 		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons
+				.getResourceId(2, -1)));
 		// Communities, Will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "10"));
-//		// Pages
-//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-//		// What's hot, We  will add a counter here
-//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons
+				.getResourceId(3, -1), true, "10"));
+		// // Pages
+		// navDrawerItems.add(new NavDrawerItem(navMenuTitles[4],
+		// navMenuIcons.getResourceId(4, -1)));
+		// // What's hot, We will add a counter here
+		// navDrawerItems.add(new NavDrawerItem(navMenuTitles[5],
+		// navMenuIcons.getResourceId(5, -1)));
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -98,9 +104,11 @@ public class MainActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, //nav menu toggle icon
-				R.string.app_name, // nav drawer open - description for accessibility
-				R.string.app_name // nav drawer close - description for accessibility
+				R.drawable.ic_drawer, // nav menu toggle icon
+				R.string.app_name, // nav drawer open - description for
+									// accessibility
+				R.string.app_name // nav drawer close - description for
+									// accessibility
 		) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
@@ -175,24 +183,38 @@ public class MainActivity extends Activity {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			if(user_.getName() == ""){
-				Toast.makeText(getApplicationContext(), "You have to login through facebook first", Toast.LENGTH_SHORT).show();
+			if (user_.getName() == "") {
+				Toast.makeText(getApplicationContext(),
+						"You have to login through facebook first",
+						Toast.LENGTH_SHORT).show();
 				break;
 			}
 			showNoticeDialog();
 			break;
 
 		case 1:
-			//fragment = new CustomListView();
-			//UtilsServer.createNewGame(handler,false,false,5,2,1,-1,-1,user_);
+			if (user_.getName() == "") {
+				Toast.makeText(getApplicationContext(),
+						"You have to login through facebook first",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+			// fragment = new CustomListView();
+			// UtilsServer.createNewGame(handler,false,false,5,2,1,-1,-1,user_);
 			UtilsServer.getAllOpenGames(handler);
-			progress = ProgressDialog.show(this, "Wait!", "Retrieving open games", true, false);
+			progress = ProgressDialog.show(this, "Wait!",
+					"Retrieving open games", true, false);
 			break;
 		case 2:
-			
-			fragment = new CustomListView();
+			if (user_.getName() == "") {
+				Toast.makeText(getApplicationContext(),
+						"You have to login through facebook first",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+			// fragment = new CustomListView();
 			break;
-			
+
 		case 3:
 			fragment = new AndroidFacebookConnectActivity();
 			break;
@@ -266,8 +288,10 @@ public class MainActivity extends Activity {
 								fragment.setArguments(bundle);
 
 								FragmentManager fragmentManager = getFragmentManager();
-								fragmentManager.beginTransaction()
-										.replace(R.id.frame_container, fragment).commit();
+								fragmentManager
+										.beginTransaction()
+										.replace(R.id.frame_container, fragment)
+										.commit();
 								mDrawerList.setItemChecked(0, true);
 								mDrawerList.setSelection(0);
 								setTitle(navMenuTitles[0]);
@@ -286,42 +310,80 @@ public class MainActivity extends Activity {
 		builder.create();
 		builder.show();
 	}
+
 	public void getOpenGames() {
 		// Create an instance of the dialog fragment and show it
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// Get the layout inflater
 		LayoutInflater inflater = getLayoutInflater();
 
 		final View view = inflater.inflate(R.layout.listview, null);
-		ListView listview = (ListView) findViewById(R.id.gameslist);
-		CustomImageAdapter adapter = new CustomImageAdapter(getApplicationContext(), R.id.list, listOfGames);
+		ListView listview = (ListView) view.findViewById(R.id.gameslist);
+		// ListView listview = new ListView(getApplicationContext());
+		CustomImageAdapter adapter = new CustomImageAdapter(
+				getApplicationContext(), R.id.list, listOfGames);
 		listview.setAdapter(adapter);
-		//listview.setAdapter(new CustomImageAdapter(getApplicationContext(), layoutResourceId, data));
+		adapter.notifyDataSetChanged();
+		listview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				UtilsServer.joinGame(handler2, user_, listOfGames.get(position));
+
+				progress = ProgressDialog.show(getApplicationContext(), "Wait!",
+						"Joining Game", true, false);
+			}
+		});
+		// listview.setAdapter(new CustomImageAdapter(getApplicationContext(),
+		// layoutResourceId, data));
 		// Inflate and set the layout for the dialog
 		// Pass null as the parent view because its going in the dialog layout
-		builder.setView(view)
-				.setNegativeButton("Cancel",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.dismiss();
-							}
+		builder.setView(view).setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.dismiss();
+					}
 				});
 		builder.create();
 		builder.show();
 	}
-	private HandlerResponse<Game> handler = new HandlerResponse<Game>()
-			{
-				public void onResponseArrayObj(java.util.ArrayList<Game> response) {
-					
-					progress.dismiss();
-					if (response != null && response.size() > 0)
-					{
-						listOfGames = response;
-						getOpenGames();
-						Log.d("Hussain","Not Null");
-					}
-				};
-			};
+
+	private HandlerResponse<Game> handler = new HandlerResponse<Game>() {
+		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
+
+			progress.dismiss();
+			if (response != null && response.size() > 0) {
+				listOfGames = response;
+				getOpenGames();
+				Log.d("Hussain", "Not Null");
+			}
+		};
+	};
+	private HandlerResponse<Game> handler2 = new HandlerResponse<Game>() {
+		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
+
+			progress.dismiss();
+			if (response != null && response.size() > 0) {
+				Bundle bundle = new Bundle();
+				bundle.putInt("id", response.get(0).getId());
+				bundle.putString("username", user_.getName());
+				bundle.putInt("userid", user_.getId());
+
+				Fragment fragment = new ChessGame();
+				fragment.setArguments(bundle);
+
+				FragmentManager fragmentManager = getFragmentManager();
+				fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).commit();
+				mDrawerList.setItemChecked(2, true);
+				mDrawerList.setSelection(2);
+				setTitle(navMenuTitles[2]);
+				mDrawerLayout.closeDrawer(mDrawerList);
+			}
+		};
+	};
 }
