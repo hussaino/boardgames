@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import vt.team9.customgames.Board;
 import vt.team9.customgames.Piece;
 
+@SuppressWarnings("all")
 public class UtilsJSON {
 	/* ** Game class JSON interface ** */
 	private static final String JSON_KEY_GAME_ID = "k_id";

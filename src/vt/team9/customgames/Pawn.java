@@ -1,6 +1,5 @@
 package vt.team9.customgames;
 
-import android.util.Log;
 import edu.vt.boardgames.R;
 
 public class Pawn extends Piece {

@@ -38,6 +38,7 @@ import edu.vt.boardgames.network.User;
 import edu.vt.boardgames.network.UtilsServer;
 import edu.vt.boardgames.network.response.HandlerResponse;
 
+@SuppressWarnings("all")
 public class AndroidFacebookConnectActivity extends Fragment {
 
 	// Your Facebook APP ID

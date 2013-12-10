@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
 
 								UtilsServer.createNewGame(handler2, true,
 										false, 5, 2, 1, -1, -1, user_);
-								
+
 							}
 
 						})
@@ -297,7 +297,7 @@ public class MainActivity extends Activity {
 		builder.create();
 		builder.show();
 	}
-	
+
 	public void getGames() {
 		// Create an instance of the dialog fragment and show it
 
@@ -331,7 +331,6 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Auto-generated method stub
 				UtilsServer.joinGame(handler2, user_, listOfGames.get(position));
 
 				// progress = ProgressDialog.show(getApplicationContext(),
@@ -346,13 +345,13 @@ public class MainActivity extends Activity {
 		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
 
 			progress.dismiss();
-			
+
 			if (response != null && response.size() > 0) {
 				listOfGames = response;
-				Log.d("Hussain","" + listOfGames.size());
-				Log.d("Hussain",listOfGames.toString());
+				Log.d("Hussain", "" + listOfGames.size());
+				Log.d("Hussain", listOfGames.toString());
 				for (int i = 0; i < listOfGames.size(); i++) {
-					
+
 				}
 				getGames();
 			}

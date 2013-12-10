@@ -1,7 +1,6 @@
 package vt.team9.customgames;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,26 +14,22 @@ public class PiecesAdapter extends BaseAdapter {
 	Board board_;
 
 	public PiecesAdapter(Context applicationContext, Board board) {
-		// TODO Auto-generated constructor stub
 		context_ = applicationContext;
 		board_ = board;
 	}
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return 64;
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int arg0) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

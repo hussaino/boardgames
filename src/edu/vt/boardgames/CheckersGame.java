@@ -2,12 +2,8 @@ package edu.vt.boardgames;
 
 import vt.team9.customgames.CheckerBoard;
 import vt.team9.customgames.CheckersController;
-import vt.team9.customgames.ChessBoard;
-import vt.team9.customgames.ChessController;
 import vt.team9.customgames.PiecesAdapter;
 import vt.team9.customgames.SpaceListener;
-import edu.vt.boardgames.R;
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

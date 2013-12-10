@@ -45,7 +45,7 @@ public class Rook extends Piece {
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
+			if (board.Pieces_[oldX][oldY].team_ != Board.NoTeam)
 				break;
 
 		}
@@ -54,7 +54,7 @@ public class Rook extends Piece {
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
+			if (board.Pieces_[oldX][oldY].team_ != Board.NoTeam)
 				break;
 
 		}
@@ -63,7 +63,7 @@ public class Rook extends Piece {
 			oldY++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
+			if (board.Pieces_[oldX][oldY].team_ != Board.NoTeam)
 				break;
 
 		}
@@ -72,7 +72,7 @@ public class Rook extends Piece {
 			oldY--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
-			if (board.Pieces_[oldX][oldY].team_ != board.NoTeam)
+			if (board.Pieces_[oldX][oldY].team_ != Board.NoTeam)
 				break;
 		}
 	}

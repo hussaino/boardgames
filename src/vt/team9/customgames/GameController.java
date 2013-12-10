@@ -3,6 +3,7 @@ package vt.team9.customgames;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -104,9 +105,10 @@ public abstract class GameController extends Object {
 			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
 					0, PendingIntent.FLAG_UPDATE_CURRENT);
 			mBuilder.setContentIntent(resultPendingIntent);
+			submit_.getContext();
 			NotificationManager mNotificationManager = (NotificationManager) submit_
-					.getContext().getSystemService(
-							submit_.getContext().NOTIFICATION_SERVICE);
+					.getContext()
+					.getSystemService(Context.NOTIFICATION_SERVICE);
 			int mID = 0;
 			mNotificationManager.notify(mID, mBuilder.build());
 		} else

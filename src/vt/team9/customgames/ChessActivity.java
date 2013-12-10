@@ -1,24 +1,13 @@
 package vt.team9.customgames;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnDragListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import edu.vt.boardgames.R;
-import edu.vt.boardgames.R.drawable;
-import edu.vt.boardgames.R.id;
-import edu.vt.boardgames.R.layout;
-import edu.vt.boardgames.R.menu;
 
 public class ChessActivity extends Activity {
 	static final int numOfColumns = 8;
