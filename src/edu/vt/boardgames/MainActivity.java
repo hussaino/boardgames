@@ -326,18 +326,6 @@ public class MainActivity extends Activity {
 				getApplicationContext(), R.id.list, listOfGames);
 		listview.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
-		listview.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				UtilsServer.joinGame(handler2, user_, listOfGames.get(position));
-
-				progress = ProgressDialog.show(getApplicationContext(), "Wait!",
-						"Joining Game", true, false);
-			}
-		});
 		// listview.setAdapter(new CustomImageAdapter(getApplicationContext(),
 		// layoutResourceId, data));
 		// Inflate and set the layout for the dialog
@@ -350,7 +338,21 @@ public class MainActivity extends Activity {
 					}
 				});
 		builder.create();
-		builder.show();
+
+		final AlertDialog ad = builder.show();
+		listview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				UtilsServer.joinGame(handler2, user_, listOfGames.get(position));
+				
+				//progress = ProgressDialog.show(getApplicationContext(), "Wait!",
+				//		"Joining Game", true, false);
+				ad.cancel();
+			}
+		});
 	}
 
 	private HandlerResponse<Game> handler = new HandlerResponse<Game>() {
