@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		user_ = new User("");
+		user_.setId(0);
 		progress = new ProgressDialog(getApplicationContext());
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
@@ -189,6 +190,12 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
+			if(user_.getId() == 0){
+				Toast.makeText(getApplicationContext(),
+						"Error in the server, try again later",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
 			showNoticeDialog();
 			break;
 
@@ -196,6 +203,12 @@ public class MainActivity extends Activity {
 			if (user_.getName() == "") {
 				Toast.makeText(getApplicationContext(),
 						"You have to login through facebook first",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+			if(user_.getId() == 0){
+				Toast.makeText(getApplicationContext(),
+						"Error in the server, try again later",
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
@@ -207,6 +220,12 @@ public class MainActivity extends Activity {
 			if (user_.getName() == "") {
 				Toast.makeText(getApplicationContext(),
 						"You have to login through facebook first",
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+			if(user_.getId() == 0){
+				Toast.makeText(getApplicationContext(),
+						"Error in the server, try again later",
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
@@ -336,7 +355,7 @@ public class MainActivity extends Activity {
 				// progress = ProgressDialog.show(getApplicationContext(),
 				// "Wait!",
 				// "Joining Game", true, false);
-				ad.cancel();
+			ad.cancel();
 			}
 		});
 	}
@@ -349,10 +368,10 @@ public class MainActivity extends Activity {
 			if (response != null && response.size() > 0) {
 				listOfGames = response;
 				Log.d("Hussain", "" + listOfGames.size());
-				Log.d("Hussain", listOfGames.toString());
-				for (int i = 0; i < listOfGames.size(); i++) {
+				//Log.d("Hussain", listOfGames.toString());
+				//for (int i = 0; i < listOfGames.size(); i++) {
 
-				}
+				//}
 				getGames();
 			}
 		};
