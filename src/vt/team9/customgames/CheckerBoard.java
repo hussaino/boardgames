@@ -1,26 +1,20 @@
 package vt.team9.customgames;
 
-public class CheckerBoard extends Board
-{
+public class CheckerBoard extends Board {
 
-	public CheckerBoard()
-	{
+	public CheckerBoard() {
 		super();
 	}
 
-	public CheckerBoard(int length, int width)
-	{
+	public CheckerBoard(int length, int width) {
 		super(length, width);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void initBoard()
-	{
-		for (int i = 0; i < width_; i++)
-		{
-			for (int j = 0; j < length_; j++)
-			{
+	public void initBoard() {
+		for (int i = 0; i < width_; i++) {
+			for (int j = 0; j < length_; j++) {
 				Pieces_[i][j] = new EmptySpace(NoTeam, "");
 			}
 		}

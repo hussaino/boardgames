@@ -3,13 +3,13 @@ package vt.team9.customgames;
 import edu.vt.boardgames.R;
 
 public class Queen extends Piece {
-	
-	public Queen()
-	{
+
+	public Queen() {
 		super();
 	}
-	Queen(int team,String name) {
-		super(team,name);
+
+	Queen(int team, String name) {
+		super(team, name);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package vt.team9.customgames;
 
 import edu.vt.boardgames.R;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -16,28 +15,29 @@ public class CheckersActivity extends Activity {
 	static final int numOfColumns = 8;
 	static final int numOfRows = 8;
 	private static Context context_;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_main);
-		GridView grid = (GridView)findViewById(R.id.Grid);
-		LinearLayout ll = (LinearLayout)findViewById(R.id.LinearLayout1);
+		GridView grid = (GridView) findViewById(R.id.Grid);
+		LinearLayout ll = (LinearLayout) findViewById(R.id.LinearLayout1);
 		int width = ll.getWidth();
-		CheckerBoard board = new CheckerBoard(8,8);
+		CheckerBoard board = new CheckerBoard(8, 8);
 		Button button = (Button) findViewById(R.id.submitButton);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();
 		layoutParams.height = width;
 		grid.setLayoutParams(layoutParams);
 		grid.setNumColumns(numOfColumns);
-		grid.setColumnWidth(grid.getWidth()/numOfColumns);
+		grid.setColumnWidth(grid.getWidth() / numOfColumns);
 		grid.setBackgroundResource(R.drawable.checkered_background);
-		PiecesAdapter adapter = new PiecesAdapter(this,board);
-		CheckersController controller = new CheckersController(adapter, board, button, (Activity)getAppContext());
+		PiecesAdapter adapter = new PiecesAdapter(this, board);
+		CheckersController controller = new CheckersController(adapter, board,
+				button, (Activity) getAppContext());
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
 		CheckersActivity.context_ = getApplicationContext();
 
-		
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class CheckersActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	public static Context getAppContext()
-	{
+
+	public static Context getAppContext() {
 		return context_;
 	}
 

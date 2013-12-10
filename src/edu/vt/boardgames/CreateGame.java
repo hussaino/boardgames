@@ -15,7 +15,7 @@ public class CreateGame extends Fragment {
 	EditText edittext;
 
 	public CreateGame() {
-		
+
 	}
 
 	@Override
@@ -25,10 +25,10 @@ public class CreateGame extends Fragment {
 		Button create = (Button) rootView.findViewById(R.id.btn_create);
 		final Bundle bundle = new Bundle(this.getArguments());
 		create.setOnClickListener(new OnClickListener() {
-		
+
 			@Override
 			public void onClick(View v) {
-				
+
 			}
 		});
 		return rootView;

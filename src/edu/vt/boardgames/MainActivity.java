@@ -2,10 +2,6 @@ package edu.vt.boardgames;
 
 import java.util.ArrayList;
 
-import edu.vt.boardgames.network.Game;
-import edu.vt.boardgames.network.User;
-import edu.vt.boardgames.network.UtilsServer;
-import edu.vt.boardgames.network.response.HandlerResponse;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -24,10 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import edu.vt.boardgames.network.Game;
+import edu.vt.boardgames.network.User;
+import edu.vt.boardgames.network.UtilsServer;
+import edu.vt.boardgames.network.response.HandlerResponse;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -55,6 +53,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		user_ = new User("");
+		progress = new ProgressDialog(getApplicationContext());
 		setContentView(R.layout.activity_main);
 		mTitle = mDrawerTitle = getTitle();
 
@@ -200,8 +199,6 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
-			// fragment = new CustomListView();
-			// UtilsServer.createNewGame(handler,false,false,5,2,1,-1,-1,user_);
 			UtilsServer.getAllOpenGames(handler);
 			progress = ProgressDialog.show(this, "Wait!",
 					"Retrieving open games", true, false);
@@ -213,7 +210,9 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
-			// fragment = new CustomListView();
+			UtilsServer.getAllGamesForUser(handler, user_);
+			progress = ProgressDialog.show(this, "Wait!",
+					"Retrieving your games", true, false);
 			break;
 
 		case 3:
@@ -281,23 +280,10 @@ public class MainActivity extends Activity {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								Bundle bundle = new Bundle();
-								bundle.putInt("id", -1);
-								bundle.putString("username", user_.getName());
-								bundle.putInt("userid", user_.getId());
-								Fragment fragment = new ChessGame();
-								fragment.setArguments(bundle);
 
-								FragmentManager fragmentManager = getFragmentManager();
-								fragmentManager
-										.beginTransaction()
-										.replace(R.id.frame_container, fragment)
-										.commit();
-								mDrawerList.setItemChecked(0, true);
-								mDrawerList.setSelection(0);
-								setTitle(navMenuTitles[0]);
-								mDrawerLayout.closeDrawer(mDrawerList);
-
+								UtilsServer.createNewGame(handler2, true,
+										false, 5, 2, 1, -1, -1, user_);
+								
 							}
 
 						})
@@ -311,8 +297,8 @@ public class MainActivity extends Activity {
 		builder.create();
 		builder.show();
 	}
-
-	public void getOpenGames() {
+	
+	public void getGames() {
 		// Create an instance of the dialog fragment and show it
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -347,9 +333,10 @@ public class MainActivity extends Activity {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				UtilsServer.joinGame(handler2, user_, listOfGames.get(position));
-				
-				//progress = ProgressDialog.show(getApplicationContext(), "Wait!",
-				//		"Joining Game", true, false);
+
+				// progress = ProgressDialog.show(getApplicationContext(),
+				// "Wait!",
+				// "Joining Game", true, false);
 				ad.cancel();
 			}
 		});
@@ -359,13 +346,19 @@ public class MainActivity extends Activity {
 		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
 
 			progress.dismiss();
+			
 			if (response != null && response.size() > 0) {
 				listOfGames = response;
-				getOpenGames();
-				Log.d("Hussain", "Not Null");
+				Log.d("Hussain","" + listOfGames.size());
+				Log.d("Hussain",listOfGames.toString());
+				for (int i = 0; i < listOfGames.size(); i++) {
+					
+				}
+				getGames();
 			}
 		};
 	};
+
 	private HandlerResponse<Game> handler2 = new HandlerResponse<Game>() {
 		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
 
@@ -382,9 +375,12 @@ public class MainActivity extends Activity {
 				FragmentManager fragmentManager = getFragmentManager();
 				fragmentManager.beginTransaction()
 						.replace(R.id.frame_container, fragment).commit();
-				mDrawerList.setItemChecked(2, true);
-				mDrawerList.setSelection(2);
-				setTitle(navMenuTitles[2]);
+				mDrawerList.setItemChecked(0, false);
+				mDrawerList.setItemChecked(1, false);
+				mDrawerList.setItemChecked(2, false);
+				mDrawerList.setItemChecked(3, false);
+				// mDrawerList.setSelection(2);
+				setTitle("" + response.get(0).getId());
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		};

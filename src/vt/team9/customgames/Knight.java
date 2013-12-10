@@ -4,12 +4,12 @@ import edu.vt.boardgames.R;
 
 public class Knight extends Piece {
 
-	public Knight()
-	{
+	public Knight() {
 		super();
 	}
-	Knight(int team,String name) {
-		super(team,name);
+
+	Knight(int team, String name) {
+		super(team, name);
 	}
 
 	@Override

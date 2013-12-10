@@ -16,22 +16,18 @@ import edu.vt.boardgames.network.response.ResponseStream;
 /**
  * Created by Justin on 10/2/13.
  */
-public class AsyncTaskHttpRequest extends AsyncTask<HttpRequestBase, Void, Void>
-{
+public class AsyncTaskHttpRequest extends
+		AsyncTask<HttpRequestBase, Void, Void> {
 	ArrayBlockingQueue<ResponseStream> m_blockingQueue;
 
-	public AsyncTaskHttpRequest(ArrayBlockingQueue<ResponseStream> blockingQueue)
-	{
+	public AsyncTaskHttpRequest(ArrayBlockingQueue<ResponseStream> blockingQueue) {
 		m_blockingQueue = blockingQueue;
 	}
 
 	@Override
-	protected Void doInBackground(HttpRequestBase... requests)
-	{
-		try
-		{
-			for (int i = 0; i < requests.length; i++)
-			{
+	protected Void doInBackground(HttpRequestBase... requests) {
+		try {
+			for (int i = 0; i < requests.length; i++) {
 				HttpClient client = new DefaultHttpClient();
 				HttpResponse response = client.execute(requests[i]);
 				InputStream is = response.getEntity().getContent();
@@ -39,16 +35,12 @@ public class AsyncTaskHttpRequest extends AsyncTask<HttpRequestBase, Void, Void>
 				m_blockingQueue.put(source);
 			}
 			m_blockingQueue.put(new ResponseStream());
-		}
-		catch (IOException e)
-		{
-			MyLogger.logExceptionSevere(AsyncTaskHttpRequest.class.getName(), "doInBackground",
-					null, e);
-		}
-		catch (InterruptedException e)
-		{
-			MyLogger.logExceptionSevere(AsyncTaskHttpRequest.class.getName(), "doInBackground",
-					null, e);
+		} catch (IOException e) {
+			MyLogger.logExceptionSevere(AsyncTaskHttpRequest.class.getName(),
+					"doInBackground", null, e);
+		} catch (InterruptedException e) {
+			MyLogger.logExceptionSevere(AsyncTaskHttpRequest.class.getName(),
+					"doInBackground", null, e);
 		}
 		return null;
 	}

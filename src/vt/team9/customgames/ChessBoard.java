@@ -1,7 +1,6 @@
 package vt.team9.customgames;
 
-public class ChessBoard extends Board
-{
+public class ChessBoard extends Board {
 
 	public boolean team1QueenSideCast;
 	public boolean team1KingSideCast;
@@ -9,8 +8,7 @@ public class ChessBoard extends Board
 	public boolean team2KingSideCast;
 	public int enPass;
 
-	public ChessBoard()
-	{
+	public ChessBoard() {
 		super();
 		team1QueenSideCast = true;
 		team1KingSideCast = true;
@@ -19,8 +17,7 @@ public class ChessBoard extends Board
 		enPass = -1;
 	}
 
-	public ChessBoard(int length, int width)
-	{
+	public ChessBoard(int length, int width) {
 		super(length, width);
 
 		team1QueenSideCast = true;
@@ -31,18 +28,14 @@ public class ChessBoard extends Board
 	}
 
 	@Override
-	public void initBoard()
-	{
-		for (int i = 0; i < width_; i++)
-		{
-			for (int j = 0; j < length_; j++)
-			{
+	public void initBoard() {
+		for (int i = 0; i < width_; i++) {
+			for (int j = 0; j < length_; j++) {
 				Pieces_[i][j] = new EmptySpace(NoTeam, "");
 			}
 		}
 
-		for (int i = 0; i < 8; i++)
-		{
+		for (int i = 0; i < 8; i++) {
 			Pieces_[i][1] = new Pawn(Team1, "pawn" + (i + 1));
 			Pieces_[i][6] = new Pawn(Team2, "pawn" + (9 + i));
 		}

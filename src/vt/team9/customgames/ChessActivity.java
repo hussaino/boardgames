@@ -1,7 +1,5 @@
 package vt.team9.customgames;
 
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,9 +23,10 @@ import edu.vt.boardgames.R.menu;
 public class ChessActivity extends Activity {
 	static final int numOfColumns = 8;
 	private ChessController controller;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_main);
 		GridView grid = (GridView) findViewById(R.id.Grid);
@@ -42,9 +41,9 @@ public class ChessActivity extends Activity {
 		grid.setNumColumns(numOfColumns);
 		grid.setColumnWidth(grid.getWidth() / numOfColumns);
 		grid.setBackgroundResource(R.drawable.checkered_background);
-		PiecesAdapter adapter = new PiecesAdapter(this
-				.getApplicationContext(), board);
-		controller = new ChessController(adapter, board, button,this);
+		PiecesAdapter adapter = new PiecesAdapter(this.getApplicationContext(),
+				board);
+		controller = new ChessController(adapter, board, button, this);
 		grid.setAdapter(adapter);
 		grid.setOnItemClickListener(new SpaceListener(controller));
 		Bundle bundle = new Bundle();

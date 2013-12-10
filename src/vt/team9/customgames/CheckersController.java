@@ -10,7 +10,9 @@ public class CheckersController extends GameController {
 
 	CheckerBoard board_;
 	Activity main_;
-	public CheckersController(PiecesAdapter adapter, Board board, Button submit, Activity activity) {
+
+	public CheckersController(PiecesAdapter adapter, Board board,
+			Button submit, Activity activity) {
 		super(adapter, board, submit);
 		board_ = (CheckerBoard) board;
 		main_ = activity;
@@ -24,8 +26,9 @@ public class CheckersController extends GameController {
 			moved = false;
 			board_.clearAllHighlights();
 			currentTeam = -currentTeam;
-		
-		Toast.makeText(main_.getApplicationContext(), "Move submitted.", Toast.LENGTH_SHORT).show();
+
+			Toast.makeText(main_.getApplicationContext(), "Move submitted.",
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -52,11 +55,11 @@ public class CheckersController extends GameController {
 			if (board_.Pieces_[x][y].highlight_) {
 				Log.d("Checker", x + "," + y + ", " + currentTeam);
 				if ((y == 0) && (currentTeam == Board.Team2)) {
-					board_.putPiece(new King(board_.Pieces_[oldX][oldY].team_,"king"),
-							x, y);
+					board_.putPiece(new King(board_.Pieces_[oldX][oldY].team_,
+							"king"), x, y);
 				} else if ((y == 7) && (currentTeam == Board.Team1)) {
-					board_.putPiece(new King(board_.Pieces_[oldX][oldY].team_,"king"),
-							x, y);
+					board_.putPiece(new King(board_.Pieces_[oldX][oldY].team_,
+							"king"), x, y);
 				} else {
 					piece = board_.Pieces_[oldX][oldY];
 					Class<? extends Piece> newPiece = piece.getClass();
@@ -78,8 +81,7 @@ public class CheckersController extends GameController {
 				int duration = Toast.LENGTH_SHORT;
 
 				Toast toast = Toast.makeText(context, text, duration);
-				toast.show(); 
-				
+				toast.show();
 
 			} else if (board_.Pieces_[x][y].team_ != 0 && !moved) {
 				board_.clearAllHighlights();
@@ -93,15 +95,14 @@ public class CheckersController extends GameController {
 			} else if (!moved) {
 				board_.clearAllHighlights();
 				gamePhase--;
-			}
-			else{
-				
+			} else {
+
 			}
 
 			break;
 		}
 		case 2: {
-			
+
 			if ((x == oldX) && (y == oldY)) {
 				Piece piece = board_.Pieces_[x][y];
 				piece.action1(x, y, board_);

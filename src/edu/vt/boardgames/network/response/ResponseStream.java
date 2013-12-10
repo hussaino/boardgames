@@ -5,29 +5,24 @@ import java.io.InputStream;
 /**
  * Created by Justin on 10/7/13.
  */
-public class ResponseStream
-{
+public class ResponseStream {
 	private InputStream m_inputStream;
 	private boolean m_doneFetchingFlag;
 
-	public ResponseStream(InputStream is)
-	{
+	public ResponseStream(InputStream is) {
 		m_inputStream = is;
 		m_doneFetchingFlag = false;
 	}
 
-	public ResponseStream()
-	{
+	public ResponseStream() {
 		m_doneFetchingFlag = true;
 	}
 
-	public boolean isDoneFetching()
-	{
+	public boolean isDoneFetching() {
 		return m_doneFetchingFlag;
 	}
 
-	public InputStream getInputStream()
-	{
+	public InputStream getInputStream() {
 		return m_inputStream;
 	}
 }

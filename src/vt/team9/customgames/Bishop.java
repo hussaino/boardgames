@@ -2,34 +2,28 @@ package vt.team9.customgames;
 
 import edu.vt.boardgames.R;
 
-public class Bishop extends Piece
-{
+public class Bishop extends Piece {
 
-	public Bishop()
-	{
+	public Bishop() {
 		super();
 	}
 
-	Bishop(int team, String name)
-	{
+	Bishop(int team, String name) {
 		super(team, name);
 	}
 
 	@Override
-	public int getTeam1Image()
-	{
+	public int getTeam1Image() {
 		return R.drawable.team1_bishop;
 	}
 
 	@Override
-	public int getTeam2Image()
-	{
+	public int getTeam2Image() {
 		return R.drawable.team2_bishop;
 	}
 
 	@Override
-	public int getHighlightImage()
-	{
+	public int getHighlightImage() {
 		if (this.team_ == 1)
 			return R.drawable.team1_bishop_highlight;
 		else if (this.team_ == -1)
@@ -39,12 +33,10 @@ public class Bishop extends Piece
 	}
 
 	@Override
-	public void getMoves(int x, int y, Board board)
-	{
+	public void getMoves(int x, int y, Board board) {
 		int oldX = x;
 		int oldY = y;
-		while ((oldY > 0) && (oldX > 0))
-		{
+		while ((oldY > 0) && (oldX > 0)) {
 			oldY--;
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
@@ -54,8 +46,7 @@ public class Bishop extends Piece
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY > 0) && (oldX < board.width_ - 1))
-		{
+		while ((oldY > 0) && (oldX < board.width_ - 1)) {
 			oldY--;
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
@@ -65,8 +56,7 @@ public class Bishop extends Piece
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY < board.length_ - 1) && (oldX > 0))
-		{
+		while ((oldY < board.length_ - 1) && (oldX > 0)) {
 			oldY++;
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
@@ -76,8 +66,7 @@ public class Bishop extends Piece
 		}
 		oldX = x;
 		oldY = y;
-		while ((oldY < board.length_ - 1) && (oldX < board.width_ - 1))
-		{
+		while ((oldY < board.length_ - 1) && (oldX < board.width_ - 1)) {
 			oldY++;
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)

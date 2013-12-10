@@ -13,15 +13,14 @@ import android.os.Handler;
  * to parse the response of the request. Messages are passed between threads via
  * the queue.
  */
-public class ControllerHttpRequestAndParse<T>
-{
-	public void fetchAndParseRequests(Handler handler, ResponseParser<T> responseParser,
-			HttpRequestBase... requests)
-	{
+public class ControllerHttpRequestAndParse<T> {
+	public void fetchAndParseRequests(Handler handler,
+			ResponseParser<T> responseParser, HttpRequestBase... requests) {
 		ArrayBlockingQueue<ResponseStream> blockingQueue = new ArrayBlockingQueue<ResponseStream>(
 				requests.length + 1); // +1 because DONE signal is sent
 		new AsyncTaskHttpRequest(blockingQueue).execute(requests);
-		new AsyncTaskParseResource<T>(blockingQueue, responseParser, handler).execute();
+		new AsyncTaskParseResource<T>(blockingQueue, responseParser, handler)
+				.execute();
 	}
 
 }

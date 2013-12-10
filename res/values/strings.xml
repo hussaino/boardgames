@@ -12,7 +12,7 @@
     <string-array name="nav_drawer_items">
         <item >New Game</item>
         <item >Join Game</item>
-        <item >All Games</item>
+        <item >My Games</item>
         <item >Account</item>
         <item >Other Games</item>
         <item >Settings</item>

@@ -9,11 +9,9 @@ import edu.vt.boardgames.network.UtilsJSON;
 /**
  * Created by Justin on 11/21/13
  */
-public class ResponseParserGame extends ResponseParserJSON<Game>
-{
+public class ResponseParserGame extends ResponseParserJSON<Game> {
 	@Override
-	protected Game getObjFromJSON(JSONObject json) throws JSONException
-	{
+	protected Game getObjFromJSON(JSONObject json) throws JSONException {
 		return UtilsJSON.getGameFromJSON(json);
 	}
 }

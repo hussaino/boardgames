@@ -4,14 +4,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SpaceListener implements OnItemClickListener{
+public class SpaceListener implements OnItemClickListener {
 
 	GameController controller_;
-	
-	public SpaceListener(GameController controller){
+
+	public SpaceListener(GameController controller) {
 		controller_ = controller;
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long ID) {
 		try {
@@ -24,5 +24,5 @@ public class SpaceListener implements OnItemClickListener{
 			e.printStackTrace();
 		}
 	}
-	
+
 }

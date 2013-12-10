@@ -9,7 +9,6 @@ import java.util.ArrayList;
  * You can implement this interface to make parsers for html, JSON, or any other
  * type of formatted input stream.
  */
-public abstract class ResponseParser<T>
-{
+public abstract class ResponseParser<T> {
 	public abstract ArrayList<T> getResourceParsedElems(InputStream is);
 }

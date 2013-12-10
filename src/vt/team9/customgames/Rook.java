@@ -2,34 +2,28 @@ package vt.team9.customgames;
 
 import edu.vt.boardgames.R;
 
-public class Rook extends Piece
-{
+public class Rook extends Piece {
 
-	public Rook()
-	{
+	public Rook() {
 		super();
 	}
 
-	Rook(int team, String name)
-	{
+	Rook(int team, String name) {
 		super(team, name);
 	}
 
 	@Override
-	public int getTeam1Image()
-	{
+	public int getTeam1Image() {
 		return R.drawable.team1_rook;
 	}
 
 	@Override
-	public int getTeam2Image()
-	{
+	public int getTeam2Image() {
 		return R.drawable.team2_rook;
 	}
 
 	@Override
-	public int getHighlightImage()
-	{
+	public int getHighlightImage() {
 		if (this.team_ == 1)
 			return R.drawable.team1_rook_highlight;
 		else if (this.team_ == -1)
@@ -39,18 +33,15 @@ public class Rook extends Piece
 	}
 
 	@Override
-	public void action1(int x, int y, Board board)
-	{
+	public void action1(int x, int y, Board board) {
 
 	}
 
 	@Override
-	public void getMoves(int x, int y, Board board)
-	{
+	public void getMoves(int x, int y, Board board) {
 		int oldX = x;
 		int oldY = y;
-		while (oldX < board.width_ - 1)
-		{
+		while (oldX < board.width_ - 1) {
 			oldX++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
@@ -59,8 +50,7 @@ public class Rook extends Piece
 
 		}
 		oldX = x;
-		while (oldX > 0)
-		{
+		while (oldX > 0) {
 			oldX--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
@@ -69,8 +59,7 @@ public class Rook extends Piece
 
 		}
 		oldX = x;
-		while (oldY < board.length_ - 1)
-		{
+		while (oldY < board.length_ - 1) {
 			oldY++;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);
@@ -79,8 +68,7 @@ public class Rook extends Piece
 
 		}
 		oldY = y;
-		while (oldY > 0)
-		{
+		while (oldY > 0) {
 			oldY--;
 			if (board.Pieces_[oldX][oldY].team_ != this.team_)
 				board.Pieces_[oldX][oldY].setHighlighted(true);

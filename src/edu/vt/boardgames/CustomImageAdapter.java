@@ -52,8 +52,8 @@ public class CustomImageAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		View rowLayout = LayoutInflater.from(context).inflate(
-				R.layout.list, null);
+		View rowLayout = LayoutInflater.from(context).inflate(R.layout.list,
+				null);
 
 		Game game = data.get(position);
 

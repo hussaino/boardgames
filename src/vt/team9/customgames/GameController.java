@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,8 +19,7 @@ import edu.vt.boardgames.network.User;
 import edu.vt.boardgames.network.UtilsServer;
 import edu.vt.boardgames.network.response.HandlerResponse;
 
-public abstract class GameController extends Object
-{
+public abstract class GameController extends Object {
 	PiecesAdapter adapter_;
 	ProgressDialog progress;
 	private Board board_;
@@ -37,26 +35,26 @@ public abstract class GameController extends Object
 	boolean timerFlag = false;
 	CountDownTimer countdown;
 	int id_ = -1;
+	User thisUser;
 
-	public GameController(PiecesAdapter adapter, Board board, Button submit)
-	{
+	public GameController(PiecesAdapter adapter, Board board, Button submit) {
 		adapter_ = adapter;
 		board_ = board;
 		submit_ = submit;
 		board.initBoard();
-		submit_.setOnClickListener(new OnClickListener()
-		{
+		submit_.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				submitClick();
 			}
 		});
 		countdown = new CountDownTimer(30000, 1000) {
-			
+
 			public void onTick(long millisUntilFinished) {
-			    //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+				// mTextField.setText("seconds remaining: " +
+				// millisUntilFinished / 1000);
 			}
+
 			public void onFinish() {
 				UtilsServer.getGameFromServer(handler, id_);
 			}
@@ -64,11 +62,9 @@ public abstract class GameController extends Object
 
 	}
 
-	public void submitClick()
-	{
+	public void submitClick() {
 		// save the game state here.
-		if (gamePhase == 2)
-		{
+		if (gamePhase == 2) {
 			gamePhase = 0;
 			moved = false;
 			board_.clearAllHighlights();
@@ -81,88 +77,83 @@ public abstract class GameController extends Object
 		}
 	}
 
-	private HandlerResponse<String> handler_ = new HandlerResponse<String>()
-	{
+	private HandlerResponse<String> handler_ = new HandlerResponse<String>() {
 		public void onResponseArrayObj(java.util.ArrayList<String> response) {
-			Toast.makeText(submit_.getContext(), "Move submitted. " + response.get(0),
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(submit_.getContext(),
+					"Move submitted. " + response.get(0), Toast.LENGTH_SHORT)
+					.show();
 		};
 	};
 
-	abstract void itemClicked(int position) throws InstantiationException, IllegalAccessException;
+	abstract void itemClicked(int position) throws InstantiationException,
+			IllegalAccessException;
 
-	public void setGame(Game game)
-	{
+	public void setGame(Game game) {
 		game_ = game;
-		if(game.getTurn() == thisTeam){
+		if (game.getTurn() == thisTeam) {
 			countdown.cancel();
-			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(submit_.getContext())
-			.setSmallIcon(R.drawable.icon_chess)
-			.setContentTitle("Chess")
-			.setContentText("It's your move!");
-			Intent mainIntent = new Intent(submit_.getContext(), MainActivity.class);
-			TaskStackBuilder stackBuilder = TaskStackBuilder.create(submit_.getContext());
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+					submit_.getContext()).setSmallIcon(R.drawable.icon_chess)
+					.setContentTitle("Chess").setContentText("It's your move!");
+			Intent mainIntent = new Intent(submit_.getContext(),
+					MainActivity.class);
+			TaskStackBuilder stackBuilder = TaskStackBuilder.create(submit_
+					.getContext());
 			stackBuilder.addParentStack(MainActivity.class);
 			stackBuilder.addNextIntent(mainIntent);
-			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+					0, PendingIntent.FLAG_UPDATE_CURRENT);
 			mBuilder.setContentIntent(resultPendingIntent);
-			NotificationManager mNotificationManager = (NotificationManager) submit_.getContext() .getSystemService(submit_.getContext().NOTIFICATION_SERVICE);
+			NotificationManager mNotificationManager = (NotificationManager) submit_
+					.getContext().getSystemService(
+							submit_.getContext().NOTIFICATION_SERVICE);
 			int mID = 0;
 			mNotificationManager.notify(mID, mBuilder.build());
-			Log.d("Hussain","notification");
-		}
-		else
+		} else
 			countdown.start();
-		
+
 		if (game.getTurn() != 0)
 			currentTeam = game.getTurn();
 
 		Board board = game.getBoard();
-		if (board != null)
-		{
+		if (board != null) {
 			board_ = board;
 			adapter_.setBoardToDraw(board_);
 			adapter_.notifyDataSetChanged();
 		}
 	}
-	
+
 	public void setThisTeam(int thisTeam) {
 		this.thisTeam = thisTeam;
 	}
 
-	public Board getBoard()
-	{
+	public Board getBoard() {
 		return board_;
 	}
 
-	public void setBoard(Board board)
-	{
+	public void setBoard(Board board) {
 		board_ = board;
 	}
 
-	//@SuppressWarnings("unchecked")
-	public void retrieveGame(Bundle bundle){
+	// @SuppressWarnings("unchecked")
+	public void retrieveGame(Bundle bundle) {
 		id_ = bundle.getInt("id");
-		User user = new User(bundle.getString("username"));
-		user.setId(bundle.getInt("userid"));
-		//ArrayList<String> usernames = (ArrayList<String>) bundle.getSerializable("usernames");
-		if(id_ == -1){
-			UtilsServer.createNewGame(handler, true, false, 5, 2, 1 ,-1 ,-1,user);
-			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Creating your game.", true, false);
-		}
-		else{
-			UtilsServer.getGameFromServer(handler, id_);
-			progress = ProgressDialog.show(submit_.getContext(), "Wait!", "Retrieving your game.", true, false);
-		}
+		thisUser = new User(bundle.getString("username"));
+		thisUser.setId(bundle.getInt("userid"));
+		// ArrayList<String> usernames = (ArrayList<String>)
+		// bundle.getSerializable("usernames");
+		UtilsServer.getGameFromServer(handler, id_);
+		progress = ProgressDialog.show(submit_.getContext(), "Wait!",
+				"Retrieving your game.", true, false);
+
 	}
-	private HandlerResponse<Game> handler = new HandlerResponse<Game>()
-	{
+
+	private HandlerResponse<Game> handler = new HandlerResponse<Game>() {
 		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
-			
+
 			progress.dismiss();
-			
-			if (response != null && response.size() > 0)
-			{
+
+			if (response != null && response.size() > 0) {
 				setGame(response.get(0));
 			}
 		};
