@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 	public static User user_;
 	ArrayList<Game> listOfGames;
 	ProgressDialog progress;
+	private int tab;
 
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -82,7 +83,8 @@ public class MainActivity extends Activity {
 				.getResourceId(2, -1)));
 		// Communities, Will add a counter here
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons
-				.getResourceId(3, -1), true, "10"));
+				.getResourceId(3, -1)));
+		
 		// // Pages
 		// navDrawerItems.add(new NavDrawerItem(navMenuTitles[4],
 		// navMenuIcons.getResourceId(4, -1)));
@@ -212,6 +214,7 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
+			tab = 1;
 			UtilsServer.getAllOpenGames(handler);
 			progress = ProgressDialog.show(this, "Wait!",
 					"Retrieving open games", true, false);
@@ -229,6 +232,7 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				break;
 			}
+			tab = 2;
 			UtilsServer.getAllGamesForUser(handler, user_);
 			progress = ProgressDialog.show(this, "Wait!",
 					"Retrieving your games", true, false);
@@ -320,21 +324,18 @@ public class MainActivity extends Activity {
 	public void getGames() {
 		// Create an instance of the dialog fragment and show it
 
+		navDrawerItems.get(tab).setCount("" +listOfGames.size());
+		navDrawerItems.get(tab).setCounterVisibility(true);
+		adapter.notifyDataSetChanged();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		// Get the layout inflater
 		LayoutInflater inflater = getLayoutInflater();
 
 		final View view = inflater.inflate(R.layout.listview, null);
 		ListView listview = (ListView) view.findViewById(R.id.gameslist);
-		// ListView listview = new ListView(getApplicationContext());
 		CustomImageAdapter adapter = new CustomImageAdapter(
 				getApplicationContext(), R.id.list, listOfGames);
 		listview.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
-		// listview.setAdapter(new CustomImageAdapter(getApplicationContext(),
-		// layoutResourceId, data));
-		// Inflate and set the layout for the dialog
-		// Pass null as the parent view because its going in the dialog layout
 		builder.setView(view).setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -351,11 +352,7 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				UtilsServer.joinGame(handler2, user_, listOfGames.get(position));
-
-				// progress = ProgressDialog.show(getApplicationContext(),
-				// "Wait!",
-				// "Joining Game", true, false);
-			ad.cancel();
+				ad.cancel();
 			}
 		});
 	}
@@ -367,13 +364,11 @@ public class MainActivity extends Activity {
 
 			if (response != null && response.size() > 0) {
 				listOfGames = response;
-				Log.d("Hussain", "" + listOfGames.size());
-				//Log.d("Hussain", listOfGames.toString());
-				//for (int i = 0; i < listOfGames.size(); i++) {
-
-				//}
-				getGames();
+				getGames();				
+				Log.d("Hussain","Tab: " + navDrawerItems.get(tab).toString());
 			}
+			else
+				Toast.makeText(getApplicationContext(), "No games found", Toast.LENGTH_SHORT).show();
 		};
 	};
 
@@ -397,7 +392,6 @@ public class MainActivity extends Activity {
 				mDrawerList.setItemChecked(1, false);
 				mDrawerList.setItemChecked(2, false);
 				mDrawerList.setItemChecked(3, false);
-				// mDrawerList.setSelection(2);
 				setTitle("" + response.get(0).getId());
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
