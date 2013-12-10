@@ -14,6 +14,7 @@ public class ChessController extends GameController {
 	boolean check;
 	boolean checkmate;
 	Activity main;
+	boolean ready = false;
 
 	// ChessBoard board;
 	public ChessController(PiecesAdapter adapter, Board board, Button submit,
@@ -29,6 +30,7 @@ public class ChessController extends GameController {
 		// TODO Auto-generated method stub
 		super.setGame(game);
 		if (game_.getPlayers().size() > 1) {
+			ready = true;
 			if (game_.getPlayers().get(0).getId() == thisUser.getId())
 				thisTeam = 1;
 			else
@@ -36,9 +38,7 @@ public class ChessController extends GameController {
 
 		} else {
 			thisTeam = -1;
-			Toast.makeText(submit_.getContext(),
-					"Still waiting for another player to join",
-					Toast.LENGTH_SHORT).show();
+			ready = false;
 		}
 
 	}
@@ -47,6 +47,11 @@ public class ChessController extends GameController {
 	void itemClicked(int position) throws InstantiationException,
 			IllegalAccessException {
 		ChessBoard board = (ChessBoard) this.getBoard();
+		if(!ready)
+			Toast.makeText(submit_.getContext(),
+					"Still waiting for another player to join",
+					Toast.LENGTH_SHORT).show();
+		
 		int x = position % 8;
 		int y = position / 8;
 		switch (gamePhase) {
