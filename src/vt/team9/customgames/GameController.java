@@ -102,25 +102,8 @@ public abstract class GameController extends Object {
 	public void setGame(Game game) {
 		game_ = game;
 		if (game.getTurn() == thisTeam) {
+			sendNotification();
 			countdown.cancel();
-			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-					submit_.getContext()).setSmallIcon(R.drawable.icon_chess)
-					.setContentTitle("Chess").setContentText("It's your turn on game: " + id_ + "!");
-			Intent mainIntent = new Intent(submit_.getContext(),
-					MainActivity.class);
-			TaskStackBuilder stackBuilder = TaskStackBuilder.create(submit_
-					.getContext());
-			stackBuilder.addParentStack(MainActivity.class);
-			stackBuilder.addNextIntent(mainIntent);
-			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-					0, PendingIntent.FLAG_UPDATE_CURRENT);
-			mBuilder.setContentIntent(resultPendingIntent);
-			submit_.getContext();
-			NotificationManager mNotificationManager = (NotificationManager) submit_
-					.getContext()
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-			int mID = 0;
-			mNotificationManager.notify(mID, mBuilder.build());
 		} else
 			countdown.start();
 
@@ -134,7 +117,26 @@ public abstract class GameController extends Object {
 			adapter_.notifyDataSetChanged();
 		}
 	}
-
+	public void sendNotification(){
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				submit_.getContext()).setSmallIcon(R.drawable.icon_chess)
+				.setContentTitle("Chess").setContentText("It's your turn on game: " + id_ + "!");
+		Intent mainIntent = new Intent(submit_.getContext(),
+				MainActivity.class);
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(submit_
+				.getContext());
+		stackBuilder.addParentStack(MainActivity.class);
+		stackBuilder.addNextIntent(mainIntent);
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+				0, PendingIntent.FLAG_UPDATE_CURRENT);
+		mBuilder.setContentIntent(resultPendingIntent);
+		submit_.getContext();
+		NotificationManager mNotificationManager = (NotificationManager) submit_
+				.getContext()
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		int mID = 0;
+		mNotificationManager.notify(mID, mBuilder.build());
+	}
 	public void setThisTeam(int thisTeam) {
 		this.thisTeam = thisTeam;
 	}
