@@ -6,8 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.vt.boardgames.Piece;
 import vt.team9.customgames.Board;
-import vt.team9.customgames.Piece;
 
 @SuppressWarnings("all")
 public class UtilsJSON {

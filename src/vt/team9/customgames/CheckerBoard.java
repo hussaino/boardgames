@@ -1,5 +1,7 @@
 package vt.team9.customgames;
 
+import edu.vt.boardgames.EmptySpace;
+
 public class CheckerBoard extends Board {
 
 	public CheckerBoard() {

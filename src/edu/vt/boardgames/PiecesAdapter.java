@@ -1,5 +1,6 @@
-package vt.team9.customgames;
+package edu.vt.boardgames;
 
+import vt.team9.customgames.Board;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;

@@ -1,9 +1,7 @@
 package edu.vt.boardgames;
 
-import vt.team9.customgames.ChessBoard;
+import vt.team9.customgames.CustomBoard;
 import vt.team9.customgames.ChessController;
-import vt.team9.customgames.PiecesAdapter;
-import vt.team9.customgames.SpaceListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -14,9 +12,9 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
-public class ChessGame extends Fragment {
+public class CustomGame extends Fragment {
 
-	public ChessGame() {
+	public CustomGame() {
 
 	}
 
@@ -33,7 +31,7 @@ public class ChessGame extends Fragment {
 				.findViewById(R.id.LinearLayout1);
 		int width = ll.getWidth();
 
-		ChessBoard board = new ChessBoard(8, 8);
+		CustomBoard board = new CustomBoard(8, 8);
 		Button button = (Button) rootView.findViewById(R.id.submitButton);
 		Button reset = (Button) rootView.findViewById(R.id.resetButton);
 		ViewGroup.LayoutParams layoutParams = grid.getLayoutParams();

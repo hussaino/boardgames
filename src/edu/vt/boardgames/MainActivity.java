@@ -236,6 +236,8 @@ public class MainActivity extends Activity {
 			UtilsServer.getAllGamesForUser(handler, user_);
 			progress = ProgressDialog.show(this, "Wait!",
 					"Retrieving your games", true, false);
+
+			Log.d("Hussain","" + user_.getName() + ":" + user_.getId());
 			break;
 
 		case 3:
@@ -361,14 +363,15 @@ public class MainActivity extends Activity {
 		public void onResponseArrayObj(java.util.ArrayList<Game> response) {
 
 			progress.dismiss();
-
+			Log.d("Hussain","" + response.size());
 			if (response != null && response.size() > 0) {
 				listOfGames = response;
 				getGames();				
-				Log.d("Hussain","Tab: " + navDrawerItems.get(tab).toString());
+				//Log.d("Hussain","Tab: " + navDrawerItems.get(tab).toString());
 			}
-			else
-				Toast.makeText(getApplicationContext(), "No games found", Toast.LENGTH_SHORT).show();
+			else{
+				//Toast.makeText(getApplicationContext(), "No games found", Toast.LENGTH_SHORT).show();
+			}
 		};
 	};
 
@@ -382,7 +385,7 @@ public class MainActivity extends Activity {
 				bundle.putString("username", user_.getName());
 				bundle.putInt("userid", user_.getId());
 
-				Fragment fragment = new ChessGame();
+				Fragment fragment = new CustomGame();
 				fragment.setArguments(bundle);
 
 				FragmentManager fragmentManager = getFragmentManager();

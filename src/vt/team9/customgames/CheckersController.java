@@ -1,5 +1,8 @@
 package vt.team9.customgames;
 
+import edu.vt.boardgames.GameController;
+import edu.vt.boardgames.Piece;
+import edu.vt.boardgames.PiecesAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -33,7 +36,7 @@ public class CheckersController extends GameController {
 	}
 
 	@Override
-	void itemClicked(int position) throws InstantiationException,
+	protected void itemClicked(int position) throws InstantiationException,
 			IllegalAccessException {
 		int x = position % 8;
 		int y = position / 8;

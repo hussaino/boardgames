@@ -1,4 +1,4 @@
-package vt.team9.customgames;
+package edu.vt.boardgames;
 
 import edu.vt.boardgames.R;
 
@@ -22,7 +22,7 @@ public class EmptySpace extends Piece {
 		return R.drawable.empty_space_highlight;
 	}
 
-	EmptySpace(int team, String name) {
+	public EmptySpace(int team, String name) {
 		super(team, name);
 	}
 }

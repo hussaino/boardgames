@@ -1,5 +1,8 @@
 package vt.team9.customgames;
 
+import edu.vt.boardgames.GameController;
+import edu.vt.boardgames.Piece;
+import edu.vt.boardgames.PiecesAdapter;
 import edu.vt.boardgames.network.Game;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,7 +30,6 @@ public class ChessController extends GameController {
 
 	@Override
 	public void setGame(Game game) {
-		// TODO Auto-generated method stub
 		super.setGame(game);
 		if (game_.getPlayers().size() > 1) {
 			ready = true;
@@ -44,9 +46,9 @@ public class ChessController extends GameController {
 	}
 
 	@Override
-	void itemClicked(int position) throws InstantiationException,
+	protected void itemClicked(int position) throws InstantiationException,
 			IllegalAccessException {
-		ChessBoard board = (ChessBoard) this.getBoard();
+		CustomBoard board = (CustomBoard) this.getBoard();
 		if(!ready)
 			Toast.makeText(submit_.getContext(),
 					"Still waiting for another player to join",
@@ -178,7 +180,7 @@ public class ChessController extends GameController {
 	}
 
 	private void checkCast() {
-		ChessBoard board = (ChessBoard) this.getBoard();
+		CustomBoard board = (CustomBoard) this.getBoard();
 		boolean flag1 = true;
 		boolean flag2 = true;
 		if (currentTeam == Board.Team1) {
@@ -296,7 +298,7 @@ public class ChessController extends GameController {
 	}
 
 	private void checkPromotion() {
-		final ChessBoard board = (ChessBoard) this.getBoard();
+		final CustomBoard board = (CustomBoard) this.getBoard();
 		for (int i = 0; i < 8; i++) {
 			Piece pawn;
 			pawn = board.Pieces_[i][7];
@@ -375,7 +377,7 @@ public class ChessController extends GameController {
 	}
 
 	public void putInCheck() {
-		ChessBoard board = (ChessBoard) this.getBoard();
+		CustomBoard board = (CustomBoard) this.getBoard();
 		Piece king;
 
 		int coord[] = new int[2];
@@ -401,7 +403,7 @@ public class ChessController extends GameController {
 	}
 
 	public void isCheckmate() {
-		ChessBoard board = (ChessBoard) this.getBoard();
+		CustomBoard board = (CustomBoard) this.getBoard();
 		if (!check) {
 			return;
 		}
@@ -499,7 +501,7 @@ public class ChessController extends GameController {
 	}
 
 	public void isInCheck() {
-		ChessBoard board = (ChessBoard) this.getBoard();
+		CustomBoard board = (CustomBoard) this.getBoard();
 		Piece king;
 
 		int coord[] = new int[2];

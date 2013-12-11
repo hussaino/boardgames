@@ -1,13 +1,16 @@
 package vt.team9.customgames;
 
+import edu.vt.boardgames.EmptySpace;
+import edu.vt.boardgames.Piece;
+
 public class Board extends Object {
 	static final int NoTeam = 0;
-	static int Team1 = 1;
-	static int Team2 = -1;
+	public static int Team1 = 1;
+	public static int Team2 = -1;
 	public Piece Pieces_[][];
 	public int width_;
 	public int length_;
-	boolean isHighlighted;
+	public boolean isHighlighted;
 
 	public Board() {
 	}
@@ -35,7 +38,7 @@ public class Board extends Object {
 		Pieces_[x][y] = new EmptySpace(NoTeam, "");
 	}
 
-	void clearAllHighlights() {
+	public void clearAllHighlights() {
 		for (int i = 0; i < width_; i++)
 			for (int j = 0; j < length_; j++) {
 				Pieces_[i][j].highlight_ = false;

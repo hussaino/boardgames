@@ -1,10 +1,12 @@
-package vt.team9.customgames;
+package edu.vt.boardgames;
+
+import vt.team9.customgames.Board;
 
 public class Piece {
 
-	boolean highlight_;
-	int team_;
-	String name_;
+	public boolean highlight_;
+	public int team_;
+	public String name_;
 
 	public Piece() {
 

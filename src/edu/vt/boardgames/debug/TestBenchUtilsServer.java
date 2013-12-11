@@ -2,7 +2,7 @@ package edu.vt.boardgames.debug;
 
 import java.util.ArrayList;
 
-import vt.team9.customgames.ChessBoard;
+import vt.team9.customgames.CustomBoard;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
@@ -27,7 +27,7 @@ public class TestBenchUtilsServer {
 			public void onResponseArrayObj(ArrayList<Game> response) {
 				if (response != null) {
 					Game game = response.get(0);
-					ChessBoard board = new ChessBoard(8, 8);
+					CustomBoard board = new CustomBoard(8, 8);
 					board.initBoard();
 					game.setBoard(board);
 					testSubmitNewGameState(game);

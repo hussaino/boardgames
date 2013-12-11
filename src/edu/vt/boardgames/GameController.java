@@ -1,5 +1,6 @@
-package vt.team9.customgames;
+package edu.vt.boardgames;
 
+import vt.team9.customgames.Board;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import edu.vt.boardgames.MainActivity;
 import edu.vt.boardgames.R;
 import edu.vt.boardgames.network.Game;
 import edu.vt.boardgames.network.User;
@@ -21,23 +21,23 @@ import edu.vt.boardgames.network.UtilsServer;
 import edu.vt.boardgames.network.response.HandlerResponse;
 
 public abstract class GameController extends Object {
-	PiecesAdapter adapter_;
+	protected PiecesAdapter adapter_;
 	ProgressDialog progress;
 	private Board board_;
 	public Game game_;
-	Button submit_;
+	protected Button submit_;
 	Button reset_;
-	boolean moved = false;
+	protected boolean moved = false;
 	int old_team;
-	int gamePhase = 0;
-	int currentTeam = 1;
-	int oldX;
-	int oldY;
-	int thisTeam = 1;
+	protected int gamePhase = 0;
+	protected int currentTeam = 1;
+	protected int oldX;
+	protected int oldY;
+	protected int thisTeam = 1;
 	boolean timerFlag = false;
 	CountDownTimer countdown;
 	int id_ = -1;
-	User thisUser;
+	protected User thisUser;
 
 	public GameController(PiecesAdapter adapter, Board board, Button submit,
 			Button reset) {
@@ -96,7 +96,7 @@ public abstract class GameController extends Object {
 		};
 	};
 
-	abstract void itemClicked(int position) throws InstantiationException,
+	protected abstract void itemClicked(int position) throws InstantiationException,
 			IllegalAccessException;
 
 	public void setGame(Game game) {

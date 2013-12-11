@@ -1,4 +1,4 @@
-package vt.team9.customgames;
+package edu.vt.boardgames;
 
 import android.view.View;
 import android.widget.AdapterView;

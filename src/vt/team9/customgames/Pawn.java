@@ -1,5 +1,6 @@
 package vt.team9.customgames;
 
+import edu.vt.boardgames.Piece;
 import edu.vt.boardgames.R;
 
 public class Pawn extends Piece {
@@ -39,7 +40,7 @@ public class Pawn extends Piece {
 
 	@Override
 	public void getMoves(int x, int y, Board board_) {
-		ChessBoard board = (ChessBoard) board_;
+		CustomBoard board = (CustomBoard) board_;
 		if (this.team_ == Board.Team1) {
 			if (y + 1 < board.length_
 					&& board.Pieces_[x][y + 1].team_ == Board.NoTeam)

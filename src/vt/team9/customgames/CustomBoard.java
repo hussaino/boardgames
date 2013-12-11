@@ -1,6 +1,8 @@
 package vt.team9.customgames;
 
-public class ChessBoard extends Board {
+import edu.vt.boardgames.EmptySpace;
+
+public class CustomBoard extends Board {
 
 	public boolean team1QueenSideCast;
 	public boolean team1KingSideCast;
@@ -8,7 +10,7 @@ public class ChessBoard extends Board {
 	public boolean team2KingSideCast;
 	public int enPass;
 
-	public ChessBoard() {
+	public CustomBoard() {
 		super();
 		team1QueenSideCast = true;
 		team1KingSideCast = true;
@@ -17,7 +19,7 @@ public class ChessBoard extends Board {
 		enPass = -1;
 	}
 
-	public ChessBoard(int length, int width) {
+	public CustomBoard(int length, int width) {
 		super(length, width);
 
 		team1QueenSideCast = true;
