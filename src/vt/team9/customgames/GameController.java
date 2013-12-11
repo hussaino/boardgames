@@ -105,7 +105,7 @@ public abstract class GameController extends Object {
 			countdown.cancel();
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 					submit_.getContext()).setSmallIcon(R.drawable.icon_chess)
-					.setContentTitle("Chess").setContentText("It's your move!");
+					.setContentTitle("Chess").setContentText("It's your turn on game: " + id_ + "!");
 			Intent mainIntent = new Intent(submit_.getContext(),
 					MainActivity.class);
 			TaskStackBuilder stackBuilder = TaskStackBuilder.create(submit_
