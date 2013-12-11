@@ -370,7 +370,7 @@ public class MainActivity extends Activity {
 				//Log.d("Hussain","Tab: " + navDrawerItems.get(tab).toString());
 			}
 			else{
-				//Toast.makeText(getApplicationContext(), "No games found", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "No games found", Toast.LENGTH_SHORT).show();
 			}
 		};
 	};
